@@ -1,2 +1,173 @@
 <!doctype html>
-<!-- (HTML content from 'Portfolio With Resume Details' goes here) -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Afsal Ashraf — Cloud Solution Architect</title>
+  <meta name="description" content="Portfolio — Afsal Ashraf, Cloud Solution Architect. Terraform, Kubernetes, Azure, GCP, AI/ML." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://kit.fontawesome.com/a2d9d6b5f0.js" crossorigin="anonymous"></script>
+  <style>
+    .hero-bg {
+      background: linear-gradient(120deg, #0f172a 0%, #0ea5a4 40%, #7c3aed 100%);
+      color: white;
+    }
+    .glass {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .name-anim {
+      background: linear-gradient(90deg,#fff,#c7f9ff,#fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: move 3s linear infinite;
+      background-size: 200% 100%;
+    }
+    @keyframes move {
+      0% { background-position: 0% 0% }
+      100% { background-position: -200% 0% }
+    }
+    .blob {
+      position: absolute;
+      filter: blur(80px);
+      opacity: 0.45;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased leading-relaxed">
+<header class="hero-bg relative overflow-hidden">
+  <div class="blob w-96 h-96 rounded-full bg-pink-500 left-0 top-0" style="transform: translate(-30%, -20%);"></div>
+  <div class="blob w-96 h-96 rounded-full bg-cyan-400 right-0 bottom-0" style="transform: translate(30%, 20%);"></div>
+  <div class="container mx-auto px-6 md:px-12 py-20 relative z-10">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div data-aos="fade-right">
+        <p class="text-sm uppercase tracking-widest opacity-80">Hello — I'm</p>
+        <h1 class="text-4xl sm:text-5xl font-extrabold mt-3">Afsal <span class="name-anim">Ashraf</span></h1>
+        <p class="mt-4 text-xl opacity-95">Cloud Solution Architect • Platform Engineering • Terraform • Kubernetes • AI/ML</p>
+        <p class="mt-6 max-w-xl opacity-90">
+          Cloud Engineer with 12+ years delivering enterprise-grade solutions on Azure & GCP. I design scalable platform engineering solutions, automation with Terraform, Kubernetes-based PaaS, and integrate AI/ML to drive intelligent automation.
+        </p>
+        <div class="mt-8 flex items-center gap-4">
+          <a href="resume.pdf" download class="inline-flex items-center gap-3 bg-white text-slate-900 px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition">
+            <i class="fa-solid fa-download"></i> Download Resume
+          </a>
+          <a href="https://www.linkedin.com/in/afsalva" target="_blank" class="inline-flex items-center gap-3 px-5 py-3 rounded-full glass border border-white/10 hover:bg-white/5 transition">
+            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          </a>
+        </div>
+      </div>
+      <div data-aos="fade-left" class="flex justify-center md:justify-end">
+        <div class="glass rounded-2xl p-6 w-full max-w-md relative z-10 shadow-2xl">
+          <h3 class="text-lg font-semibold">Contact</h3>
+          <p class="mt-3 text-sm opacity-90"><strong>Email:</strong> <a href="mailto:email@afsalashraf.com" class="text-cyan-200 hover:underline">email@afsalashraf.com</a></p>
+          <p class="mt-1 text-sm opacity-90"><strong>Phone:</strong> +91 974 034 2463</p>
+          <p class="mt-1 text-sm opacity-90"><strong>Location:</strong> Bengaluru, India</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="container mx-auto px-6 md:px-12 py-16">
+
+  <!-- About -->
+  <section id="about" class="mb-12" data-aos="fade-up">
+    <h2 class="text-2xl font-bold">About</h2>
+    <p class="mt-4 max-w-3xl opacity-90">
+      I am a Cloud Solution Architect with over 12 years of experience in designing, implementing, and optimizing enterprise-grade cloud solutions. My career has spanned multiple industries, where I have led the development of highly scalable PaaS platforms, hybrid cloud migrations, and self-service infrastructure models that empower development teams.
+    </p>
+    <p class="mt-4 max-w-3xl opacity-90">
+      My expertise includes architecting solutions using Azure, Google Cloud, and Kubernetes distributions such as GKE, AKS, and OpenShift. I have extensive hands-on experience with Terraform, CI/CD pipelines, container orchestration, and integrating AI/ML capabilities into cloud-native platforms.
+    </p>
+    <p class="mt-4 max-w-3xl opacity-90">
+      Career highlights include architecting a multi-cloud PaaS platform for Walmart serving thousands of internal developers, achieving a 40% improvement in deployment times, and leading cost optimization initiatives that saved over $2M annually.
+    </p>
+    <p class="mt-4 max-w-3xl opacity-90">
+      Beyond my technical expertise, I value mentorship and knowledge sharing, and have a proven track record of leading distributed teams, collaborating across global time zones, and delivering solutions that align with both technical and business objectives.
+    </p>
+    <p class="mt-4 max-w-3xl opacity-90">
+      My professional philosophy centers on combining innovation with practical execution, embracing emerging technologies while ensuring reliability and security.
+    </p>
+    <p class="mt-4 max-w-3xl opacity-90 font-semibold">
+      If you’re building the future of cloud, let’s collaborate.
+    </p>
+  </section>
+
+  <!-- Employment -->
+  <section id="employment" class="mb-12" data-aos="fade-up">
+    <h2 class="text-2xl font-bold">Employment History</h2>
+    <ul class="mt-4 space-y-4">
+      <li class="glass p-4 rounded-lg"><strong>Walmart Global Tech</strong> — Cloud Solution Architect (Sep 2020 – Present)</li>
+      <li class="glass p-4 rounded-lg"><strong>Tech Mahindra</strong> — Sr Azure DevOps Consultant (Nov 2018 – Aug 2020)</li>
+      <li class="glass p-4 rounded-lg"><strong>Xerox Technology India</strong> — Sr Development Support Engineer (Aug 2015 – Nov 2018)</li>
+      <li class="glass p-4 rounded-lg"><strong>Syntel Ltd / Allstate</strong> — System Engineer / .Net Developer (Jun 2012 – Aug 2015)</li>
+    </ul>
+  </section>
+
+  <!-- Certifications -->
+  <section id="certifications" class="mb-12" data-aos="fade-up">
+    <h2 class="text-2xl font-bold">Certifications</h2>
+    <ul class="mt-4 space-y-4">
+      <li class="glass p-4 rounded-lg">Microsoft Certified: Azure Solutions Architect Expert — 2022</li>
+      <li class="glass p-4 rounded-lg">Microsoft Certified: DevOps Engineer Expert — 2022</li>
+      <li class="glass p-4 rounded-lg">Google Cloud: Professional Cloud Architect — 2023</li>
+      <li class="glass p-4 rounded-lg">Microsoft Certified: Azure Administrator Associate — 2022</li>
+    </ul>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="mb-12" data-aos="fade-up">
+    <h2 class="text-2xl font-bold">Skills</h2>
+    <p class="mt-4 opacity-90"><strong>Cloud Platforms:</strong> Azure (AKS, App Services, ASE, VM, Azure Monitor, Azure ML, Stack), Google Cloud (GKE, Compute Engine, App Engine, BigQuery), OpenStack, Anthos</p>
+    <p class="mt-2 opacity-90"><strong>Automation:</strong> Terraform, PowerShell, Ansible, Azure DevOps Pipelines, GitHub Actions, ARM/Bicep, GitLab CI</p>
+    <p class="mt-2 opacity-90"><strong>Containers & Orchestration:</strong> Kubernetes (AKS, GKE, OpenShift), Docker, Helm</p>
+    <p class="mt-2 opacity-90"><strong>Programming:</strong> Python, Go, .NET, JavaScript, Java</p>
+    <p class="mt-2 opacity-90"><strong>AI/MLOps:</strong> Azure Machine Learning, Cognitive Services, Generative AI, Agentic AI, Vertex AI, Azure OpenAI, Autogen Studio</p>
+    <p class="mt-2 opacity-90"><strong>Monitoring:</strong> Prometheus, Grafana, ELK Stack, OpenTelemetry, OpenObserv, Azure Monitor, Log Analytics</p>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="mb-12" data-aos="fade-up">
+    <h2 class="text-2xl font-bold">Education</h2>
+    <ul class="mt-4 space-y-4">
+      <li class="glass p-4 rounded-lg">Master of Science in Information Technology — Sikkim Manipal University, 2015</li>
+      <li class="glass p-4 rounded-lg">Bachelor of Computer Applications — Calicut University, 2012</li>
+    </ul>
+  </section>
+
+  <!-- Awards -->
+  <section id="awards" class="mb-12" data-aos="fade-up">
+    <h2 class="text-2xl font-bold">Awards</h2>
+    <ul class="mt-4 space-y-4">
+      <li class="glass p-4 rounded-lg">Excellence Award — Walmart Inc., Apr 2025</li>
+      <li class="glass p-4 rounded-lg">Bravo Awards — Walmart Inc., Jun 2023 & Tech Mahindra, Dec 2018</li>
+      <li class="glass p-4 rounded-lg">Kudos Award — Walmart Inc., Dec 2021</li>
+    </ul>
+  </section>
+
+  <!-- Languages -->
+  <section id="languages" class="mb-12" data-aos="fade-up">
+    <h2 class="text-2xl font-bold">Languages</h2>
+    <ul class="mt-4 space-y-4">
+      <li class="glass p-4 rounded-lg">English (C2)</li>
+      <li class="glass p-4 rounded-lg">Hindi (C2)</li>
+      <li class="glass p-4 rounded-lg">Malayalam (C2)</li>
+    </ul>
+  </section>
+
+</main>
+<footer class="border-t border-white/5 py-6">
+  <div class="container mx-auto px-6 md:px-12 text-center">
+    <p class="opacity-70">© <span id="year"></span> Afsal Ashraf — Cloud Solution Architect</p>
+  </div>
+</footer>
+<script>
+  AOS.init();
+  document.getElementById('year').innerText = new Date().getFullYear();
+</script>
+</body>
+</html>
