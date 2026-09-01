@@ -1,0 +1,82 @@
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-void text-slate-100 font-body antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-cyan-400/25 text-white;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/[0.02] border border-white/[0.06];
+  }
+
+  .glass-card {
+    @apply glass rounded-xl transition-colors duration-300;
+  }
+
+  .glass-card:hover {
+    @apply border-white/[0.1] bg-white/[0.03];
+  }
+
+  .text-gradient-cyan {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-cyan-500;
+  }
+
+  .text-gradient-violet {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-300 to-violet-500;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-white text-sm transition-all duration-200;
+    background: linear-gradient(135deg, #0891b2, #7c3aed);
+  }
+
+  .btn-primary:hover {
+    @apply opacity-90 shadow-[0_0_24px_rgba(8,145,178,0.25)];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm text-slate-300 border border-white/[0.08] bg-white/[0.02] transition-all duration-200;
+  }
+
+  .btn-ghost:hover {
+    @apply text-white border-white/[0.15] bg-white/[0.04];
+  }
+
+  .section-label {
+    @apply text-xs font-mono font-medium uppercase tracking-[0.2em] text-slate-500;
+  }
+
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-bold tracking-tight text-white;
+  }
+
+  .tag-cyan {
+    @apply text-[11px] font-mono px-2.5 py-1 rounded-md bg-cyan-400/5 text-cyan-400/80 border border-cyan-400/10;
+  }
+
+  .tag-violet {
+    @apply text-[11px] font-mono px-2.5 py-1 rounded-md bg-violet-400/5 text-violet-400/80 border border-violet-400/10;
+  }
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #030712; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
