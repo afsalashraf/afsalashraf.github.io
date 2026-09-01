@@ -8,12 +8,11 @@ Live at [afsalashraf.com](https://afsalashraf.com)
 
 GitHub Pages serves **static files only** (no Node.js server at runtime). This project uses React during development, then **builds to static HTML/JS/CSS** that GitHub Pages can host.
 
-On every push to `main`, GitHub Actions builds the site and deploys to GitHub Pages.
+On every push to `main`, GitHub Actions builds the site and publishes to the `gh-pages` branch.
 
-### One-time setup (if Pages source is not GitHub Actions)
+### Pages source
 
-1. Go to **GitHub → Settings → Pages**
-2. Set **Source** to: **GitHub Actions**
+GitHub → **Settings → Pages** → Source: **`gh-pages`** branch, **`/ (root)`**
 
 ## Local development
 
