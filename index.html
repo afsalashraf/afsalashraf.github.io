@@ -3,143 +3,752 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Afsal Ashraf — Cloud Solution Architect</title>
-  <meta name="description" content="Portfolio — Afsal Ashraf, Cloud Solution Architect. Terraform, Kubernetes, Azure, GCP, AI/ML." />
+  <title>Afsal Ashraf — AI Platform Architect &amp; Cloud Architect</title>
+  <meta name="description" content="Portfolio — Afsal Ashraf, AI Platform Architect & Cloud Architect. Azure, GCP, Generative AI, Agentic AI, Kubernetes, Terraform, NVIDIA AI." />
+  <meta name="theme-color" content="#0a0f1e" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script src="https://kit.fontawesome.com/a2d9d6b5f0.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            surface: '#0a0f1e',
+            card: '#111827',
+            accent: '#06b6d4',
+            violet: '#8b5cf6',
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    @import "https://use.typekit.net/kmj5qkr.css";
+    *, *::before, *::after { box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #0a0f1e;
+      overflow-x: hidden;
+    }
+
+    /* Scroll progress */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899);
+      z-index: 100;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* Nav */
+    nav.scrolled {
+      background: rgba(10, 15, 30, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Hero */
     .hero-bg {
-      background: linear-gradient(120deg, #0f172a 0%, #0ea5a4 40%, #7c3aed 100%);
+      background: #0a0f1e;
       color: white;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .glass {
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .name-anim {
-      background: linear-gradient(90deg,#fff,#c7f9ff,#fff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: move 3s linear infinite;
-      background-size: 200% 100%;
-    }
-    @keyframes move {
-      0% { background-position: 0% 0% }
-      100% { background-position: -200% 0% }
-    }
-    .blob {
+
+    .hero-mesh {
       position: absolute;
-      filter: blur(80px);
-      opacity: 0.45;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 40%, rgba(6,182,212,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(139,92,246,0.2) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 60% 80%, rgba(236,72,153,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 30% at 10% 90%, rgba(6,182,212,0.1) 0%, transparent 50%);
       z-index: 0;
     }
 
-    /* Toptal Badge Styles */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 80%);
+      z-index: 0;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.5;
+      z-index: 0;
+      animation: float 8s ease-in-out infinite;
+    }
+    .blob-1 { animation-delay: 0s; }
+    .blob-2 { animation-delay: -4s; }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(20px, -30px) scale(1.05); }
+      66% { transform: translate(-15px, 20px) scale(0.95); }
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(6,182,212,0.3);
+      box-shadow: 0 20px 60px rgba(6,182,212,0.08), 0 0 0 1px rgba(6,182,212,0.1);
+    }
+
+    .name-anim {
+      background: linear-gradient(90deg, #fff 0%, #67e8f9 40%, #c4b5fd 70%, #fff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 4s linear infinite;
+      background-size: 200% 100%;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #22d3ee, #a78bfa);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(6,182,212,0.35);
+    }
+    .btn-primary:hover::before { opacity: 1; }
+    .btn-primary span, .btn-primary i { position: relative; z-index: 1; }
+
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Profile ring */
+    .profile-ring {
+      position: relative;
+      padding: 4px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+      animation: ring-rotate 4s linear infinite;
+    }
+    @keyframes ring-rotate {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+    .profile-ring img {
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* Section headings */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #06b6d4;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Stats */
+    .stat-card {
+      background: linear-gradient(135deg, rgba(6,182,212,0.08) 0%, rgba(139,92,246,0.08) 100%);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.3s ease;
+    }
+    .stat-card:hover { transform: scale(1.03); }
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Timeline */
+    .timeline-line {
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, #06b6d4, #8b5cf6, transparent);
+    }
+    .timeline-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      box-shadow: 0 0 12px rgba(6,182,212,0.6);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* Skill pills */
+    .skill-pill {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.25s ease;
+      cursor: default;
+    }
+    .skill-pill:hover {
+      background: rgba(6,182,212,0.1);
+      border-color: rgba(6,182,212,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(6,182,212,0.1);
+    }
+    .skill-pill i { color: #06b6d4; }
+
+    /* Cert cards */
+    .cert-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .cert-card:hover::before { opacity: 1; }
+    .cert-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(6,182,212,0.2);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    }
+
+    /* Toptal Badge */
     :root { --h: polygon(50% 0, 100% 24%, 100% 76%, 50% 100%, 0 76%, 0 24%); }
     .h-badge { display: inline-block; background: #25a9ef; padding: 4px; clip-path: var(--h); transform: scale(0.8); }
     .a-badge { width: 180px; padding: 20px 0 30px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: #204ecf; text-align: center; background: radial-gradient(circle at 20% -10%,#00c3ff -80%,#fff 30%), #fff; clip-path: var(--h); }
-    .b-badge { margin: 0; font-size: 16px; font-weight: 700; line-height: 1; font-family: proxima-nova, sans-serif; }
+    .b-badge { margin: 0; font-size: 16px; font-weight: 700; line-height: 1; font-family: 'DM Sans', sans-serif; }
     .c-badge { width: 100px; height: 1px; background: #25a9ef; }
-    .d-badge { font-size: 14px; margin-bottom: -4px; font-family: proxima-nova, sans-serif; }
-    .f-badge { display: inline-flex; align-items: center; justify-content: center; padding: 4px 16px; border-radius: 6px; background: #296bff; color: #fff; font-size: 14px; font-weight: 500; text-decoration: none; }
+    .d-badge { font-size: 14px; margin-bottom: -4px; font-family: 'DM Sans', sans-serif; }
+    .f-badge { display: inline-flex; align-items: center; justify-content: center; padding: 4px 16px; border-radius: 6px; background: #296bff; color: #fff; font-size: 14px; font-weight: 500; text-decoration: none; transition: background 0.2s; }
+    .f-badge:hover { background: #1a52d4; }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); opacity: 0.6; }
+      50% { transform: translateY(8px); opacity: 1; }
+    }
+
+    /* Footer glow */
+    .footer-glow {
+      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(6,182,212,0.08) 0%, transparent 70%);
+    }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 antialiased leading-relaxed">
+<body class="text-slate-100 antialiased leading-relaxed">
+
+<div id="scroll-progress"></div>
+
+<!-- Navigation -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="container mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
+    <a href="#" class="font-display font-bold text-lg tracking-tight">
+      <span class="text-cyan-400">A</span>fsal
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+      <a href="#about" class="hover:text-white transition-colors">About</a>
+      <a href="#experience" class="hover:text-white transition-colors">Experience</a>
+      <a href="#skills" class="hover:text-white transition-colors">Skills</a>
+      <a href="#certifications" class="hover:text-white transition-colors">Certs</a>
+      <a href="#education" class="hover:text-white transition-colors">Education</a>
+      <a href="resume.pdf" download class="btn-primary px-4 py-2 rounded-full text-sm font-semibold">
+        <span>Resume</span>
+      </a>
+    </div>
+    <button id="menu-btn" class="md:hidden text-slate-300 hover:text-white p-2" aria-label="Menu">
+      <i class="fa-solid fa-bars text-xl"></i>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/5 px-6 py-4 space-y-3">
+    <a href="#about" class="block text-slate-300 hover:text-white py-1">About</a>
+    <a href="#experience" class="block text-slate-300 hover:text-white py-1">Experience</a>
+    <a href="#skills" class="block text-slate-300 hover:text-white py-1">Skills</a>
+    <a href="#certifications" class="block text-slate-300 hover:text-white py-1">Certs</a>
+    <a href="#education" class="block text-slate-300 hover:text-white py-1">Education</a>
+    <a href="resume.pdf" download class="block text-cyan-400 font-semibold py-1">Download Resume</a>
+  </div>
+</nav>
+
+<!-- Hero -->
 <header class="hero-bg relative overflow-hidden">
-  <div class="blob w-96 h-96 rounded-full bg-pink-500 left-0 top-0" style="transform: translate(-30%, -20%);"></div>
-  <div class="blob w-96 h-96 rounded-full bg-cyan-400 right-0 bottom-0" style="transform: translate(30%, 20%);"></div>
-  <div class="container mx-auto px-6 md:px-12 py-20 relative z-10">
-    <div class="grid md:grid-cols-2 gap-8 items-center">
-      <div data-aos="fade-right">
-        <p class="text-sm uppercase tracking-widest opacity-80">Hello — I'm</p>
-        <h1 class="text-4xl sm:text-5xl font-extrabold mt-3">Afsal <span class="name-anim">Ashraf</span></h1>
-        <p class="mt-4 text-xl opacity-95">Cloud Solution Architect • Platform Engineering • Terraform • Kubernetes • AI/ML</p>
-        <p class="mt-6 max-w-xl opacity-90">
-          Cloud Engineer with 12+ years delivering enterprise-grade solutions on Azure & GCP. I design scalable platform engineering solutions, automation with Terraform, Kubernetes-based PaaS, and integrate AI/ML to drive intelligent automation.
+  <div class="hero-mesh"></div>
+  <div class="grid-overlay"></div>
+  <div class="blob blob-1 w-[500px] h-[500px] bg-cyan-500 left-0 top-0" style="transform: translate(-40%, -30%);"></div>
+  <div class="blob blob-2 w-[400px] h-[400px] bg-violet-500 right-0 bottom-0" style="transform: translate(30%, 30%);"></div>
+
+  <div class="container mx-auto px-6 md:px-12 flex-1 flex items-center relative z-10 pt-24 pb-16">
+    <div class="grid md:grid-cols-2 gap-12 items-center w-full">
+      <div data-aos="fade-right" data-aos-duration="800">
+        <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs font-medium text-cyan-300 mb-6">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Available for opportunities
+        </div>
+        <p class="section-label">Hello — I'm</p>
+        <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold mt-2 leading-tight">
+          Afsal<br><span class="name-anim">Ashraf</span>
+        </h1>
+        <p class="mt-5 text-lg sm:text-xl text-slate-300 font-light">
+          AI Platform Architect
+          <span class="text-slate-600 mx-2">·</span>
+          Cloud Architect
+          <span class="text-slate-600 mx-2">·</span>
+          Generative &amp; Agentic AI
         </p>
-        <div class="mt-8 flex items-center gap-4">
-          <a href="resume.pdf" download class="inline-flex items-center gap-3 bg-white text-slate-900 px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition">
-            <i class="fa-solid fa-download"></i> Download Resume
+        <p class="mt-6 max-w-xl text-slate-400 leading-relaxed">
+          14+ years architecting enterprise-scale Azure, GCP, and AI/ML platforms. Specialized in Microsoft Foundry, Azure OpenAI, Agentic AI, RAG, MLOps, Kubernetes, Platform Engineering, and NVIDIA AI technologies.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="resume.pdf" download class="btn-primary inline-flex items-center gap-3 px-6 py-3.5 rounded-full font-semibold shadow-lg">
+            <i class="fa-solid fa-download"></i>
+            <span>Download Resume</span>
           </a>
-          <a href="https://www.linkedin.com/in/afsalva" target="_blank" class="inline-flex items-center gap-3 px-5 py-3 rounded-full glass border border-white/10 hover:bg-white/5 transition">
-            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          <a href="https://www.linkedin.com/in/afsalva" target="_blank" rel="noopener" class="btn-ghost inline-flex items-center gap-3 px-6 py-3.5 rounded-full font-semibold">
+            <i class="fa-brands fa-linkedin text-cyan-400"></i> LinkedIn
           </a>
         </div>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <span class="glass text-xs px-3 py-1.5 rounded-full text-slate-400"><i class="fa-brands fa-microsoft text-blue-400 mr-1.5"></i>Azure / Foundry</span>
+          <span class="glass text-xs px-3 py-1.5 rounded-full text-slate-400"><i class="fa-brands fa-google text-red-400 mr-1.5"></i>GCP / Vertex AI</span>
+          <span class="glass text-xs px-3 py-1.5 rounded-full text-slate-400"><i class="fa-solid fa-brain text-purple-400 mr-1.5"></i>Agentic AI</span>
+          <span class="glass text-xs px-3 py-1.5 rounded-full text-slate-400"><i class="fa-solid fa-dharmachakra text-cyan-400 mr-1.5"></i>Kubernetes</span>
+          <span class="glass text-xs px-3 py-1.5 rounded-full text-slate-400"><i class="fa-solid fa-microchip text-green-400 mr-1.5"></i>NVIDIA AI</span>
+        </div>
       </div>
-     <div data-aos="fade-left" class="flex justify-center md:justify-end">
-        <div class="glass rounded-2xl p-6 w-full max-w-sm relative z-10 shadow-2xl flex flex-col items-center">
-          <img src="profile.jpg" alt="Afsal Ashraf" class="rounded-full shadow-xl border-4 border-white/20 w-32 h-32 object-cover mb-4">
-          
-          <div class="h-badge mb-4">
+
+      <div data-aos="fade-left" data-aos-duration="800" data-aos-delay="150" class="flex justify-center md:justify-end">
+        <div class="glass-card rounded-3xl p-8 w-full max-w-sm shadow-2xl flex flex-col items-center relative">
+          <div class="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"></div>
+          <div class="profile-ring mb-5">
+            <img src="profile.jpg" alt="Afsal Ashraf" class="w-36 h-36 object-cover border-4 border-surface">
+          </div>
+
+          <div class="h-badge mb-5">
             <div class="a-badge">
               <svg width="50" viewBox="0 0 60 17" xmlns="http://www.w3.org/2000/svg"><path d="m20.85 6.38 6.06-.89 2.72-5.49 2.71 5.49 6.06.89-4.39 4.28 1.04 6.03-5.42-2.85-5.43 2.85 1.04-6.03zm33.06 7.17 1.85-.27.82-1.67.83 1.67 1.84.27-1.33 1.31.31 1.83-1.65-.87-1.66.87.32-1.83zm-3.38-3.01-3.61-.52-1.61-3.26-1.62 3.26-3.6.52 2.6 2.55-.61 3.59 3.23-1.69 3.21 1.69-.61-3.59zm-45.19 3.01-1.85-.27-.82-1.67-.83 1.67-1.84.27 1.33 1.31-.31 1.83 1.65-.87 1.65.87-.31-1.83zm3.38-3.01 3.61-.52 1.61-3.26 1.61 3.26 3.61.52-2.6 2.55.61 3.59-3.23-1.69-3.22 1.69.62-3.59z" fill="#00c3ff"/></svg>
               <h3 class="b-badge">TOP 3% TALENT</h3>
               <div class="c-badge"></div>
               <span class="d-badge">Vetted by</span>
               <svg style="width:80px;" viewBox="0 0 108 30" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.11 0L14.82 6.7C14.87 6.75 14.91 6.8 14.97 6.85L20.82 12.7L11.31 22.16L15.66 26.52L12.75 29.41L6.09 22.75C6.01 22.68 5.93 22.6 5.85 22.52L0 16.68L9.48 7.25L5.16 2.94L8.11 0ZM12.36 10.5C12.27 10.48 12.18 10.48 12.1 10.5C12.01 10.53 11.94 10.57 11.78 10.72L6.37 16.11C6.21 16.27 6.17 16.34 6.15 16.42C6.12 16.51 6.12 16.6 6.15 16.68C6.17 16.77 6.22 16.85 6.37 17L8.09 18.72C8.24 18.87 8.31 18.91 8.4 18.94C8.49 18.96 8.57 18.96 8.66 18.94C8.75 18.91 8.82 18.87 8.97 18.72L14.38 13.33C14.54 13.18 14.58 13.1 14.61 13.02C14.63 12.93 14.63 12.85 14.61 12.76C14.59 12.67 14.54 12.6 14.39 12.45L12.67 10.73C12.52 10.57 12.44 10.53 12.36 10.5Z" fill="#204ecf"/></svg>
-              <a class="f-badge" href="https://www.toptal.com/developers/resume/afsal-ashraf#onxbvE">Hire me</a>
+              <a class="f-badge" href="https://www.toptal.com/developers/resume/afsal-ashraf#onxbvE" target="_blank" rel="noopener">Hire me</a>
             </div>
           </div>
 
-          <p class="text-sm opacity-90"><strong>Email:</strong> email@afsalashraf.com</p>
-          <p class="mt-1 text-sm opacity-90"><strong>Location:</strong> Bengaluru, India</p>
+          <div class="w-full space-y-3 text-sm">
+            <div class="flex items-center gap-3 text-slate-400">
+              <div class="w-8 h-8 rounded-lg glass flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-envelope text-cyan-400 text-xs"></i>
+              </div>
+              <a href="mailto:email@afsalashraf.com" class="hover:text-cyan-300 transition-colors">email@afsalashraf.com</a>
+            </div>
+            <div class="flex items-center gap-3 text-slate-400">
+              <div class="w-8 h-8 rounded-lg glass flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-phone text-violet-400 text-xs"></i>
+              </div>
+              <span>+971 508 852 463</span>
+            </div>
+            <div class="flex items-center gap-3 text-slate-400">
+              <div class="w-8 h-8 rounded-lg glass flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-location-dot text-pink-400 text-xs"></i>
+              </div>
+              <span>Abu Dhabi, UAE</span>
+            </div>
+            <div class="flex items-center gap-3 text-slate-400">
+              <div class="w-8 h-8 rounded-lg glass flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-globe text-emerald-400 text-xs"></i>
+              </div>
+              <a href="https://www.afsalashraf.com" target="_blank" rel="noopener" class="hover:text-cyan-300 transition-colors">afsalashraf.com</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="relative z-10 flex justify-center pb-8 scroll-hint">
+    <a href="#stats" class="text-slate-500 hover:text-slate-300 transition-colors">
+      <i class="fa-solid fa-chevron-down"></i>
+    </a>
+  </div>
 </header>
-<main class="container mx-auto px-6 md:px-12 py-16">
 
-  <section id="about" class="mb-12" data-aos="fade-up">
-    <h2 class="text-2xl font-bold">About</h2>
-    <p class="mt-4 max-w-3xl opacity-90">
-      I am a Cloud Solution Architect with over 12 years of experience in designing, implementing, and optimizing enterprise-grade cloud solutions. 
-    </p>
-    <p class="mt-4 max-w-3xl opacity-90">
-      Career highlights include architecting a multi-cloud PaaS platform for Walmart serving thousands of internal developers, achieving a 40% improvement in deployment times, and leading cost optimization initiatives that saved over $2M annually.
-    </p>
+<!-- Stats -->
+<section id="stats" class="relative py-16 border-y border-white/5">
+  <div class="container mx-auto px-6 md:px-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div class="stat-card rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="0">
+        <div class="stat-number text-4xl md:text-5xl">14+</div>
+        <div class="mt-2 text-sm text-slate-400">Years Experience</div>
+      </div>
+      <div class="stat-card rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-number text-4xl md:text-5xl">15+</div>
+        <div class="mt-2 text-sm text-slate-400">Enterprise AI Apps</div>
+      </div>
+      <div class="stat-card rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-number text-4xl md:text-5xl">5</div>
+        <div class="mt-2 text-sm text-slate-400">AI Use Cases Delivered</div>
+      </div>
+      <div class="stat-card rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-number text-4xl md:text-5xl">Top 3%</div>
+        <div class="mt-2 text-sm text-slate-400">Toptal Talent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="container mx-auto px-6 md:px-12 py-20 space-y-24">
+
+  <!-- About -->
+  <section id="about" data-aos="fade-up">
+    <p class="section-label mb-2">Who I Am</p>
+    <h2 class="section-title text-3xl md:text-4xl font-bold">About</h2>
+    <div class="mt-8 grid md:grid-cols-2 gap-8">
+      <p class="text-slate-400 leading-relaxed">
+        Cloud Architect &amp; AI Platform Engineer with 14+ years of experience architecting enterprise-scale Azure cloud, AI/ML, and cloud-native platforms across GCP and hybrid environments.
+      </p>
+      <p class="text-slate-400 leading-relaxed">
+        Specialized in Generative AI, Agentic AI, RAG, MLOps, Kubernetes, Platform Engineering, and DevSecOps — with hands-on experience across Microsoft Foundry, Azure OpenAI, Azure ML, and NVIDIA AI Enterprise, NIM, NeMo, and Triton Inference Server.
+      </p>
+    </div>
   </section>
 
-  <section id="employment" class="mb-12" data-aos="fade-up">
-    <h2 class="text-2xl font-bold">Employment History</h2>
-    <ul class="mt-4 space-y-4">
-      <li class="glass p-4 rounded-lg"><strong>Walmart Global Tech</strong> — Cloud Solution Architect (Sep 2020 – Present)</li>
-      <li class="glass p-4 rounded-lg"><strong>Tech Mahindra</strong> — Sr Azure DevOps Consultant (Nov 2018 – Aug 2020)</li>
-      <li class="glass p-4 rounded-lg"><strong>Xerox Technology India</strong> — Sr Development Support Engineer (Aug 2015 – Nov 2018)</li>
-    </ul>
+  <!-- Experience -->
+  <section id="experience" data-aos="fade-up">
+    <p class="section-label mb-2">Career</p>
+    <h2 class="section-title text-3xl md:text-4xl font-bold">Employment History</h2>
+    <div class="mt-10 relative pl-10">
+      <div class="timeline-line hidden sm:block"></div>
+      <div class="space-y-8">
+        <div class="relative flex gap-6" data-aos="fade-up" data-aos-delay="0">
+          <div class="timeline-dot hidden sm:block absolute -left-10"></div>
+          <div class="glass-card rounded-2xl p-6 flex-1">
+            <div class="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <h3 class="font-display font-bold text-lg text-white">Abu Dhabi Commercial Bank (ADCB)</h3>
+                <p class="text-cyan-400 text-sm font-medium mt-0.5">AI Platform Lead / Cloud Architect</p>
+              </div>
+              <span class="text-xs text-slate-500 glass px-3 py-1 rounded-full whitespace-nowrap">Jan 2026 – Present · Abu Dhabi</span>
+            </div>
+            <ul class="mt-3 text-slate-400 text-sm leading-relaxed space-y-1.5 list-disc list-inside">
+              <li>Led architecture and delivery of an enterprise Azure AI platform with secure, scalable foundations for production AI workloads.</li>
+              <li>Architected AI Landing Zone using Azure Citadel with standardized governance, networking, and security controls.</li>
+              <li>Delivered 5 enterprise AI use cases via Microsoft Foundry, Azure OpenAI, Agentic AI, and RAG workflows.</li>
+              <li>Established AI governance framework for data privacy, model bias, and ethical AI across 15+ enterprise applications.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="relative flex gap-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="timeline-dot hidden sm:block absolute -left-10"></div>
+          <div class="glass-card rounded-2xl p-6 flex-1">
+            <div class="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <h3 class="font-display font-bold text-lg text-white">Walmart Inc</h3>
+                <p class="text-cyan-400 text-sm font-medium mt-0.5">SDE 4 — Cloud &amp; AI Platform Engineering</p>
+              </div>
+              <span class="text-xs text-slate-500 glass px-3 py-1 rounded-full whitespace-nowrap">Sep 2020 – Dec 2025 · Bengaluru</span>
+            </div>
+            <ul class="mt-3 text-slate-400 text-sm leading-relaxed space-y-1.5 list-disc list-inside">
+              <li>Architected multi-cloud PaaS across GCP, Azure, and private cloud using GKE, AKS, and OpenShift.</li>
+              <li>Integrated Generative AI and Agentic AI into cloud platforms; built multi-tenant GPU infrastructure with NVIDIA AI Enterprise.</li>
+              <li>Contributed to the Terraform AzureRM Provider; standardized IaC with Terraform and Concord.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="relative flex gap-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="timeline-dot hidden sm:block absolute -left-10"></div>
+          <div class="glass-card rounded-2xl p-6 flex-1">
+            <div class="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <h3 class="font-display font-bold text-lg text-white">Tech Mahindra</h3>
+                <p class="text-cyan-400 text-sm font-medium mt-0.5">Sr Azure Consultant</p>
+              </div>
+              <span class="text-xs text-slate-500 glass px-3 py-1 rounded-full whitespace-nowrap">Nov 2018 – Aug 2020 · Bengaluru</span>
+            </div>
+            <ul class="mt-3 text-slate-400 text-sm leading-relaxed space-y-1.5 list-disc list-inside">
+              <li>Led enterprise CI/CD and DevOps platforms using Azure DevOps for automotive engineering and MLOps.</li>
+              <li>Integrated PTC ThingWorx with Azure IoT Hub for real-time telemetry across 10,000+ vehicles.</li>
+              <li>Designed hybrid multi-cloud architectures across Azure and GCP for connected vehicle workloads.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="relative flex gap-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="timeline-dot hidden sm:block absolute -left-10"></div>
+          <div class="glass-card rounded-2xl p-6 flex-1">
+            <div class="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <h3 class="font-display font-bold text-lg text-white">Xerox Corp Inc</h3>
+                <p class="text-cyan-400 text-sm font-medium mt-0.5">Sr Development Support Engineer</p>
+              </div>
+              <span class="text-xs text-slate-500 glass px-3 py-1 rounded-full whitespace-nowrap">Aug 2015 – Nov 2018 · Cochin</span>
+            </div>
+            <ul class="mt-3 text-slate-400 text-sm leading-relaxed space-y-1.5 list-disc list-inside">
+              <li>Supported Siemens Teamcenter PLM for Xerox printer engineering; customized solutions with BMIDE and C++.</li>
+              <li>Led enterprise migration to Azure including VMware-to-Azure transitions and ASE modernization.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="relative flex gap-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="timeline-dot hidden sm:block absolute -left-10"></div>
+          <div class="glass-card rounded-2xl p-6 flex-1">
+            <div class="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <h3 class="font-display font-bold text-lg text-white">Syntel Ltd (Atos Syntel)</h3>
+                <p class="text-cyan-400 text-sm font-medium mt-0.5">Systems Engineer</p>
+              </div>
+              <span class="text-xs text-slate-500 glass px-3 py-1 rounded-full whitespace-nowrap">Jun 2012 – Aug 2015 · Pune</span>
+            </div>
+            <ul class="mt-3 text-slate-400 text-sm leading-relaxed space-y-1.5 list-disc list-inside">
+              <li>Developed enterprise ASP.NET/.NET applications across full SDLC for insurance workloads.</li>
+              <li>Built and maintained IIS-hosted applications with focus on availability, performance, and production support.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section id="certifications" class="mb-12" data-aos="fade-up">
-    <h2 class="text-2xl font-bold">Certifications</h2>
-    <ul class="mt-4 space-y-4">
-      <li class="glass p-4 rounded-lg">Google Cloud: Professional Cloud Architect — 2023</li>
-      <li class="glass p-4 rounded-lg">Microsoft Certified: Azure Solutions Architect Expert — 2022</li>
-      <li class="glass p-4 rounded-lg">Microsoft Certified: DevOps Engineer Expert — 2022</li>
-    </ul>
+  <!-- Skills -->
+  <section id="skills" data-aos="fade-up">
+    <p class="section-label mb-2">Expertise</p>
+    <h2 class="section-title text-3xl md:text-4xl font-bold">Skills</h2>
+    <div class="mt-10 space-y-8">
+      <div>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Cloud &amp; AI Platforms</h3>
+        <div class="flex flex-wrap gap-3">
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-microsoft"></i> Microsoft Azure</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-landmark"></i> Azure Citadel</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-wand-magic-sparkles"></i> Microsoft Foundry</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-brain"></i> Azure OpenAI</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-google"></i> GCP / Vertex AI</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-aws"></i> AWS</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">AI / Generative AI</h3>
+        <div class="flex flex-wrap gap-3">
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-robot"></i> Agentic AI</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-magnifying-glass"></i> RAG</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-flask"></i> MLOps</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-server"></i> Model Serving</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-microchip"></i> NVIDIA AI Enterprise</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-bolt"></i> NIM / NeMo / Triton</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Platform Engineering &amp; IaC</h3>
+        <div class="flex flex-wrap gap-3">
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-dharmachakra"></i> Kubernetes</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-cloud"></i> AKS / GKE / OpenShift</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-docker"></i> Docker</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-cubes"></i> Terraform</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-ship"></i> Helm</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">DevOps &amp; Automation</h3>
+        <div class="flex flex-wrap gap-3">
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-github"></i> GitHub Actions</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-microsoft"></i> Azure DevOps</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-shield-halved"></i> DevSecOps</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-windows"></i> PowerShell</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-brands fa-python"></i> Python / Go</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Data &amp; Observability</h3>
+        <div class="flex flex-wrap gap-3">
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-database"></i> BigQuery</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-stream"></i> Dataflow</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-satellite-dish"></i> Azure IoT Hub</span>
+          <span class="skill-pill inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-chart-line"></i> Prometheus / Grafana</span>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section id="skills" class="mb-12" data-aos="fade-up">
-    <h2 class="text-2xl font-bold">Skills</h2>
-    <p class="mt-4 opacity-90"><strong>Automation:</strong> Terraform, PowerShell, Ansible, Azure DevOps, GitHub Actions</p>
-    <p class="mt-2 opacity-90"><strong>Containers:</strong> Kubernetes (AKS, GKE, OpenShift), Docker, Helm</p>
-    <p class="mt-2 opacity-90"><strong>AI/MLOps:</strong> Azure OpenAI, Vertex AI, Agentic AI, Autogen Studio</p>
+  <!-- Certifications -->
+  <section id="certifications" data-aos="fade-up">
+    <p class="section-label mb-2">Credentials</p>
+    <h2 class="section-title text-3xl md:text-4xl font-bold">Certifications</h2>
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="cert-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center mb-4">
+          <i class="fa-solid fa-certificate text-2xl text-orange-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-white">Claude Certified Architect</h3>
+        <p class="text-sm text-slate-500 mt-1">Anthropic</p>
+      </div>
+      <div class="cert-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center mb-4">
+          <i class="fa-brands fa-microsoft text-2xl text-blue-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-white">Azure Solutions Architect Expert</h3>
+        <p class="text-sm text-slate-500 mt-1">Microsoft Certified</p>
+      </div>
+      <div class="cert-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center mb-4">
+          <i class="fa-brands fa-google text-2xl text-red-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-white">Professional Cloud Architect</h3>
+        <p class="text-sm text-slate-500 mt-1">Google Cloud</p>
+      </div>
+      <div class="cert-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center mb-4">
+          <i class="fa-brands fa-microsoft text-2xl text-blue-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-white">DevOps Engineer Expert</h3>
+        <p class="text-sm text-slate-500 mt-1">Microsoft Certified</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education" data-aos="fade-up">
+    <p class="section-label mb-2">Academic</p>
+    <h2 class="section-title text-3xl md:text-4xl font-bold">Education</h2>
+    <div class="mt-10 grid sm:grid-cols-2 gap-5">
+      <div class="glass-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center mb-4">
+          <i class="fa-solid fa-graduation-cap text-2xl text-cyan-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-white">Masters in Information Technology</h3>
+        <p class="text-sm text-slate-500 mt-1">Sikkim Manipal University</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center mb-4">
+          <i class="fa-solid fa-graduation-cap text-2xl text-violet-400"></i>
+        </div>
+        <h3 class="font-display font-bold text-white">Bachelors of Computer Applications</h3>
+        <p class="text-sm text-slate-500 mt-1">Calicut University</p>
+      </div>
+    </div>
   </section>
 
 </main>
-<footer class="border-t border-white/5 py-6">
-  <div class="container mx-auto px-6 md:px-12 text-center">
-    <p class="opacity-70">© <span id="year"></span> Afsal Ashraf — Cloud Solution Architect</p>
+
+<!-- Footer -->
+<footer class="footer-glow border-t border-white/5 py-12 mt-8">
+  <div class="container mx-auto px-6 md:px-12">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="text-center md:text-left">
+        <p class="font-display font-bold text-lg">Afsal Ashraf</p>
+        <p class="text-slate-500 text-sm mt-1">AI Platform Architect &amp; Cloud Architect</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://www.linkedin.com/in/afsalva" target="_blank" rel="noopener" class="w-10 h-10 rounded-full glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-400/30 transition-all">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href="https://www.afsalashraf.com" target="_blank" rel="noopener" class="w-10 h-10 rounded-full glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-400/30 transition-all">
+          <i class="fa-solid fa-globe"></i>
+        </a>
+        <a href="https://www.toptal.com/developers/resume/afsal-ashraf#onxbvE" target="_blank" rel="noopener" class="w-10 h-10 rounded-full glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-400/30 transition-all">
+          <i class="fa-solid fa-star"></i>
+        </a>
+        <a href="resume.pdf" download class="w-10 h-10 rounded-full glass flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-400/30 transition-all">
+          <i class="fa-solid fa-file-arrow-down"></i>
+        </a>
+      </div>
+      <p class="text-slate-600 text-sm">© <span id="year"></span> All rights reserved</p>
+    </div>
   </div>
 </footer>
+
 <script>
-  AOS.init();
+  AOS.init({ once: true, offset: 80, duration: 700, easing: 'ease-out-cubic' });
   document.getElementById('year').innerText = new Date().getFullYear();
+
+  // Scroll progress
+  const progress = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    progress.style.width = pct + '%';
+  });
+
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Mobile menu
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+  });
 </script>
 </body>
 </html>
