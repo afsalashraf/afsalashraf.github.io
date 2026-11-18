@@ -9,6 +9,7 @@ import { Certifications } from '../components/Certifications'
 import { Education } from '../components/Education'
 import { Contact } from '../components/Contact'
 import { Footer } from '../components/Footer'
+import { VisitorEye } from '../components/VisitorEye'
 
 export function HomePage() {
   return (
@@ -28,6 +29,7 @@ export function HomePage() {
         <Contact />
       </main>
       <Footer />
+      <VisitorEye />
     </div>
   )
 }
