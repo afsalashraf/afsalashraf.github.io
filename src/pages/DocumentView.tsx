@@ -51,7 +51,7 @@ export function DocumentView() {
     return () => root.removeEventListener('click', onClick)
   }, [doc?.slug])
 
-  if (!doc) return <Navigate to="/documents" replace />
+  if (!doc) return <Navigate to="/blog" replace />
 
   const html = (marked.parse(doc.markdown) as string).replace(
     /<img /g,
@@ -68,11 +68,11 @@ export function DocumentView() {
         <article className="max-w-6xl mx-auto px-6 md:px-8">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <Link
-              to="/documents"
+              to="/blog"
               className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-cyan-300 transition-colors mb-10"
             >
               <ArrowLeft size={14} />
-              All documents
+              All posts
             </Link>
 
             <div className="flex flex-wrap gap-2 mb-6">
@@ -110,10 +110,10 @@ export function DocumentView() {
           />
 
           <div className="mt-14 pt-10 border-t border-white/[0.06] max-w-3xl">
-            <p className="section-label mb-6">More documents</p>
+            <p className="section-label mb-6">More writing</p>
             <div className="space-y-5">
               {related.map((r) => (
-                <Link key={r.slug} to={`/documents/${r.slug}`} className="block group">
+                <Link key={r.slug} to={`/blog/${r.slug}`} className="block group">
                   <h3 className="font-display text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors">
                     {r.title}
                   </h3>
