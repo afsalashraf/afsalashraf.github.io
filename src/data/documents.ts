@@ -21,10 +21,10 @@ export const documents: TechDocument[] = [
     title: 'NVIDIA NIM vs vLLM vs Triton vs TensorRT-LLM',
     type: 'Deep-dive comparison',
     audience: 'Cloud / AI Platform Architects',
-    updated: '2026-11-18',
+    updated: '2026-11-19',
     tags: ['NVIDIA', 'NIM', 'vLLM', 'Triton', 'TensorRT-LLM'],
     summary:
-      'How NIM, vLLM, Triton, and TensorRT-LLM fit together — with architecture diagrams, code samples, and when to choose each.',
+      'Architect guide to NIM, vLLM, Triton, and TensorRT-LLM — decision criteria, ops/SLOs, security, and when to choose each.',
     file: 'Documents/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm.md',
     markdown: nimVsStack,
   },
