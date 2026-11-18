@@ -1,9 +1,17 @@
+import { Link, useLocation } from 'react-router-dom'
 import { Download, Mail, MapPin } from 'lucide-react'
 import { navLinks, profile } from '../data/portfolio'
 import { AfsalLogo } from './AfsalLogo'
 
+function resolveHref(href: string, pathname: string) {
+  if (href.startsWith('/')) return href
+  if (pathname === '/') return href
+  return `/${href}`
+}
+
 export function Footer() {
   const year = new Date().getFullYear()
+  const { pathname } = useLocation()
 
   return (
     <footer className="relative z-10 border-t border-white/[0.06] bg-black/20">
@@ -11,7 +19,9 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.75fr_0.75fr] gap-8 lg:gap-10 items-start">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <AfsalLogo size="sm" />
+            <Link to="/" className="inline-block hover:opacity-90 transition-opacity">
+              <AfsalLogo size="sm" />
+            </Link>
             <p className="mt-3 text-sm text-slate-500 leading-relaxed line-clamp-3">
               {profile.tagline}
             </p>
@@ -27,16 +37,28 @@ export function Footer() {
               Navigate
             </p>
             <ul className="space-y-2">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {navLinks.map((link) => {
+                const href = resolveHref(link.href, pathname)
+                return (
+                  <li key={link.href}>
+                    {href.startsWith('/') ? (
+                      <Link
+                        to={href}
+                        className="text-sm text-slate-400 hover:text-white transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={href}
+                        className="text-sm text-slate-400 hover:text-white transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </div>
 

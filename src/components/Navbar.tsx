@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import { navLinks, profile } from '../data/portfolio'
 import { AfsalLogo } from './AfsalLogo'
@@ -14,9 +15,17 @@ export function ScrollProgress() {
   )
 }
 
+function resolveHref(href: string, pathname: string) {
+  if (href.startsWith('/')) return href
+  if (pathname === '/') return href
+  return `/${href}`
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { pathname } = useLocation()
+  const onBlog = pathname.startsWith('/blog')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -34,17 +43,39 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="#" className="hover:opacity-90 transition-opacity">
+        <Link to="/" className="hover:opacity-90 transition-opacity">
           <AfsalLogo size="sm" />
-        </a>
+        </Link>
 
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm text-slate-400 hover:text-white transition-colors relative group">
-              {link.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gradient-to-r from-cyan-400 to-violet-400 group-hover:w-full transition-all duration-300" />
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const href = resolveHref(link.href, pathname)
+            const isBlog = link.href === '/blog'
+            const active = isBlog && onBlog
+            const className = `text-sm transition-colors relative group ${
+              active ? 'text-white' : 'text-slate-400 hover:text-white'
+            }`
+
+            if (href.startsWith('/')) {
+              return (
+                <Link key={link.href} to={href} className={className}>
+                  {link.label}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-px bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-300 ${
+                      active ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  />
+                </Link>
+              )
+            }
+
+            return (
+              <a key={link.href} href={href} className={className}>
+                {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-gradient-to-r from-cyan-400 to-violet-400 group-hover:w-full transition-all duration-300" />
+              </a>
+            )
+          })}
           <a href={profile.resume} download className="btn-primary text-sm !px-5 !py-2">
             Resume
           </a>
@@ -63,11 +94,31 @@ export function Navbar() {
 
       {menuOpen && (
         <div className="md:hidden glass border-t border-white/5 px-6 py-4 space-y-3">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className="block text-slate-300 hover:text-white py-1">
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const href = resolveHref(link.href, pathname)
+            if (href.startsWith('/')) {
+              return (
+                <Link
+                  key={link.href}
+                  to={href}
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-slate-300 hover:text-white py-1"
+                >
+                  {link.label}
+                </Link>
+              )
+            }
+            return (
+              <a
+                key={link.href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="block text-slate-300 hover:text-white py-1"
+              >
+                {link.label}
+              </a>
+            )
+          })}
           <a href={profile.resume} download className="block text-cyan-400 font-semibold py-1">Resume</a>
         </div>
       )}
