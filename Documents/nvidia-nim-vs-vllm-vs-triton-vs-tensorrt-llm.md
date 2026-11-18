@@ -15,13 +15,13 @@ The easiest way to understand them:
 
 They are **not all direct competitors**. Some work together in the same production architecture.
 
-![LLM inference stack layers](/documents/llm-inference-stack/hero.jpg)
+![LLM inference stack layers](/documents/llm-inference-stack/hero.jpg?v=2)
 
 ---
 
 ## 1. High-level comparison
 
-![Primary roles](/documents/llm-inference-stack/roles.svg)
+![Primary roles](/documents/llm-inference-stack/roles.jpg?v=2)
 
 | Technology | Primary responsibility | Think of it as |
 | --- | --- | --- |
@@ -176,7 +176,7 @@ It supports many ML frameworks and backends, for example:
 - Python backend
 - vLLM (via supported backends / deployment configs)
 
-![Triton multi-model topology](/documents/llm-inference-stack/triton-topology.svg)
+![Triton multi-model topology](/documents/llm-inference-stack/triton-topology.jpg?v=2)
 
 Triton manages model loading, inference requests, batching, and serving through a common interface. It shines when you must serve **different AI/ML models**, not only LLMs.
 
@@ -275,7 +275,7 @@ trtllm-build \
 
 ## 3. How they work together
 
-![Production deployment options](/documents/llm-inference-stack/deploy-options.svg)
+![Production deployment options](/documents/llm-inference-stack/deploy-options.jpg?v=2)
 
 ### Option 1 — Simple LLM deployment with vLLM
 
@@ -338,7 +338,7 @@ Application / API Gateway
 
 ## 5. Kubernetes / NVIDIA AI Factory fit
 
-![AI factory layers](/documents/llm-inference-stack/ai-factory-layers.svg)
+![AI factory layers](/documents/llm-inference-stack/ai-factory-layers.jpg?v=2)
 
 | Layer | Technology |
 | --- | --- |

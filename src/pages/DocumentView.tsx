@@ -22,7 +22,10 @@ export function DocumentView() {
 
   if (!doc) return <Navigate to="/documents" replace />
 
-  const html = marked.parse(doc.markdown) as string
+  const html = (marked.parse(doc.markdown) as string).replace(
+    /<img /g,
+    '<img loading="eager" decoding="async" style="max-width:100%;height:auto;display:block;" ',
+  )
   const related = documents.filter((d) => d.slug !== doc.slug).slice(0, 2)
 
   return (
