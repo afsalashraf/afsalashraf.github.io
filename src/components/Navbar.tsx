@@ -26,6 +26,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const onBlog = pathname.startsWith('/blog')
+  const onDocs = pathname.startsWith('/documents')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -50,8 +51,9 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
             const href = resolveHref(link.href, pathname)
-            const isBlog = link.href === '/blog'
-            const active = isBlog && onBlog
+            const active =
+              (link.href === '/blog' && onBlog) ||
+              (link.href === '/documents' && onDocs)
             const className = `text-sm transition-colors relative group ${
               active ? 'text-white' : 'text-slate-400 hover:text-white'
             }`
