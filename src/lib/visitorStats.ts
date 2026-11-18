@@ -1,9 +1,8 @@
 /**
- * Persistent visitor stats.
- * Prefers Cloudflare Worker API (VITE_VISITOR_API_URL) when set —
- * otherwise falls back to Abacus. Counts are external, so GitHub
- * Pages rebuilds never reset them.
+ * Persistent visitor stats via Cloudflare Worker (fallback: Abacus).
  */
+
+import { API_BASE } from './apiBase'
 
 const NAMESPACE = 'afsalashraf-com'
 const TOTAL_KEY = 'visits'
@@ -12,10 +11,7 @@ const CACHE_KEY = 'afsal_visitor_stats_v1'
 const SESSION_KEY = 'afsal_visitor_hit_v1'
 const KNOWN_KEY = 'afsal_visitor_countries_v1'
 
-const WORKER_URL = (
-  (import.meta.env.VITE_VISITOR_API_URL as string | undefined) ||
-  'https://afsal-visitors.afsalashraf.workers.dev'
-).replace(/\/$/, '')
+const WORKER_URL = API_BASE
 
 const WATCH_COUNTRIES = [
   'AE', 'IN', 'US', 'GB', 'DE', 'SG', 'SA', 'QA', 'KW', 'BH', 'OM', 'PK', 'BD',

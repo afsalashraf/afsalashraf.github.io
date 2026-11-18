@@ -7,6 +7,7 @@ import { AuroraBackground } from '../components/AuroraBackground'
 import { ScrollProgress, Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 import { getDocumentBySlug, documents } from '../data/documents'
+import { BlogComments } from '../components/BlogComments'
 
 marked.setOptions({ gfm: true, breaks: false })
 
@@ -92,7 +93,7 @@ export function DocumentView() {
               {doc.title}
             </h1>
             <p className="mt-3 text-sm font-mono text-slate-500">
-              Updated {formatDate(doc.updated)} · {doc.file}
+              Updated {formatDate(doc.updated)}
             </p>
             <p className="mt-4 inline-flex items-center gap-1.5 text-xs text-slate-600">
               <ZoomIn size={12} />
@@ -108,6 +109,8 @@ export function DocumentView() {
             className="doc-prose doc-prose-wide mt-10"
             dangerouslySetInnerHTML={{ __html: html }}
           />
+
+          <BlogComments slug={doc.slug} />
 
           <div className="mt-14 pt-10 border-t border-white/[0.06] max-w-3xl">
             <p className="section-label mb-6">More writing</p>
