@@ -1,6 +1,7 @@
 import azureAgentic from '../../Documents/azure-agentic-ai-platform.md?raw'
 import multiCloudK8s from '../../Documents/multi-cloud-kubernetes-paas.md?raw'
 import nvidiaInference from '../../Documents/nvidia-inference-at-scale.md?raw'
+import nimVsStack from '../../Documents/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm.md?raw'
 
 export type TechDocument = {
   slug: string
@@ -15,6 +16,18 @@ export type TechDocument = {
 }
 
 export const documents: TechDocument[] = [
+  {
+    slug: 'nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm',
+    title: 'NVIDIA NIM vs vLLM vs Triton vs TensorRT-LLM',
+    type: 'Deep-dive comparison',
+    audience: 'Cloud / AI Platform Architects',
+    updated: '2026-11-18',
+    tags: ['NVIDIA', 'NIM', 'vLLM', 'Triton', 'TensorRT-LLM'],
+    summary:
+      'How NIM, vLLM, Triton, and TensorRT-LLM fit together — with architecture diagrams, code samples, and when to choose each.',
+    file: 'Documents/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm.md',
+    markdown: nimVsStack,
+  },
   {
     slug: 'azure-agentic-ai-platform',
     title: 'Azure Agentic AI Platform Reference',

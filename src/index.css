@@ -126,7 +126,35 @@
   }
 
   .doc-prose a {
-    @apply text-cyan-400 hover:text-cyan-300 underline-offset-2;
+    @apply text-cyan-400 hover:text-cyan-300 underline underline-offset-2;
+  }
+
+  .doc-prose h3 {
+    @apply font-display text-lg font-semibold text-white mt-8 mb-3;
+  }
+
+  .doc-prose img {
+    @apply w-full rounded-xl border border-white/[0.08] my-8 bg-[#0a0f1e];
+  }
+
+  .doc-prose hr {
+    @apply border-white/[0.08] my-10;
+  }
+
+  .doc-prose blockquote {
+    @apply border-l-2 border-cyan-400/50 pl-4 my-6 text-slate-200 italic;
+  }
+
+  .doc-prose code {
+    @apply font-mono text-[0.85em] text-cyan-300/90 bg-white/[0.04] px-1.5 py-0.5 rounded;
+  }
+
+  .doc-prose pre {
+    @apply mb-6 overflow-x-auto rounded-xl border border-white/[0.08] bg-[#050914] p-4;
+  }
+
+  .doc-prose pre code {
+    @apply bg-transparent p-0 text-[13px] leading-relaxed text-slate-300 whitespace-pre;
   }
 }
 
