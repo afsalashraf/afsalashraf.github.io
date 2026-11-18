@@ -12,7 +12,10 @@ const CACHE_KEY = 'afsal_visitor_stats_v1'
 const SESSION_KEY = 'afsal_visitor_hit_v1'
 const KNOWN_KEY = 'afsal_visitor_countries_v1'
 
-const WORKER_URL = (import.meta.env.VITE_VISITOR_API_URL as string | undefined)?.replace(/\/$/, '') || ''
+const WORKER_URL = (
+  (import.meta.env.VITE_VISITOR_API_URL as string | undefined) ||
+  'https://afsal-visitors.afsalashraf.workers.dev'
+).replace(/\/$/, '')
 
 const WATCH_COUNTRIES = [
   'AE', 'IN', 'US', 'GB', 'DE', 'SG', 'SA', 'QA', 'KW', 'BH', 'OM', 'PK', 'BD',
