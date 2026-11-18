@@ -370,83 +370,20 @@ Use non-functional requirements to choose — not brand preference.
 
 ---
 
-## 7. Operations, SLOs, and capacity
+## 7. Common misconceptions
 
-Production inference is a capacity and reliability problem as much as a model problem.
-
-**Define SLOs before choosing the stack**
-
-- Interactive chat: p95 / p99 time-to-first-token and end-to-end latency  
-- Batch / embedding: throughput (tokens/sec or requests/sec) and cost per 1M tokens  
-- Availability: error budget for 5xx, queueouts, and GPU node loss  
-
-**Autoscaling signals that work in practice**
-
-- Queue depth / in-flight requests (better than raw CPU for LLM serving)  
-- GPU utilization and KV-cache pressure  
-- Token generation rate and admission-control rejections  
-
-**Release hygiene**
-
-- Version model weights, tokenizer, engine build, and serving image together  
-- Canary on a single replica or traffic slice before fleet-wide rollout  
-- Keep a known-good image for fast rollback when a quantization or engine upgrade regresses quality  
-
-**Observability baseline**
-
-- Request metrics: QPS, latency histograms, abort/timeout rates  
-- GPU metrics: DCGM (util, memory, power, ECC)  
-- Cost metrics: GPU-hours per team / product, idle time, tokens served  
-
----
-
-## 8. Security and governance
-
-Treat inference endpoints like any other production API plane.
-
-1. **Network** — private endpoints or cluster-only Services; no public GPU APIs without a gateway.  
-2. **Identity** — short-lived tokens or mTLS at the gateway; NGC / registry credentials in a secret store, never in images.  
-3. **Data boundary** — log prompt/response policy (retain, redact, or disable) aligned with data classification.  
-4. **Supply chain** — pin image digests; verify model provenance and license terms before promotion.  
-5. **Isolation** — separate interactive vs batch pools so noisy neighbors cannot starve latency-sensitive traffic.  
-
----
-
-## 9. Common misconceptions
-
-- **Triton is not mandatory for LLM production.** Many platforms run vLLM (or NIM) behind Kubernetes Services and an API gateway without Triton.  
-- **NIM is not “just Triton renamed.”** Current NIM LLM 2.x packages engines such as **vLLM** or **SGLang**; Triton + TensorRT-LLM remain a separate composition pattern.  
-- **Triton can front multiple engines.** Where backends are supported, Triton can serve TensorRT-LLM and vLLM-style workloads in one serving fabric — validate versions on your CUDA / driver stack.  
-- **TensorRT-LLM is not universally “faster than vLLM.”** Gains depend on model, GPU SKU, batching, quantization, and sequence lengths. Benchmark on *your* traffic.  
-- **Running all four does not equal a better platform.** Extra layers without clear ownership increase failure modes and change-management cost.  
-
----
-
-## 10. Anti-patterns to avoid
-
-1. Mixing latency-sensitive chat and heavy batch jobs on the same GPU pool without isolation.  
-2. Shipping unversioned model artifacts as anonymous node-local files.  
-3. Tuning only average latency while ignoring p99 and queueouts.  
-4. Exposing raw inference ports to the internet.  
-5. Choosing TensorRT-LLM “because NVIDIA” without a measured gap versus a well-tuned vLLM/NIM baseline.  
-
----
-
-## 11. Recommended adoption sequence
-
-For most enterprise platform teams:
-
-1. **Prove the workload** — one model, clear SLOs, vLLM or NIM on Kubernetes.  
-2. **Instrument** — latency, GPU, cost, and quality evaluation before optimizing further.  
-3. **Specialize** — introduce TensorRT-LLM when GPU efficiency or advanced NVIDIA features are the bottleneck.  
-4. **Consolidate serving** — add Triton when you need multi-model repositories, shared serving controls, or heterogeneous backends under one control plane.  
+- **Triton is not mandatory for LLM production.** Many platforms run vLLM (or NIM) behind Kubernetes Services and an API gateway without Triton.
+- **NIM is not "just Triton renamed."** Current NIM LLM 2.x packages engines such as **vLLM** or **SGLang**; Triton + TensorRT-LLM remain a separate composition pattern.
+- **Triton can front multiple engines.** Where backends are supported, Triton can serve TensorRT-LLM and vLLM-style workloads in one serving fabric — validate versions on your CUDA / driver stack.
+- **TensorRT-LLM is not universally "faster than vLLM."** Gains depend on model, GPU SKU, batching, quantization, and sequence lengths. Benchmark on *your* traffic.
+- **Running all four does not equal a better platform.** Extra layers without clear ownership increase failure modes and change-management cost.
 
 **Official references**
 
-- [NVIDIA NIM documentation](https://docs.nvidia.com/nim/)  
-- [vLLM documentation](https://docs.vllm.ai/)  
-- [Triton Inference Server documentation](https://docs.nvidia.com/deeplearning/triton-inference-server/)  
-- [TensorRT-LLM documentation](https://nvidia.github.io/TensorRT-LLM/)  
+- [NVIDIA NIM documentation](https://docs.nvidia.com/nim/)
+- [vLLM documentation](https://docs.vllm.ai/)
+- [Triton Inference Server documentation](https://docs.nvidia.com/deeplearning/triton-inference-server/)
+- [TensorRT-LLM documentation](https://nvidia.github.io/TensorRT-LLM/)
 
 ---
 
