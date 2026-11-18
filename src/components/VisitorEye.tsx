@@ -129,9 +129,6 @@ export function VisitorEye() {
             )}
           </div>
 
-          <p className="px-4 py-2.5 text-[10px] text-slate-600 border-t border-white/[0.06]">
-            Counts are stored externally and keep growing across site rebuilds.
-          </p>
         </div>
       )}
 
