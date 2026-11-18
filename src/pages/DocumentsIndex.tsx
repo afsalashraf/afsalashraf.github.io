@@ -20,7 +20,7 @@ export function DocumentsIndex() {
       <ScrollProgress />
       <Navbar />
       <main className="relative z-10 pt-28 pb-24">
-        <div className="max-w-3xl mx-auto px-6">
+        <div className="max-w-5xl mx-auto px-6 md:px-8">
           <motion.header
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

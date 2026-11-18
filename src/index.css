@@ -137,6 +137,31 @@
     @apply w-full rounded-xl border border-white/[0.08] my-8 bg-[#0a0f1e];
   }
 
+  .doc-prose-wide {
+    @apply max-w-none;
+  }
+
+  .doc-prose-wide > p,
+  .doc-prose-wide > ul,
+  .doc-prose-wide > ol,
+  .doc-prose-wide > blockquote,
+  .doc-prose-wide > h1,
+  .doc-prose-wide > h2,
+  .doc-prose-wide > h3 {
+    @apply max-w-3xl;
+  }
+
+  .doc-prose-wide > table,
+  .doc-prose-wide > pre,
+  .doc-prose-wide > p > img,
+  .doc-prose-wide img {
+    @apply max-w-none w-full;
+  }
+
+  .doc-zoomable {
+    @apply cursor-zoom-in transition-opacity hover:opacity-90;
+  }
+
   .doc-prose hr {
     @apply border-white/[0.08] my-10;
   }
