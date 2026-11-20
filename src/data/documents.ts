@@ -1,3 +1,4 @@
+import aksNimLab from '../../Documents/aks-nim-llm-inference-on-azure.md?raw'
 import azureAgentic from '../../Documents/azure-agentic-ai-platform.md?raw'
 import multiCloudK8s from '../../Documents/multi-cloud-kubernetes-paas.md?raw'
 import nvidiaInference from '../../Documents/nvidia-inference-at-scale.md?raw'
@@ -16,6 +17,18 @@ export type TechDocument = {
 }
 
 export const documents: TechDocument[] = [
+  {
+    slug: 'aks-nim-llm-inference-on-azure',
+    title: 'Self-Host an LLM on AKS with NVIDIA GPU Operator and NIM',
+    type: 'Hands-on lab',
+    audience: 'Cloud / AI Platform Architects',
+    updated: '2026-11-20',
+    tags: ['Azure', 'AKS', 'NVIDIA', 'NIM', 'GPU'],
+    summary:
+      'End-to-end lab: AKS + GPU Operator + NVIDIA NIM + optional chat UI — scripts, manifests, and lessons from a real eastus run.',
+    file: 'Documents/aks-nim-llm-inference-on-azure.md',
+    markdown: aksNimLab,
+  },
   {
     slug: 'nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm',
     title: 'NVIDIA NIM vs vLLM vs Triton vs TensorRT-LLM',
