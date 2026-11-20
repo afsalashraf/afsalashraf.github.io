@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="320" viewBox="0 0 1100 320">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#585b70"/>
+    </marker>
+  </defs>
+  <rect width="1100" height="320" rx="18" fill="#11111b"/>
+  <text x="40" y="48" font-family="Segoe UI,sans-serif" font-size="26" fill="#cdd6f4" font-weight="700">AKS + NVIDIA GPU + NIM Lab Flow</text>
+  <text x="40" y="78" font-family="SF Mono,Menlo,monospace" font-size="13" fill="#a6adc8">afsalashraf@MacBookPro · eastus · 20.121.181.131:8000</text>
+  
+        <rect x="40" y="110" width="155" height="120" rx="14" fill="#181825" stroke="#89b4fa" stroke-width="2"/>
+        <text x="58" y="145" font-family="Segoe UI,sans-serif" font-size="14" fill="#89b4fa" font-weight="700">STEP 01</text>
+        <text x="58" y="175" font-family="Segoe UI,sans-serif" font-size="18" fill="#cdd6f4" font-weight="600">Create AKS</text>
+        <text x="58" y="200" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">D2s_v4</text>
+        <path d="M195 170 L215 170" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="215" y="110" width="155" height="120" rx="14" fill="#181825" stroke="#cba6f7" stroke-width="2"/>
+        <text x="233" y="145" font-family="Segoe UI,sans-serif" font-size="14" fill="#cba6f7" font-weight="700">STEP 02</text>
+        <text x="233" y="175" font-family="Segoe UI,sans-serif" font-size="18" fill="#cdd6f4" font-weight="600">GPU pool</text>
+        <text x="233" y="200" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">NC4as_T4_v3</text>
+        <path d="M370 170 L390 170" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="390" y="110" width="155" height="120" rx="14" fill="#181825" stroke="#f9e2af" stroke-width="2"/>
+        <text x="408" y="145" font-family="Segoe UI,sans-serif" font-size="14" fill="#f9e2af" font-weight="700">STEP 03</text>
+        <text x="408" y="175" font-family="Segoe UI,sans-serif" font-size="18" fill="#cdd6f4" font-weight="600">GPU Operator</text>
+        <text x="408" y="200" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">gpu=1</text>
+        <path d="M545 170 L565 170" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="565" y="110" width="155" height="120" rx="14" fill="#181825" stroke="#a6e3a1" stroke-width="2"/>
+        <text x="583" y="145" font-family="Segoe UI,sans-serif" font-size="14" fill="#a6e3a1" font-weight="700">STEP 04</text>
+        <text x="583" y="175" font-family="Segoe UI,sans-serif" font-size="18" fill="#cdd6f4" font-weight="600">CUDA test</text>
+        <text x="583" y="200" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">PASSED</text>
+        <path d="M720 170 L740 170" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="740" y="110" width="155" height="120" rx="14" fill="#181825" stroke="#94e2d5" stroke-width="2"/>
+        <text x="758" y="145" font-family="Segoe UI,sans-serif" font-size="14" fill="#94e2d5" font-weight="700">STEP 05</text>
+        <text x="758" y="175" font-family="Segoe UI,sans-serif" font-size="18" fill="#cdd6f4" font-weight="600">Deploy NIM</text>
+        <text x="758" y="200" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">llama-3.2-1b</text>
+        <path d="M895 170 L915 170" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="915" y="110" width="155" height="120" rx="14" fill="#181825" stroke="#fab387" stroke-width="2"/>
+        <text x="933" y="145" font-family="Segoe UI,sans-serif" font-size="14" fill="#fab387" font-weight="700">STEP 06</text>
+        <text x="933" y="175" font-family="Segoe UI,sans-serif" font-size="18" fill="#cdd6f4" font-weight="600">Inference</text>
+        <text x="933" y="200" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">:8000</text>
+        
+  <text x="40" y="290" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#6c7086">Terminal prompt style: afsalashraf@MacBookPro scripts %</text>
+</svg>

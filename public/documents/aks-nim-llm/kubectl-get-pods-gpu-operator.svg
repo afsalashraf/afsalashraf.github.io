@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="294" viewBox="0 0 980 294" role="img" aria-label="afsalashraf@MacBookPro: ~/Code/LLM_inferncing — zsh — 120×40">
+  <defs>
+    <style>
+      .banner { font: 600 15px 'SF Pro Text', 'Segoe UI', sans-serif; fill: #bac2de; }
+      .chrome { font: 12px 'SF Pro Text', 'Segoe UI', sans-serif; fill: #a6adc8; }
+      .term { font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+    </style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#11111b"/>
+      <stop offset="100%" stop-color="#1e1e2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="980" height="294" rx="14" fill="url(#bg)"/>
+  <rect x="0" y="0" width="980" height="44" rx="14" fill="#181825"/>
+  <rect x="0" y="30" width="980" height="14" fill="#181825"/>
+  <circle cx="26" cy="22" r="6" fill="#f38ba8"/>
+  <circle cx="46" cy="22" r="6" fill="#f9e2af"/>
+  <circle cx="66" cy="22" r="6" fill="#a6e3a1"/>
+  <text x="92" y="26" class="chrome">afsalashraf@MacBookPro: ~/Code/LLM_inferncing — zsh — 120×40</text>
+  <text x="28" y="68" class="term" fill="#a6e3a1">afsalashraf@MacBookPro LLM_inferncing % kubectl get pods -n gpu-operator</text><text x="28" y="86" class="term" fill="#cdd6f4">NAME                                                         READY   STATUS      RESTARTS      AGE</text><text x="28" y="104" class="term" fill="#94e2d5">gpu-feature-discovery-9qg65                                  1/1     Running     0             31m</text><text x="28" y="122" class="term" fill="#94e2d5">gpu-operator-5fb46cd57d-kn42x                                1/1     Running     0             41m</text><text x="28" y="140" class="term" fill="#94e2d5">nvidia-container-toolkit-daemonset-p5kgx                     1/1     Running     0             31m</text><text x="28" y="158" class="term" fill="#cdd6f4">nvidia-cuda-validator-dlrsv                                  0/1     Completed   0             28m</text><text x="28" y="176" class="term" fill="#94e2d5">nvidia-dcgm-exporter-vhwvs                                   1/1     Running     0             31m</text><text x="28" y="194" class="term" fill="#94e2d5">nvidia-device-plugin-daemonset-9fzk6                         1/1     Running     0             31m</text><text x="28" y="212" class="term" fill="#94e2d5">nvidia-driver-daemonset-sr7x4                                1/1     Running     0             31m</text><text x="28" y="230" class="term" fill="#94e2d5">nvidia-operator-validator-fjbd8                              1/1     Running     0             31m</text><text x="28" y="248" class="term" fill="#a6e3a1">afsalashraf@MacBookPro LLM_inferncing % </text>
+</svg>
