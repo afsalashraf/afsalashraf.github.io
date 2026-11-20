@@ -281,19 +281,9 @@ What we completed in the lab:
 
 ### Mental model
 
-\`\`\`
-You (browser or curl)
-        │
-        ▼
-┌───────────────────┐     ┌─────────────────────────────────────┐
-│ Chat UI (optional)│────▶│ AKS cluster                         │
-│ public IP :80     │     │  • CPU system node (control apps)   │
-└───────────────────┘     │  • GPU node (T4)                    │
-                          │      - GPU Operator                 │
-        curl ────────────▶│      - NIM pod (LLM)                │
-                          │      - model cache disk (PVC)       │
-                          └─────────────────────────────────────┘
-\`\`\`
+![Mental model — You → Chat UI or curl → AKS (CPU + GPU node with Operator, NIM, PVC)](/documents/aks-nim-llm/mental-model.svg)
+
+*Figure: two ways in (Chat UI or curl), one GPU node hosting Operator + NIM + model cache.*
 
 ### What ran in our lab
 
@@ -360,18 +350,9 @@ Clear ownership: \`nim\` owns inference; \`chat\` owns the human front door. You
 
 On this platform path, think in **layers**, not competing products:
 
-\`\`\`text
-Application / Chat UI / curl
-        │  OpenAI-compatible HTTP
-        ▼
-NVIDIA NIM (inference microservice)
-        │  uses an optimized engine under the hood
-        ▼
-CUDA + GPU driver + device plugin   ← GPU Operator owns this on the node
-        │
-        ▼
-NVIDIA GPU (T4 / A100 / H100 / …)
-\`\`\`
+![NVIDIA stack layers on AKS — App → NIM → engine → GPU Operator → GPU](/documents/aks-nim-llm/nvidia-stack-layers.svg)
+
+*Figure: each layer has one job; NIM packages the engine so you do not install Triton/TRT-LLM yourself for this lab.*
 
 | Layer | Responsibility | In this lab |
 | --- | --- | --- |
