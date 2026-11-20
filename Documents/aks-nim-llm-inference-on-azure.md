@@ -1,308 +1,619 @@
-# Self-Host an LLM on AKS with NVIDIA GPU Operator and NIM
+# Self-Host an LLM on Azure Kubernetes with NVIDIA GPUs — Complete Guide
 
-**Type:** Hands-on lab / architecture walkthrough  
-**Audience:** Cloud / AI Platform Architects  
+**Type:** Hands-on lab / complete walkthrough  
+**Audience:** Cloud engineers and architects — no prior GPU/K8s expertise required  
 **Updated:** 2026-11-20
 
-A complete path from an empty Azure subscription to an **OpenAI-compatible** self-hosted LLM on **AKS**, using the **NVIDIA GPU Operator** and **NVIDIA NIM**, plus an optional ChatGPT-style UI.
+Understand **what** we built, **why** each technology is required, and **how** to reproduce every step — with screenshots from a real lab in **eastus** (November 2026), then torn down to stop billing.
 
-This post is based on a real lab run in **eastus** (November 2026) that was torn down afterward to stop billing. Automation lives in the public repo:
-
-**Code:** [github.com/afsalashraf/aks-nim-llm-inference](https://github.com/afsalashraf/aks-nim-llm-inference)
+**Reproduce with code:** [github.com/afsalashraf/aks-nim-llm-inference](https://github.com/afsalashraf/aks-nim-llm-inference)  
+**Companion deep-dive:** [NIM vs vLLM vs Triton vs TensorRT-LLM](/blog/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm)
 
 ---
 
-## What you build
+## Table of contents
 
-1. AKS cluster with a **CPU system pool**  
-2. Dedicated **NVIDIA GPU node pool** (`--gpu-driver none`)  
-3. **NVIDIA GPU Operator** (drivers, toolkit, device plugin)  
-4. **NVIDIA NIM** serving an LLM over `/v1/chat/completions`  
-5. Optional browser chat UI (nginx proxy → NIM)
+1. [Plain-English story](#1-plain-english-story)
+2. [Words you will see (glossary)](#2-words-you-will-see-glossary)
+3. [What we built (big picture)](#3-what-we-built-big-picture)
+4. [Why each major piece is needed](#4-why-each-major-piece-is-needed)
+5. [Prerequisites (tools + accounts)](#5-prerequisites-tools--accounts)
+6. [Money, Free Trial, and GPU quota (read carefully)](#6-money-free-trial-and-gpu-quota-read-carefully)
+7. [Repo map — where everything lives](#7-repo-map--where-everything-lives)
+8. [Step-by-step lab](#8-step-by-step-lab)
+9. [ChatGPT-style web UI](#9-chatgpt-style-web-ui)
+10. [How to talk to the model (curl)](#10-how-to-talk-to-the-model-curl)
+11. [Problems we hit (and fixes)](#11-problems-we-hit-and-fixes)
+12. [Tear down (stop paying)](#12-tear-down-stop-paying)
+13. [Appendix — commands cheat sheet](#13-appendix--commands-cheat-sheet)
 
-```text
-Client (curl / Chat UI)
+---
+
+## 1. Plain-English story
+
+Imagine you want a **private ChatGPT-like system** that runs on **your** cloud computers — not OpenAI’s.
+
+To do that you need:
+
+1. **Computers in the cloud** (Azure).
+2. A **GPU** (special chip that runs AI models fast).
+3. **Software that loads a model** and answers chat requests (NVIDIA NIM).
+4. Optionally a **simple website** so humans can type questions.
+
+This guide walks through creating all of that on **Azure Kubernetes Service (AKS)**.
+
+We successfully:
+
+- Created an AKS cluster  
+- Added an NVIDIA **T4** GPU node  
+- Installed the **NVIDIA GPU Operator**  
+- Proved the GPU works with a CUDA test (**Test PASSED**)  
+- Deployed **NVIDIA NIM** with model `meta/llama-3.2-1b-instruct`  
+- Called `/v1/chat/completions` with `curl`  
+- Deployed a **simple chat webpage** on a public IP  
+- Captured screenshots/SVGs for documentation  
+- Deleted the resource group to stop costs  
+
+---
+
+## 2. Words you will see (glossary)
+
+| Term | Simple meaning |
+|------|----------------|
+| **Cloud** | Someone else’s data center you rent by the hour |
+| **Azure** | Microsoft’s cloud |
+| **VM / virtual machine** | A rented computer (CPU, RAM, maybe GPU) |
+| **GPU** | Graphics chip used for AI math (here: NVIDIA T4) |
+| **Kubernetes (K8s)** | Software that runs and restarts your apps in containers across machines |
+| **AKS** | Azure’s managed Kubernetes — Azure runs the control plane for you |
+| **Node** | One worker machine inside the Kubernetes cluster |
+| **Node pool** | A group of nodes with the same VM size |
+| **Pod** | Smallest deployable unit in Kubernetes (usually 1 container) |
+| **Container** | Packaged app + libraries that runs the same everywhere |
+| **Namespace** | A “folder” inside the cluster to group related apps |
+| **Service / LoadBalancer** | Gives your app a stable network address; LoadBalancer can give a **public IP** |
+| **Helm** | Package manager for Kubernetes (install complex apps with one chart) |
+| **NVIDIA NIM** | NVIDIA’s ready-made LLM inference server (OpenAI-style HTTP API) |
+| **NGC** | NVIDIA GPU Cloud — where you get NIM images (needs API key) |
+| **Quota** | Azure limit on how many CPU/GPU cores you may create |
+| **Taint / Toleration** | Rules that keep normal apps off GPU machines unless they “tolerate” the rule |
+| **Device plugin** | Tiny Kubernetes component that advertises `nvidia.com/gpu` so pods can request a GPU |
+
+You do **not** need to memorize these. Come back here when a word appears.
+
+---
+
+## 3. What we built (big picture)
+
+![Lab overview](/documents/aks-nim-llm/00-lab-overview.jpg)
+
+*Figure: end-to-end flow from AKS create → GPU → Operator → CUDA → NIM → inference.*
+
+### Mental model
+
+```
+You (browser or curl)
         │
         ▼
-┌──────────────────────────────────────────────┐
-│  AKS                                         │
-│  ┌─────────────┐    ┌─────────────────────┐  │
-│  │ System pool │    │ GPU node pool       │  │
-│  │ (CPU)       │    │ NVIDIA T4 / A100    │  │
-│  └─────────────┘    │  • GPU Operator     │  │
-│                     │  • NIM LLM pod      │  │
-│                     │  • Model cache PVC  │  │
-│                     │  • Chat UI (opt.)   │  │
-│                     └─────────────────────┘  │
-└──────────────────────────────────────────────┘
+┌───────────────────┐     ┌─────────────────────────────────────┐
+│ Chat UI (optional)│────▶│ AKS cluster                         │
+│ public IP :80     │     │  • CPU system node (control apps)   │
+└───────────────────┘     │  • GPU node (T4)                    │
+                          │      - GPU Operator                 │
+        curl ────────────▶│      - NIM pod (LLM)                │
+                          │      - model cache disk (PVC)       │
+                          └─────────────────────────────────────┘
 ```
 
-**Why NIM?** Packaged NVIDIA inference microservices with an OpenAI-style HTTP API — without assembling Triton / TensorRT-LLM yourself. For how NIM relates to vLLM and Triton, see the companion post: [NIM vs vLLM vs Triton vs TensorRT-LLM](/blog/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm).
+### What ran in our lab
+
+| Layer | Exact choice |
+|-------|----------------|
+| Resource group | `rg-llm-inference` |
+| Cluster | `aks-llm-nim` (Kubernetes **1.36**) |
+| System node | `Standard_D2s_v4` × 1 |
+| GPU node | `Standard_NC4as_T4_v3` × 1 (1× NVIDIA T4, 16 GB GPU RAM) |
+| Inference model | `meta/llama-3.2-1b-instruct` (1B parameters — fits T4) |
+| Chat UI | nginx page + proxy in namespace `chat` |
 
 ---
 
-## Lab outcomes (what actually worked)
+## 4. Why each major piece is needed
 
-| Layer | Choice in this lab |
-| --- | --- |
-| Region | `eastus` |
-| Cluster | `aks-llm-nim` |
-| System pool | `Standard_D2s_v4` × 1 |
-| GPU pool | `Standard_NC4as_T4_v3` × 1 (`--gpu-driver none`) |
-| GPU software | NVIDIA GPU Operator |
-| Model | `meta/llama-3.2-1b-instruct:1.12.0` |
-| API | OpenAI-compatible `/v1/chat/completions` |
-| UI | Simple chat page (no history) |
+### Why Azure / AKS?
+You need always-on servers. AKS gives you Kubernetes without managing the control-plane VMs yourself.
 
-Verified: CUDA **Test PASSED**, NIM health ready, chat completions + UI proxy working — then resource group deleted.
+### Why a separate GPU node pool?
+GPUs are expensive. Keep cheap CPU nodes for system pods, and put GPUs only where AI runs.
 
-![Chat UI home](/documents/aks-nim-llm/chat-ui-home.jpg)
+### Why `--gpu-driver none`?
+We want the **NVIDIA GPU Operator** to install drivers itself. If AKS also installs drivers, they can conflict.
 
-*Figure: Chat UI landing page in front of the in-cluster NIM service.*
+### Why GPU Operator?
+It installs/maintains:
 
-![Chat UI with model reply](/documents/aks-nim-llm/chat-ui-with-reply.jpg)
+- NVIDIA driver  
+- container toolkit  
+- device plugin (`nvidia.com/gpu`)  
+- validators / metrics helpers  
 
-*Figure: Browser chat proxied to `/api/v1/chat/completions` → NIM.*
+Without it, Kubernetes cannot schedule “give me 1 GPU” pods correctly.
+
+### Why NIM (not just “run Python”)?
+NIM is NVIDIA’s packaged inference server. You get:
+
+- Model download/cache  
+- Optimized runtime  
+- OpenAI-compatible HTTP API (`/v1/chat/completions`)  
+
+### Why a Chat UI?
+`curl` proves the API works. A webpage proves a human can use it like ChatGPT (no history needed for this lab).
+
+### Why NGC / nvcr.io?
+NIM containers and many model artifacts are distributed through NVIDIA’s registry. Your NGC API key authenticates image pulls and model downloads. Never commit the key.
+
+### Why Helm?
+GPU Operator and NIM ship as multi-resource packages (Deployments, DaemonSets, Services, RBAC). Helm installs and upgrades that bundle as one release.
+
+### Why a PVC for the model cache?
+The first NIM start downloads/builds a large cache. A PersistentVolumeClaim keeps that cache across pod restarts so you do not pay the download cost again.
+
+### Why LoadBalancer Services in this lab?
+Fastest way to reach NIM and the Chat UI from your laptop. For production, prefer private networking, Ingress + TLS, and an API gateway — not public GPU ports.
+
+### Why split Chat UI into its own namespace?
+Clear ownership: `nim` owns inference; `chat` owns the human front door. You can delete the UI without tearing down the model.
 
 ---
 
-## Architecture decisions
+## 5. Prerequisites (tools + accounts)
 
-| Decision | Recommendation | Why |
-| --- | --- | --- |
-| GPU software | GPU Operator + `--gpu-driver none` | Matches NVIDIA’s recommended NIM/K8s path; you own the driver stack |
-| System vs GPU pools | Split CPU system / GPU user pool | Keeps control-plane and system pods off expensive GPUs |
-| Taint | `sku=gpu:NoSchedule` | Only workloads with matching tolerations land on GPU nodes |
-| Starter model on T4 | Llama **3.2 1B** (+ `NIM_RELAX_MEM_CONSTRAINTS=1`) | T4 is 16 GB; 8B typically does not fit well |
-| Prefer for 8B | A100-class SKU | Enough VRAM for `llama-3.1-8b-instruct`-class models |
-| Cost control | Scale GPU pool to **0** or delete RG | GPU VMs dominate spend |
+### Accounts
 
-> **Cost warning:** Even a single GPU node can cost tens of dollars per day. Finish the lab, then scale to zero or tear down.
+1. **Azure subscription** (Pay-As-You-Go for GPU quota)  
+2. **NVIDIA NGC account** + API key (for NIM images)  
 
----
+### Software on your laptop
 
-## Prerequisites
+| Tool | Why |
+|------|-----|
+| Azure CLI (`az`) ≥ 2.72.2 | Create AKS / node pools (`--gpu-driver`) |
+| `kubectl` | Talk to the Kubernetes cluster |
+| Helm 3 | Install GPU Operator + NIM chart |
+| `curl` / `jq` (optional) | Test APIs |
 
-- Azure CLI **≥ 2.72.2** (required for `--gpu-driver`)
-- `kubectl`, Helm 3  
-- Azure subscription with **GPU quota** (Pay-As-You-Go — Free Trial usually cannot create GPU VMs)  
-- NGC API key from [build.nvidia.com](https://build.nvidia.com) / NGC  
+Check versions:
 
 ```bash
 az version
 kubectl version --client
 helm version
+```
+
+Login:
+
+```bash
 az login
 az account set --subscription "<YOUR_SUBSCRIPTION_ID>"
 ```
 
-Clone the public automation:
+### Clone / open this repo
+
+All scripts live under [`scripts/`](https://github.com/afsalashraf/aks-nim-llm-inference/tree/main/scripts). Defaults live in `scripts/00-env.sh`.
+
+---
+
+## 6. Money, Free Trial, and GPU quota (read carefully)
+
+### Free Trial limitation
+Azure Free Trial usually **cannot** create modern NVIDIA GPU VMs (T4/A100).  
+GPU families often show **quota = 0**, and free accounts often **cannot raise quota**.
+
+**What worked in this lab:** upgrade to **Pay-As-You-Go**, then request T4 quota.
+
+### Quota is measured in vCPUs, not “1 GPU”
+For one machine of size `Standard_NC4as_T4_v3` you need:
+
+| Ask Azure for | Why |
+|---------------|-----|
+| **4 vCPUs** of `NCASv3_T4` family | That VM has **4 CPU cores + 1 T4 GPU** |
+
+Asking for **1 vCPU** is wrong — Microsoft will reject it.
+
+### Cost warning
+A GPU node can cost many dollars per day.  
+When practice is done:
 
 ```bash
-git clone https://github.com/afsalashraf/aks-nim-llm-inference.git
-cd aks-nim-llm-inference
-chmod +x scripts/*.sh
-source scripts/00-env.sh
-export NGC_API_KEY="nvapi-..."
+./scripts/99-teardown.sh delete-all
 ```
 
 ---
 
-## Ordered runbook
+## 7. Repo map — where everything lives
 
-| Step | Script | Purpose |
-| --- | --- | --- |
-| 1 | `01-create-aks.sh` | Resource group + AKS CPU system pool |
-| 2 | `02-add-gpu-nodepool.sh` | GPU pool, label, taint, `--gpu-driver none` |
-| 3 | `03-install-gpu-operator.sh` | Helm install Operator **with GPU taint tolerations** |
-| 4 | `04-validate-gpu.sh` | CUDA `vectorAdd` job → **Test PASSED** |
-| 5 | `05-deploy-nim.sh` | NGC secrets + NIM Helm + LoadBalancer `:8000` |
-| 6 | `06-test-inference.sh` | Health, models, chat completion |
-| 7 | `07-deploy-chat-ui.sh` | Optional ChatGPT-style UI |
-| 99 | `99-teardown.sh` | Scale down / delete |
+```text
+aks-nim-llm-inference/          # public repo
+├── README.md
+├── scripts/                    # 01…07 + teardown
+├── manifests/                  # CUDA job + NIM Helm values
+└── web/                        # Chat UI (nginx + static files)
+```
+
+Clone:
 
 ```bash
+git clone https://github.com/afsalashraf/aks-nim-llm-inference.git
+cd aks-nim-llm-inference
+```
+
+---
+
+## 8. Step-by-step lab
+
+Run from:
+
+```bash
+cd aks-nim-llm-inference/scripts
+chmod +x *.sh
+```
+
+### Shared settings (`00-env.sh`)
+
+**Why:** one place for names/sizes so every script agrees.
+
+Important defaults used in the successful run:
+
+- Region: `eastus`  
+- System VM: `Standard_D2s_v4` (2 vCPU) — DSv5 had 0 quota; `B2s` was blocked for AKS  
+- GPU VM: `Standard_NC4as_T4_v3`  
+
+```bash
+source ./00-env.sh
+```
+
+---
+
+### Step 1 — Create the AKS cluster (CPU system pool)
+
+**Script:** `./01-create-aks.sh`  
+
+**What it does:**
+
+1. Creates resource group `rg-llm-inference`  
+2. Creates AKS cluster `aks-llm-nim` with a **CPU** system node  
+3. Downloads kubeconfig so `kubectl` works  
+
+**Why system pool is CPU-only:**  
+Kubernetes system pods should not sit on expensive GPUs.
+
+![Stage 01 — create AKS](/documents/aks-nim-llm/01-create-aks.jpg)
+
+*Figure: creating the resource group and AKS system pool.*
+
+After this you can run:
+
+```bash
+kubectl get nodes
+```
+
+You should see one Ready node (system pool).
+
+---
+
+### Step 2 — Add the NVIDIA GPU node pool
+
+**Script:** `./02-add-gpu-nodepool.sh`  
+
+**What it does:** adds pool `gpupool` with:
+
+- VM size `Standard_NC4as_T4_v3`  
+- Label `workload=gpu`  
+- Taint `sku=gpu:NoSchedule` (only special pods can land here)  
+- `--gpu-driver none` (Operator will install drivers)  
+
+**Why the taint?**  
+Stops random workloads from consuming the GPU node.
+
+![Stage 02 — GPU node pool](/documents/aks-nim-llm/02-add-gpu-nodepool.jpg)
+
+*Figure: GPU pool created with driver install skipped.*
+
+Verify nodes (live lab capture):
+
+![kubectl get nodes](/documents/aks-nim-llm/kubectl-get-nodes.jpg)
+
+*Figure: system node + GPU node; GPU column shows `1` after Operator is healthy.*
+
+---
+
+### Step 3 — Install NVIDIA GPU Operator
+
+**Script:** `./03-install-gpu-operator.sh`  
+
+**What it does:** Helm-installs `nvidia/gpu-operator` into namespace `gpu-operator`, with **tolerations** for our custom `sku=gpu` taint.
+
+**Why tolerations matter (we learned the hard way):**  
+Without them, Operator pods stay on the CPU node, drivers never install on the GPU node, and Kubernetes reports **no GPU** (`nvidia.com/gpu` missing). CUDA jobs stay Pending forever.
+
+![Stage 03 — GPU Operator](/documents/aks-nim-llm/03-install-gpu-operator.jpg)
+
+*Figure: Operator deployed; GPU allocatable becomes 1.*
+
+Operator pods look like this:
+
+![GPU Operator pods](/documents/aks-nim-llm/kubectl-get-pods-gpu-operator.jpg)
+
+*Figure: driver, device-plugin, toolkit, validators running.*
+
+---
+
+### Step 4 — Validate the GPU with CUDA
+
+**Script:** `./04-validate-gpu.sh`  
+**Manifest:** `manifests/gpu-validation/cuda-vectoradd.yaml`  
+
+**What it does:** runs NVIDIA’s sample `vectorAdd` job requesting `nvidia.com/gpu: 1`.
+
+**Why:** before downloading a huge NIM image, prove the GPU path works.
+
+![Stage 04 — CUDA Test PASSED](/documents/aks-nim-llm/04-validate-gpu.jpg)
+
+*Figure: CUDA vector addition completed with **Test PASSED**.*
+
+If this fails, do **not** deploy NIM yet — fix Operator/scheduling first.
+
+---
+
+### Step 5 — Deploy NVIDIA NIM (the LLM server)
+
+**Script:** `./05-deploy-nim.sh`  
+**Values:** `manifests/nim/values.yaml`  
+
+**What it does:**
+
+1. Creates namespace `nim`  
+2. Creates Docker pull secret for `nvcr.io`  
+3. Creates NGC API secret  
+4. Installs NIM Helm chart  
+5. Exposes a LoadBalancer on port **8000**  
+
+**Why secrets?**  
+NIM images and model artifacts are pulled from NVIDIA’s registry; the key authenticates you.
+
+**Why 1B model on T4?**  
+T4 has **16 GB** GPU memory. Llama-3.1-8B is typically too large. We used:
+
+- image: `nvcr.io/nim/meta/llama-3.2-1b-instruct:1.12.0`  
+- env: `NIM_RELAX_MEM_CONSTRAINTS=1`  
+
+![Stage 05 — deploy NIM](/documents/aks-nim-llm/05-deploy-nim.jpg)
+
+*Figure: Helm release deployed; service received a public IP.*
+
+NIM pods/services:
+
+![kubectl get nim](/documents/aks-nim-llm/kubectl-get-nim.jpg)
+
+*Figure: `llm-nim-0` Running and LoadBalancer EXTERNAL-IP assigned.*
+
+**Patience note:** first image pull can take **10–30+ minutes**. Status may show `ContainerCreating` / `Pulling` for a long time. That is normal.
+
+Cluster status snapshot:
+
+![Cluster status](/documents/aks-nim-llm/06-cluster-status.jpg)
+
+---
+
+### Step 6 — Test inference
+
+**Script:** `./06-test-inference.sh`  
+
+Calls:
+
+1. `/v1/health/ready`  
+2. `/v1/models`  
+3. `/v1/chat/completions`  
+
+![Inference response](/documents/aks-nim-llm/07-inference-response.jpg)
+
+*Figure: health OK + sample chat completion from the self-hosted model.*
+
+More curl detail is in [section 10](#10-how-to-talk-to-the-model-curl).
+
+---
+
+## 9. ChatGPT-style web UI
+
+**Script:** `./07-deploy-chat-ui.sh`  
+**Code:** `web/static/` + `web/nginx.conf`  
+
+### Why a proxy?
+Browsers block cross-origin calls (CORS).  
+The UI is served by nginx, and `/api/...` is **proxied inside the cluster** to NIM. The browser only talks to one origin (the Chat UI IP).
+
+### What you get
+- Simple chat page  
+- **No history** (refresh clears messages)  
+- Public LoadBalancer IP  
+
+### Screenshots from the live website
+
+#### Empty home screen
+
+![Chat UI home](/documents/aks-nim-llm/chat-ui-home.jpg)
+
+*Figure: NIM Chat landing page — model name, prompt chips, send box.*
+
+#### Live conversation
+
+![Chat UI conversation](/documents/aks-nim-llm/chat-ui-conversation.jpg)
+
+*Figure: user question and model answer in the UI.*
+
+![Chat UI with reply](/documents/aks-nim-llm/chat-ui-with-reply.jpg)
+
+*Figure: another live reply against the self-hosted NIM backend.*
+
+#### Another reply capture (GPU scheduling prompt)
+
+![Chat UI final](/documents/aks-nim-llm/chat-ui-final-before-teardown.jpg)
+
+*Figure: interactive chat against the in-cluster NIM backend.*
+
+### Redeploy after UI edits
+
+```bash
+./scripts/07-deploy-chat-ui.sh
+```
+
+---
+
+## 10. How to talk to the model (curl)
+
+While the cluster was live, NIM listened on a public IP (example from our run: `20.121.181.131:8000`).  
+After teardown those IPs die — treat them as historical examples.
+
+### Health check
+
+**Why:** confirms the server finished loading the model.
+
+![curl health](/documents/aks-nim-llm/curl-health.jpg)
+
+### List models
+
+**Why:** shows the exact model id string you must send in chat requests.
+
+![curl models](/documents/aks-nim-llm/curl-models.jpg)
+
+### Chat completion
+
+**Why:** this is the same API shape many apps use for OpenAI.
+
+![curl chat](/documents/aks-nim-llm/curl-chat-completions.jpg)
+
+### Chat UI proxy health
+
+**Why:** proves the webpage’s `/api` path reaches NIM.
+
+![curl chat ui proxy](/documents/aks-nim-llm/curl-chat-ui-proxy.jpg)
+
+### Example request (copy/paste pattern)
+
+```bash
+export NIM_IP="<YOUR_LOADBALANCER_IP>"
+
+curl -s "http://${NIM_IP}:8000/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta/llama-3.2-1b-instruct",
+    "messages": [
+      {"role": "user", "content": "Explain Kubernetes GPU scheduling in 3 short bullet points."}
+    ],
+    "max_tokens": 200,
+    "temperature": 0.2
+  }'
+```
+
+---
+
+## 11. Problems we hit (and fixes)
+
+These are real issues from this lab — expect them.
+
+### 1) Insufficient vCPU for `DSv5`
+**Symptom:** creating AKS with `Standard_D4s_v5` fails (quota remaining 0).  
+**Fix:** use `Standard_D2s_v4` (or another family with quota).
+
+### 2) `Standard_B2s` not allowed for AKS
+**Symptom:** BadRequest listing allowed SKUs; `B2s` missing, `B2s_v2` / `D2s_v4` present.  
+**Fix:** switch system pool to `Standard_D2s_v4`.
+
+### 3) GPU quota request of 1 vCPU rejected
+**Symptom:** Microsoft email saying vCore↔GPU conversion is wrong.  
+**Fix:** request **4** vCPUs for one `NC4as_T4_v3`.
+
+### 4) CUDA job timed out / Pending
+**Symptom:** `Insufficient nvidia.com/gpu`.  
+**Cause:** GPU Operator could not schedule onto tainted GPU node.  
+**Fix:** Helm upgrade Operator with toleration for `sku=gpu:NoSchedule`.
+
+### 5) NIM stays ContainerCreating for a long time
+**Cause:** large image pull from `nvcr.io`.  
+**Fix:** wait; watch events with `kubectl describe pod -n nim llm-nim-0`.
+
+### 6) Wrong model size for T4
+**Symptom:** OOM / crash on 8B models.  
+**Fix:** use 1B instruct NIM + `NIM_RELAX_MEM_CONSTRAINTS=1`.
+
+---
+
+## 12. Tear down (stop paying)
+
+**Why:** GPU + LoadBalancers continue billing while they exist.
+
+```bash
+cd aks-nim-llm-inference/scripts
+./99-teardown.sh delete-all
+```
+
+This deletes resource group `rg-llm-inference` (cluster, disks, public IPs, everything in that RG).
+
+Scale GPU to zero instead (keeps cluster, cheaper than full GPU):
+
+```bash
+./99-teardown.sh scale-zero
+```
+
+In our documentation pass, the RG was set to **Deleting**.
+
+---
+
+## 13. Appendix
+---
+
+## 13. Appendix — commands cheat sheet
+
+```bash
+# 0) env
+source scripts/00-env.sh
+export NGC_API_KEY="nvapi-..."   # for NIM only
+
+# 1-7) lab
 ./scripts/01-create-aks.sh
 ./scripts/02-add-gpu-nodepool.sh
 ./scripts/03-install-gpu-operator.sh
 ./scripts/04-validate-gpu.sh
 ./scripts/05-deploy-nim.sh
 ./scripts/06-test-inference.sh
-./scripts/07-deploy-chat-ui.sh   # optional
+./scripts/07-deploy-chat-ui.sh
 
-# when finished
+# inspect
+kubectl get nodes -o wide
+kubectl get pods -n gpu-operator
+kubectl get pods,svc -n nim
+kubectl get pods,svc -n chat
+kubectl logs -n nim llm-nim-0 --tail=100
+
+# cleanup
+./scripts/99-teardown.sh scale-zero
 ./scripts/99-teardown.sh delete-all
 ```
 
-Override defaults via env (`REGION`, `GPU_VM_SIZE`, `RG_NAME` / `RESOURCE_GROUP`, `CLUSTER_NAME` / `AKS_NAME`) — see `scripts/00-env.sh`.
+### Official references
 
----
-
-## Critical details (do not skip)
-
-### 1. `--gpu-driver none`
-
-For the Operator path, skip AKS’s built-in NVIDIA driver install. The Operator owns drivers, toolkit, and device plugin.
-
-### 2. Operator must tolerate your GPU taint
-
-If Operator pods cannot schedule onto the GPU node, Kubernetes never advertises `nvidia.com/gpu`, and every GPU Job stays **Pending**.
-
-### 3. Quota math for T4
-
-One `Standard_NC4as_T4_v3` needs **4** vCPUs of `Standard NCASv3_T4` family quota — not “1 GPU” in the portal sense.
-
-### 4. First NIM pull is slow
-
-Expect **10–30+ minutes** on first image/model cache. `ContainerCreating` / `Pulling` for a long time is normal.
-
-### 5. Model ↔ GPU fit
-
-| GPU | Practical lab model |
-| --- | --- |
-| T4 16 GB | `meta/llama-3.2-1b-instruct` (+ relax mem constraints) |
-| A100-class | `meta/llama-3.1-8b-instruct` (or larger per NVIDIA matrix) |
-
----
-
-## NIM values sketch (T4 lab)
-
-From `manifests/nim/values.yaml`:
-
-```yaml
-image:
-  repository: nvcr.io/nim/meta/llama-3.2-1b-instruct
-  tag: "1.12.0"
-
-model:
-  name: meta/llama-3.2-1b-instruct
-  ngcAPISecret: ngc-api
-
-env:
-  - name: NIM_RELAX_MEM_CONSTRAINTS
-    value: "1"
-
-resources:
-  limits:
-    nvidia.com/gpu: 1
-    memory: 20Gi
-
-tolerations:
-  - key: sku
-    operator: Equal
-    value: gpu
-    effect: NoSchedule
-
-nodeSelector:
-  workload: gpu
-
-service:
-  type: LoadBalancer
-```
-
-Persist the model cache on a PVC (`managed-csi`) so restarts do not re-download everything.
-
----
-
-## Test the API
-
-Health and models:
-
-```bash
-curl -s "http://${NIM_EXTERNAL_IP}:8000/v1/health/ready"
-curl -s "http://${NIM_EXTERNAL_IP}:8000/v1/models" | jq
-```
-
-Chat completion (OpenAI-compatible):
-
-```bash
-curl -s "http://${NIM_EXTERNAL_IP}:8000/v1/chat/completions" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "meta/llama-3.2-1b-instruct",
-    "messages": [
-      {"role": "user", "content": "Explain Kubernetes GPU scheduling in 3 bullet points."}
-    ],
-    "max_tokens": 200,
-    "temperature": 0.2
-  }' | jq
-```
-
-Local alternative without a public IP:
-
-```bash
-kubectl -n nim port-forward svc/llm-nim-nim-llm 8000:8000
-# then use http://127.0.0.1:8000
-```
-
----
-
-## Chat UI pattern
-
-The UI (`web/`) is nginx + static HTML/JS. Browsers cannot safely call a different NIM origin (CORS), so nginx proxies `/api/...` to the in-cluster NIM Service. The browser talks to **one** origin — the Chat UI LoadBalancer.
-
-![Longer chat conversation](/documents/aks-nim-llm/chat-ui-conversation.jpg)
-
-*Figure: Multi-turn UI session against the self-hosted NIM endpoint.*
-
----
-
-## Troubleshooting
-
-| Symptom | Likely cause | Fix |
-| --- | --- | --- |
-| `unrecognized arguments: --gpu-driver` | Old Azure CLI | Upgrade ≥ 2.72.2 |
-| `nvidia.com/gpu: 0` / missing | Operator not on GPU node | Check tolerations; wait for driver + device-plugin |
-| NIM / CUDA Job Pending | No GPU / missing toleration | Taints, `nvidia.com/gpu` limits, node allocatable |
-| ImagePullBackOff from `nvcr.io` | Bad NGC secret | Recreate with username `$oauthtoken` + API key |
-| OOM / CrashLoop on T4 | Model too large | Use 1B profile or move to A100 |
-| QuotaExceeded on node pool | No GPU family quota | Request quota or change region/SKU |
-| PVC Pending | Wrong StorageClass | Set `persistence.storageClass` to a real class |
-
----
-
-## Tear down / save money
-
-Scale GPU pool to zero when idle:
-
-```bash
-az aks nodepool scale \
-  --resource-group "$RESOURCE_GROUP" \
-  --cluster-name "$AKS_NAME" \
-  --name "$GPU_POOL_NAME" \
-  --node-count 0
-```
-
-Or delete the lab entirely:
-
-```bash
-./scripts/99-teardown.sh delete-all
-# or: az group delete --name "$RESOURCE_GROUP" --yes --no-wait
-```
-
-Rotate any NGC key that was pasted into logs or chat.
-
----
-
-## Official references
-
-- [Use NVIDIA GPU Operator on AKS](https://learn.microsoft.com/en-us/azure/aks/nvidia-gpu-operator)  
+- [AKS + NVIDIA GPU Operator](https://learn.microsoft.com/en-us/azure/aks/nvidia-gpu-operator)  
 - [Use GPUs on AKS](https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu)  
-- [NVIDIA NIM on Azure](https://docs.nvidia.com/nim/large-language-models/latest/deployment/csp-deployment/azure.html)  
+- [NIM on Azure](https://docs.nvidia.com/nim/large-language-models/latest/deployment/csp-deployment/azure.html)  
 - [NIM Helm / Kubernetes](https://docs.nvidia.com/nim/large-language-models/latest/deployment/kubernetes-deployment/helm-k8s.html)  
-- [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html)  
 
 ---
 
-## Takeaway
+## Final takeaway
 
-You can stand up a **private, OpenAI-compatible LLM** on AKS with a clear split of concerns:
+You now have a complete, beginner-readable path from **zero** to:
 
-> **AKS** orchestrates.  
-> **GPU Operator** makes `nvidia.com/gpu` real.  
-> **NIM** serves the model.  
-> **Your app / UI** stays a thin client.
+**AKS → NVIDIA GPU → GPU Operator → proven CUDA → NVIDIA NIM → curl API → Chat UI → teardown**
 
-Start with the smallest GPU + model that proves the path, instrument health and latency, then move to larger SKUs or production networking (private endpoints, auth, Ingress + TLS) when the platform pattern is proven.
-
-**Reproduce it:** [github.com/afsalashraf/aks-nim-llm-inference](https://github.com/afsalashraf/aks-nim-llm-inference)
+Every lab screenshot below sits next to the step it proves.  
+If you can follow the “why” paragraphs, you can reproduce and operate this pattern with confidence.
