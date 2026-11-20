@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520" role="img" aria-labelledby="title desc">
+  <title id="title">Mental model — request path into AKS + NIM</title>
+  <desc id="desc">You talk to Chat UI or curl; both reach an AKS cluster with a CPU system node and a GPU node running GPU Operator, NIM, and a model cache PVC.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#11111b"/>
+      <stop offset="100%" stop-color="#181825"/>
+    </linearGradient>
+    <linearGradient id="aksGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e1e2e"/>
+      <stop offset="100%" stop-color="#181825"/>
+    </linearGradient>
+    <linearGradient id="gpuGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2a22"/>
+      <stop offset="100%" stop-color="#181825"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#89b4fa"/>
+    </marker>
+    <marker id="arrTeal" markerWidth="9" markerHeight="9" refX="8" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#94e2d5"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="520" rx="20" fill="url(#bg)"/>
+
+  <!-- Header -->
+  <text x="40" y="42" font-family="Segoe UI,Helvetica Neue,sans-serif" font-size="24" font-weight="700" fill="#cdd6f4">Mental model</text>
+  <text x="40" y="68" font-family="SF Mono,Menlo,monospace" font-size="13" fill="#a6adc8">How a request reaches the LLM on AKS</text>
+
+  <!-- You -->
+  <g filter="url(#soft)">
+    <rect x="40" y="110" width="160" height="100" rx="16" fill="#181825" stroke="#f5c2e7" stroke-width="2"/>
+  </g>
+  <circle cx="120" cy="145" r="16" fill="#313244" stroke="#f5c2e7" stroke-width="2"/>
+  <circle cx="120" cy="140" r="6" fill="#f5c2e7"/>
+  <path d="M108 158 Q120 168 132 158" fill="none" stroke="#f5c2e7" stroke-width="2" stroke-linecap="round"/>
+  <text x="120" y="185" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="16" font-weight="700" fill="#cdd6f4">You</text>
+  <text x="120" y="204" text-anchor="middle" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">browser · curl</text>
+
+  <!-- Split arrows to Chat UI and curl label -->
+  <path d="M200 145 L250 145" stroke="#89b4fa" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M200 175 C230 175 230 280 270 280" fill="none" stroke="#94e2d5" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrTeal)"/>
+
+  <!-- Chat UI -->
+  <g filter="url(#soft)">
+    <rect x="270" y="100" width="200" height="90" rx="14" fill="#181825" stroke="#89b4fa" stroke-width="2"/>
+  </g>
+  <text x="290" y="130" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="#89b4fa">OPTIONAL FRONT DOOR</text>
+  <text x="290" y="158" font-family="Segoe UI,sans-serif" font-size="18" font-weight="700" fill="#cdd6f4">Chat UI</text>
+  <text x="290" y="178" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">public IP :80 · ns chat</text>
+
+  <!-- curl badge -->
+  <rect x="270" y="255" width="200" height="50" rx="12" fill="#11111b" stroke="#94e2d5" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="370" y="285" text-anchor="middle" font-family="SF Mono,Menlo,monospace" font-size="14" font-weight="600" fill="#94e2d5">curl → :8000 /v1/*</text>
+
+  <!-- Arrow into AKS -->
+  <path d="M470 145 L520 145" stroke="#89b4fa" stroke-width="2.5" marker-end="url(#arr)"/>
+  <path d="M470 280 L500 280 L500 200 L520 200" fill="none" stroke="#94e2d5" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrTeal)"/>
+
+  <!-- AKS cluster frame -->
+  <g filter="url(#soft)">
+    <rect x="520" y="95" width="540" height="380" rx="18" fill="url(#aksGlow)" stroke="#cba6f7" stroke-width="2"/>
+  </g>
+  <rect x="520" y="95" width="540" height="48" rx="18" fill="#313244"/>
+  <rect x="520" y="125" width="540" height="18" fill="#313244"/>
+  <circle cx="548" cy="119" r="6" fill="#f38ba8"/>
+  <circle cx="568" cy="119" r="6" fill="#f9e2af"/>
+  <circle cx="588" cy="119" r="6" fill="#a6e3a1"/>
+  <text x="615" y="124" font-family="Segoe UI,sans-serif" font-size="16" font-weight="700" fill="#cba6f7">AKS cluster · aks-llm-nim</text>
+  <text x="1000" y="124" text-anchor="end" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">eastus</text>
+
+  <!-- CPU system node -->
+  <rect x="545" y="165" width="230" height="130" rx="14" fill="#11111b" stroke="#89b4fa" stroke-width="1.5"/>
+  <text x="565" y="195" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="#89b4fa">CPU SYSTEM NODE</text>
+  <text x="565" y="222" font-family="Segoe UI,sans-serif" font-size="16" font-weight="600" fill="#cdd6f4">Standard_D2s_v4</text>
+  <text x="565" y="248" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">control-plane apps</text>
+  <text x="565" y="272" font-family="SF Mono,Menlo,monospace" font-size="12" fill="#a6adc8">cheap · always on</text>
+
+  <!-- GPU node -->
+  <rect x="795" y="165" width="245" height="280" rx="14" fill="url(#gpuGlow)" stroke="#a6e3a1" stroke-width="2"/>
+  <text x="815" y="195" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="#a6e3a1">GPU NODE · T4</text>
+  <text x="815" y="220" font-family="Segoe UI,sans-serif" font-size="15" font-weight="600" fill="#cdd6f4">NC4as_T4_v3</text>
+  <text x="815" y="242" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">16 GB VRAM</text>
+
+  <!-- Inner stack cards -->
+  <rect x="815" y="260" width="205" height="48" rx="10" fill="#181825" stroke="#f9e2af" stroke-width="1.5"/>
+  <text x="830" y="280" font-family="Segoe UI,sans-serif" font-size="11" font-weight="700" fill="#f9e2af">GPU OPERATOR</text>
+  <text x="830" y="298" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">driver · device plugin</text>
+
+  <rect x="815" y="320" width="205" height="48" rx="10" fill="#181825" stroke="#94e2d5" stroke-width="1.5"/>
+  <text x="830" y="340" font-family="Segoe UI,sans-serif" font-size="11" font-weight="700" fill="#94e2d5">NIM POD</text>
+  <text x="830" y="358" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">llama-3.2-1b-instruct</text>
+
+  <rect x="815" y="380" width="205" height="48" rx="10" fill="#181825" stroke="#fab387" stroke-width="1.5"/>
+  <text x="830" y="400" font-family="Segoe UI,sans-serif" font-size="11" font-weight="700" fill="#fab387">MODEL CACHE PVC</text>
+  <text x="830" y="418" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">survives pod restarts</text>
+
+  <!-- Legend -->
+  <text x="545" y="340" font-family="Segoe UI,sans-serif" font-size="12" font-weight="700" fill="#6c7086">REQUEST PATH</text>
+  <line x1="545" y1="360" x2="575" y2="360" stroke="#89b4fa" stroke-width="2.5"/>
+  <text x="585" y="364" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">via Chat UI</text>
+  <line x1="545" y1="385" x2="575" y2="385" stroke="#94e2d5" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="585" y="389" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#a6adc8">direct API (curl)</text>
+
+  <text x="545" y="440" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#585b70">One GPU node hosts Operator + NIM + cache</text>
+</svg>
