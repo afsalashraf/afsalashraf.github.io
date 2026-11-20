@@ -283,7 +283,7 @@ You do **not** need to memorize these. Come back here when a word appears.
 
 ## 3. What we built (big picture)
 
-![Lab overview](/documents/aks-nim-llm/00-lab-overview.jpg)
+![Lab overview](/documents/aks-nim-llm/00-lab-overview.svg)
 
 *Figure: end-to-end flow from AKS create → GPU → Operator → CUDA → NIM → inference.*
 
@@ -485,7 +485,7 @@ source ./00-env.sh
 **Why system pool is CPU-only:**  
 Kubernetes system pods should not sit on expensive GPUs.
 
-![Stage 01 — create AKS](/documents/aks-nim-llm/01-create-aks.jpg)
+![Stage 01 — create AKS](/documents/aks-nim-llm/01-create-aks.svg)
 
 *Figure: creating the resource group and AKS system pool.*
 
@@ -513,13 +513,13 @@ You should see one Ready node (system pool).
 **Why the taint?**  
 Stops random workloads from consuming the GPU node.
 
-![Stage 02 — GPU node pool](/documents/aks-nim-llm/02-add-gpu-nodepool.jpg)
+![Stage 02 — GPU node pool](/documents/aks-nim-llm/02-add-gpu-nodepool.svg)
 
 *Figure: GPU pool created with driver install skipped.*
 
 Verify nodes (live lab capture):
 
-![kubectl get nodes](/documents/aks-nim-llm/kubectl-get-nodes.jpg)
+![kubectl get nodes](/documents/aks-nim-llm/kubectl-get-nodes.svg)
 
 *Figure: system node + GPU node; GPU column shows \`1\` after Operator is healthy.*
 
@@ -534,13 +534,13 @@ Verify nodes (live lab capture):
 **Why tolerations matter (we learned the hard way):**  
 Without them, Operator pods stay on the CPU node, drivers never install on the GPU node, and Kubernetes reports **no GPU** (\`nvidia.com/gpu\` missing). CUDA jobs stay Pending forever.
 
-![Stage 03 — GPU Operator](/documents/aks-nim-llm/03-install-gpu-operator.jpg)
+![Stage 03 — GPU Operator](/documents/aks-nim-llm/03-install-gpu-operator.svg)
 
 *Figure: Operator deployed; GPU allocatable becomes 1.*
 
 Operator pods look like this:
 
-![GPU Operator pods](/documents/aks-nim-llm/kubectl-get-pods-gpu-operator.jpg)
+![GPU Operator pods](/documents/aks-nim-llm/kubectl-get-pods-gpu-operator.svg)
 
 *Figure: driver, device-plugin, toolkit, validators running.*
 
@@ -555,7 +555,7 @@ Operator pods look like this:
 
 **Why:** before downloading a huge NIM image, prove the GPU path works.
 
-![Stage 04 — CUDA Test PASSED](/documents/aks-nim-llm/04-validate-gpu.jpg)
+![Stage 04 — CUDA Test PASSED](/documents/aks-nim-llm/04-validate-gpu.svg)
 
 *Figure: CUDA vector addition completed with **Test PASSED**.*
 
@@ -585,13 +585,13 @@ T4 has **16 GB** GPU memory. Llama-3.1-8B is typically too large. We used:
 - image: \`nvcr.io/nim/meta/llama-3.2-1b-instruct:1.12.0\`  
 - env: \`NIM_RELAX_MEM_CONSTRAINTS=1\`  
 
-![Stage 05 — deploy NIM](/documents/aks-nim-llm/05-deploy-nim.jpg)
+![Stage 05 — deploy NIM](/documents/aks-nim-llm/05-deploy-nim.svg)
 
 *Figure: Helm release deployed; service received a public IP.*
 
 NIM pods/services:
 
-![kubectl get nim](/documents/aks-nim-llm/kubectl-get-nim.jpg)
+![kubectl get nim](/documents/aks-nim-llm/kubectl-get-nim.svg)
 
 *Figure: \`llm-nim-0\` Running and LoadBalancer EXTERNAL-IP assigned.*
 
@@ -599,7 +599,7 @@ NIM pods/services:
 
 Cluster status snapshot:
 
-![Cluster status](/documents/aks-nim-llm/06-cluster-status.jpg)
+![Cluster status](/documents/aks-nim-llm/06-cluster-status.svg)
 
 ---
 
@@ -613,7 +613,7 @@ Calls:
 2. \`/v1/models\`  
 3. \`/v1/chat/completions\`  
 
-![Inference response](/documents/aks-nim-llm/07-inference-response.jpg)
+![Inference response](/documents/aks-nim-llm/07-inference-response.svg)
 
 *Figure: health OK + sample chat completion from the self-hosted model.*
 
@@ -676,25 +676,25 @@ After teardown those IPs die — treat them as historical examples.
 
 **Why:** confirms the server finished loading the model.
 
-![curl health](/documents/aks-nim-llm/curl-health.jpg)
+![curl health](/documents/aks-nim-llm/curl-health.svg)
 
 ### List models
 
 **Why:** shows the exact model id string you must send in chat requests.
 
-![curl models](/documents/aks-nim-llm/curl-models.jpg)
+![curl models](/documents/aks-nim-llm/curl-models.svg)
 
 ### Chat completion
 
 **Why:** this is the same API shape many apps use for OpenAI.
 
-![curl chat](/documents/aks-nim-llm/curl-chat-completions.jpg)
+![curl chat](/documents/aks-nim-llm/curl-chat-completions.svg)
 
 ### Chat UI proxy health
 
 **Why:** proves the webpage’s \`/api\` path reaches NIM.
 
-![curl chat ui proxy](/documents/aks-nim-llm/curl-chat-ui-proxy.jpg)
+![curl chat ui proxy](/documents/aks-nim-llm/curl-chat-ui-proxy.svg)
 
 ### Example request (copy/paste pattern)
 

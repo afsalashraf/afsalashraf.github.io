@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="402" viewBox="0 0 980 402" role="img">
+  <defs>
+    <style>
+      .chrome { font: 12px 'SF Pro Text', 'Segoe UI', sans-serif; fill: #a6adc8; }
+      .term { font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+    </style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#11111b"/>
+      <stop offset="100%" stop-color="#1e1e2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="980" height="402" rx="14" fill="url(#bg)"/>
+  <rect x="0" y="0" width="980" height="44" rx="14" fill="#181825"/>
+  <rect x="0" y="30" width="980" height="14" fill="#181825"/>
+  <circle cx="26" cy="22" r="6" fill="#f38ba8"/>
+  <circle cx="46" cy="22" r="6" fill="#f9e2af"/>
+  <circle cx="66" cy="22" r="6" fill="#a6e3a1"/>
+  <text x="92" y="26" class="chrome">afsalashraf@MacBookPro: ~/Code/LLM_inferncing — zsh — 120×40</text>
+  <text x="28" y="68" class="term" fill="#a6e3a1">afsalashraf@MacBookPro LLM_inferncing % curl -s http://20.121.181.131:8000/v1/chat/completions \</text><text x="28" y="86" class="term" fill="#cdd6f4">  -H &quot;Content-Type: application/json&quot; \</text><text x="28" y="104" class="term" fill="#cdd6f4">  -d &#x27;{</text><text x="28" y="122" class="term" fill="#cdd6f4">    &quot;model&quot;: &quot;meta/llama-3.2-1b-instruct&quot;,</text><text x="28" y="140" class="term" fill="#cdd6f4">    &quot;messages&quot;: [{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Explain AKS GPU inference in 2 short sentences.&quot;}],</text><text x="28" y="158" class="term" fill="#cdd6f4">    &quot;max_tokens&quot;: 120</text><text x="28" y="176" class="term" fill="#cdd6f4">  }&#x27; | jq .</text><text x="28" y="194" class="term" fill="#cdd6f4"></text><text x="28" y="212" class="term" fill="#cdd6f4">model: meta/llama-3.2-1b-instruct</text><text x="28" y="230" class="term" fill="#cdd6f4">finish_reason: stop</text><text x="28" y="248" class="term" fill="#cdd6f4">assistant:</text><text x="28" y="266" class="term" fill="#cdd6f4">The AKS (Asynchronous System) GPU inference architecture is a parallel computing framework</text><text x="28" y="284" class="term" fill="#cdd6f4">that allows for efficient and scalable GPU acceleration of machine learning (ML) and deep</text><text x="28" y="302" class="term" fill="#cdd6f4">learning (DL) workloads. By leveraging multiple GPUs in parallel, AKS GPUs can significantly</text><text x="28" y="320" class="term" fill="#cdd6f4">speed up the inference process, making it suitable for large-scale ML and DL applications.</text><text x="28" y="338" class="term" fill="#cdd6f4"></text><text x="28" y="356" class="term" fill="#a6e3a1">afsalashraf@MacBookPro LLM_inferncing % </text>
+</svg>

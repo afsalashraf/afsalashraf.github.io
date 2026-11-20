@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="340" viewBox="0 0 980 340" role="img" aria-label="afsalashraf@MacBookPro: ~/Code/LLM_inferncing/scripts — zsh — 120×40">
+  <defs>
+    <style>
+      .banner { font: 600 15px 'SF Pro Text', 'Segoe UI', sans-serif; fill: #bac2de; }
+      .chrome { font: 12px 'SF Pro Text', 'Segoe UI', sans-serif; fill: #a6adc8; }
+      .term { font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+    </style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#11111b"/>
+      <stop offset="100%" stop-color="#1e1e2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="980" height="340" rx="14" fill="url(#bg)"/>
+  <rect x="0" y="0" width="980" height="44" rx="14" fill="#181825"/>
+  <rect x="0" y="30" width="980" height="14" fill="#181825"/>
+  <circle cx="26" cy="22" r="6" fill="#f38ba8"/>
+  <circle cx="46" cy="22" r="6" fill="#f9e2af"/>
+  <circle cx="66" cy="22" r="6" fill="#a6e3a1"/>
+  <text x="92" y="26" class="chrome">afsalashraf@MacBookPro: ~/Code/LLM_inferncing/scripts — zsh — 120×40</text>
+  <text x="28" y="62" class="banner">Stage 04 — CUDA GPU validation</text><text x="28" y="78" class="term" fill="#a6e3a1">afsalashraf@MacBookPro scripts % ./04-validate-gpu.sh</text><text x="28" y="96" class="term" fill="#f9e2af">==&gt; Applying CUDA validation Job</text><text x="28" y="114" class="term" fill="#cdd6f4">job.batch/cuda-vectoradd created</text><text x="28" y="132" class="term" fill="#f9e2af">==&gt; Waiting for Job to complete</text><text x="28" y="150" class="term" fill="#cdd6f4">job.batch/cuda-vectoradd condition met</text><text x="28" y="168" class="term" fill="#f9e2af">==&gt; Logs</text><text x="28" y="186" class="term" fill="#cdd6f4">[Vector addition of 50000 elements]</text><text x="28" y="204" class="term" fill="#cdd6f4">Copy input data from the host memory to the CUDA device</text><text x="28" y="222" class="term" fill="#cdd6f4">CUDA kernel launch with 196 blocks of 256 threads</text><text x="28" y="240" class="term" fill="#cdd6f4">Copy output data from the CUDA device to the host memory</text><text x="28" y="258" class="term" fill="#94e2d5">Test PASSED</text><text x="28" y="276" class="term" fill="#cdd6f4">Done</text><text x="28" y="294" class="term" fill="#a6e3a1">afsalashraf@MacBookPro scripts % </text>
+</svg>
