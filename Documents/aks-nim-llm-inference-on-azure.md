@@ -69,7 +69,8 @@ What we completed in the lab:
 | **TTFT** | Time to first token — interactive latency metric |
 | **Tokens/sec** | Decode throughput after the first token |
 | **Quantization** | Lower-precision weights (e.g. FP8/INT) to fit larger models in VRAM |
-| **Temperature / top_p** | Sampling controls that change randomness vs focus of outputs |
+| **Temperature** | How random the next word can be (low = focused, high = creative) |
+| **top_p / max_tokens** | Nucleus sampling slice / hard cap on answer length (quality + cost) |
 | **Model cache (PVC)** | On-disk NIM download/build cache so restarts skip full re-pull |
 
 ---
