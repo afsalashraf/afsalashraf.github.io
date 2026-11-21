@@ -11,6 +11,27 @@ import { BlogComments } from '../components/BlogComments'
 
 marked.setOptions({ gfm: true, breaks: false })
 
+/** GitHub-compatible heading slug so in-doc TOC anchors resolve. */
+function githubSlug(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N} -]/gu, '')
+    .replace(/ /g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+function withHeadingIds(html: string) {
+  const seen = new Map<string, number>()
+  return html.replace(/<(h[2-4])>([\s\S]*?)<\/\1>/gi, (_m, tag: string, inner: string) => {
+    const plain = inner.replace(/<[^>]+>/g, '').trim()
+    let id = githubSlug(plain)
+    const n = seen.get(id) ?? 0
+    seen.set(id, n + 1)
+    if (n > 0) id = `${id}-${n}`
+    return `<${tag} id="${id}">${inner}</${tag}>`
+  })
+}
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
     month: 'long',
@@ -54,7 +75,7 @@ export function DocumentView() {
 
   if (!doc) return <Navigate to="/blog" replace />
 
-  const html = (marked.parse(doc.markdown) as string).replace(
+  const html = withHeadingIds(marked.parse(doc.markdown) as string).replace(
     /<img /g,
     '<img loading="eager" decoding="async" class="doc-zoomable" ',
   )
