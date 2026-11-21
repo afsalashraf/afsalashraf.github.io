@@ -1,10 +1,10 @@
-# Self-Host an LLM on Azure Kubernetes with NVIDIA GPUs — Complete Guide
+# Self-Host an LLM on Azure Kubernetes with NVIDIA GPUs — Reference
 
-**Type:** Hands-on lab / intermediate platform guide  
+**Type:** Platform reference  
 **Audience:** Cloud / AI platform engineers  
 **Updated:** 2026-11-21
 
-Build and operate a self-hosted, OpenAI-compatible LLM on **AKS** with the **NVIDIA GPU Operator** and **NVIDIA NIM** — including **why** each stack layer exists, how to **choose GPU + model**, and how **sampling / caching parameters** affect quality and cost. Screenshots are from a real **eastus** lab (November 2026), then torn down to stop billing.
+Build and operate a self-hosted, OpenAI-compatible LLM on **AKS** with the **NVIDIA GPU Operator** and **NVIDIA NIM** — including **why** each stack layer exists, how to **choose GPU + model**, and how **sampling / caching parameters** affect quality and cost. Screenshots are from a real **eastus** deployment (November 2026), then torn down to stop billing.
 
 **Reproduce with code:** [github.com/afsalashraf/aks-nim-llm-inference](https://github.com/afsalashraf/aks-nim-llm-inference)  
 **Companion deep-dive:** [NIM vs vLLM vs Triton vs TensorRT-LLM](/blog/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm)
@@ -13,7 +13,7 @@ Build and operate a self-hosted, OpenAI-compatible LLM on **AKS** with the **NVI
 
 ## Table of contents
 
-1. [What this lab proves](#1-what-this-lab-proves)
+1. [What this reference covers](#1-what-this-reference-covers)
 2. [Glossary (platform + inference)](#2-glossary-platform--inference)
 3. [What we built (big picture)](#3-what-we-built-big-picture)
 4. [Why each major piece is needed](#4-why-each-major-piece-is-needed)
@@ -23,7 +23,7 @@ Build and operate a self-hosted, OpenAI-compatible LLM on **AKS** with the **NVI
 8. [Prerequisites (tools + accounts)](#8-prerequisites-tools--accounts)
 9. [Money, Free Trial, and GPU quota](#9-money-free-trial-and-gpu-quota)
 10. [Repo map](#10-repo-map)
-11. [Step-by-step lab](#11-step-by-step-lab)
+11. [Step-by-step walkthrough](#11-step-by-step-walkthrough)
 12. [ChatGPT-style web UI](#12-chatgpt-style-web-ui)
 13. [Calling the model (curl + API fields)](#13-calling-the-model-curl--api-fields)
 14. [Tear down (stop paying)](#14-tear-down-stop-paying)
@@ -31,7 +31,7 @@ Build and operate a self-hosted, OpenAI-compatible LLM on **AKS** with the **NVI
 
 ---
 
-## 1. What this lab proves
+## 1. What this reference covers
 
 Goal: a **private, OpenAI-compatible** chat/completions endpoint under **your** control plane — not a public SaaS model API.
 
@@ -43,7 +43,7 @@ Platform path:
 4. **NVIDIA NIM** as the inference microservice  
 5. Optional **Chat UI** as a thin client  
 
-What we completed in the lab:
+What the reference deployment completed:
 
 - AKS + NVIDIA **T4** user pool (`--gpu-driver none`)  
 - GPU Operator with custom taint tolerations  
@@ -56,7 +56,7 @@ What we completed in the lab:
 
 ## 2. Glossary (platform + inference)
 
-| Term | Meaning in this lab |
+| Term | Meaning in this reference |
 |------|---------------------|
 | **AKS** | Azure-managed Kubernetes control plane; you manage node pools and workloads |
 | **Node pool** | Homogeneous VM group (CPU system pool vs GPU user pool) |
@@ -77,7 +77,7 @@ What we completed in the lab:
 
 ## 3. What we built (big picture)
 
-![Lab overview](/documents/aks-nim-llm/00-lab-overview.svg)
+![Reference overview](/documents/aks-nim-llm/00-lab-overview.svg)
 
 *Figure: end-to-end flow from AKS create → GPU → Operator → CUDA → NIM → inference.*
 
@@ -87,7 +87,7 @@ What we completed in the lab:
 
 *Figure: two ways in (Chat UI or curl), one GPU node hosting Operator + NIM + model cache.*
 
-### What ran in our lab
+### What ran in the reference deployment
 
 | Layer | Exact choice |
 |-------|----------------|
@@ -129,7 +129,7 @@ NIM is NVIDIA’s packaged inference server. You get:
 - OpenAI-compatible HTTP API (`/v1/chat/completions`)  
 
 ### Why a Chat UI?
-`curl` proves the API works. A webpage proves a human can use it like ChatGPT (no history needed for this lab).
+`curl` proves the API works. A webpage proves a human can use it like ChatGPT (no history needed for this reference).
 
 ### Why NGC / nvcr.io?
 NIM containers and many model artifacts are distributed through NVIDIA’s registry. Your NGC API key authenticates image pulls and model downloads. Never commit the key.
@@ -140,7 +140,7 @@ GPU Operator and NIM ship as multi-resource packages (Deployments, DaemonSets, S
 ### Why a PVC for the model cache?
 The first NIM start downloads/builds a large cache. A PersistentVolumeClaim keeps that cache across pod restarts so you do not pay the download cost again.
 
-### Why LoadBalancer Services in this lab?
+### Why LoadBalancer Services in this reference?
 Fastest way to reach NIM and the Chat UI from your laptop. For production, prefer private networking, Ingress + TLS, and an API gateway — not public GPU ports.
 
 ### Why split Chat UI into its own namespace?
@@ -154,9 +154,9 @@ On this platform path, think in **layers**, not competing products:
 
 ![NVIDIA stack layers on AKS — App → NIM → engine → GPU Operator → GPU](/documents/aks-nim-llm/nvidia-stack-layers.svg)
 
-*Figure: each layer has one job; NIM packages the engine so you do not install Triton/TRT-LLM yourself for this lab.*
+*Figure: each layer has one job; NIM packages the engine so you do not install Triton/TRT-LLM yourself for this path.*
 
-| Layer | Responsibility | In this lab |
+| Layer | Responsibility | In this reference |
 | --- | --- | --- |
 | **Orchestration** | Schedule pods, networking, restarts | AKS |
 | **GPU enablement** | Driver, toolkit, `nvidia.com/gpu` | GPU Operator |
@@ -164,7 +164,7 @@ On this platform path, think in **layers**, not competing products:
 | **Acceleration engine** | Kernels, batching, KV management | Inside NIM (e.g. TensorRT-LLM / vLLM-class stacks depending on NIM build) |
 | **Hardware** | VRAM + FLOPs | Azure NVIDIA SKU |
 
-**Practical implication:** you do **not** need to install Triton or TensorRT-LLM yourself for this lab. NIM packages a production inference path. You *do* need a correct GPU Operator + SKU/model fit, or the pod will never become Ready.
+**Practical implication:** you do **not** need to install Triton or TensorRT-LLM yourself for this path. NIM packages a production inference path. You *do* need a correct GPU Operator + SKU/model fit, or the pod will never become Ready.
 
 For when to compose NIM vs bare vLLM vs Triton + TensorRT-LLM, see the [companion comparison](/blog/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm).
 
@@ -188,7 +188,7 @@ Model choice is constrained first by **VRAM**, then by latency/quality targets.
 
 | GPU (examples) | VRAM | Practical starter models |
 | --- | --- | --- |
-| **T4** (`NC4as_T4_v3`) | 16 GB | Small instruct models (this lab: **Llama 3.2 1B**) |
+| **T4** (`NC4as_T4_v3`) | 16 GB | Small instruct models (this reference: **Llama 3.2 1B**) |
 | **A10 / L4 class** | ~24 GB | 7B–8B often feasible (profile-dependent) |
 | **A100 40/80 GB** | 40/80 GB | 8B–70B with parallelism / quantization as required |
 | **H100 / H200** | High | Larger models + higher concurrency |
@@ -200,7 +200,7 @@ Rules of thumb:
 3. Official NIM support matrices matter — unofficial “it might fit” often OOMs.  
 4. Prefer an **instruct / chat** NIM for conversational APIs; base models need different prompting.
 
-### Lab choice explained
+### Reference SKU / model choice explained
 
 | Constraint | Decision |
 | --- | --- |
@@ -210,7 +210,7 @@ Rules of thumb:
 | Escape hatch | `NIM_RELAX_MEM_CONSTRAINTS=1` for tight T4 profiles |
 
 **Why not Llama 3.1 8B on this T4?**  
-8B instruct NIMs typically need more VRAM than a comfortable T4 lab leaves after runtime + KV cache. Use A100-class (or a supported quantized/smaller profile) for 8B.
+8B instruct NIMs typically need more VRAM than a comfortable T4 profile leaves after runtime + KV cache. Use A100-class (or a supported quantized/smaller profile) for 8B.
 
 ### Model attributes to check before you Helm-install
 
@@ -221,7 +221,7 @@ Rules of thumb:
 | **Precision / quantization** | FP16 vs FP8/INT changes fit and speed |
 | **TP / multi-GPU** | Big models may need tensor parallel across GPUs |
 | **License / gating** | Some weights need Hugging Face tokens in addition to NGC |
-| **NIM tag / chart version** | Pin image digests for reproducible labs |
+| **NIM tag / chart version** | Pin image digests for reproducible deploys |
 
 ---
 
@@ -251,7 +251,7 @@ The model always has a ranked list of next-token candidates. **Temperature** str
 
 **Why we need it:** without temperature control, every app gets the same “default personality.” Platform teams usually **force a low default** at the gateway so demos and internal tools stay consistent.
 
-**Lab tip:** use **`0.1–0.3`** for screenshots and smoke tests so two runs look similar.
+**Reference tip:** use **`0.1–0.3`** for screenshots and smoke tests so two runs look similar.
 
 ### `top_p` — “only consider the top slice of likely words”
 
@@ -260,7 +260,7 @@ The model always has a ranked list of next-token candidates. **Temperature** str
 - **Low `top_p` (e.g. 0.5)** → narrower vocabulary → safer, sometimes duller  
 - **High `top_p` (e.g. 0.95)** → more options → more variety  
 
-**Why we need it:** another way to limit randomness. You usually **tune either temperature *or* top_p**, not both aggressively. For this lab, **`top_p: 0.9`** (or omit) with low temperature is enough.
+**Why we need it:** another way to limit randomness. You usually **tune either temperature *or* top_p**, not both aggressively. For this reference, **`top_p: 0.9`** (or omit) with low temperature is enough.
 
 ### `max_tokens` — “hard stop on answer length”
 
@@ -273,7 +273,7 @@ This caps **how many tokens the model may generate** (not your prompt length).
 | **KV / VRAM** | Longer outputs keep more state in GPU memory |
 | **UX** | Unbounded answers feel broken in APIs |
 
-**Why we need it:** without a cap, a chatty reply can dominate a small T4. Start with **`128–256`** in labs; raise only when product needs longer answers.
+**Why we need it:** without a cap, a chatty reply can dominate a small T4. Start with **`128–256`** in early tests; raise only when product needs longer answers.
 
 ### `stop` — “end the reply when you see this text”
 
@@ -302,7 +302,7 @@ Same prompt + same seed → more reproducible answers.
 | **`messages`** | Chat history (`system` / `user` / `assistant`) | `system` sets behavior; keep history short to save tokens + KV |
 | **`top_k`** (if present) | Only look at the top *k* tokens | Another randomness limiter; often leave default |
 | **`presence_penalty` / `frequency_penalty`** | Discourage repetition | Helpful for long chat; usually leave near `0` for Q&A |
-| **`n`** | Ask for multiple completions | Multiplies cost — avoid in labs |
+| **`n`** | Ask for multiple completions | Multiplies cost — avoid in early tests |
 
 ### Serving-side knobs (server, not the curl body)
 
@@ -312,7 +312,7 @@ These are set in Helm / env / gateway — they shape capacity for everyone:
 | --- | --- | --- |
 | **Max concurrent requests / batch** | How many chats share the GPU at once | Higher throughput, worse per-user latency if overloaded |
 | **Max context / input length** | Reject huge prompts early | Protects VRAM and stops accidental 50k-token dumps |
-| **`NIM_RELAX_MEM_CONSTRAINTS`** | Allow tighter VRAM packing on small GPUs | Lab escape hatch on T4 — validate before production |
+| **`NIM_RELAX_MEM_CONSTRAINTS`** | Allow tighter VRAM packing on small GPUs | Escape hatch on T4 — validate before production |
 | **Replicas** | More NIM pods | Only helps if each replica has a GPU and the model fits |
 
 ### Quick “what should I set?” guide
@@ -324,7 +324,7 @@ These are set in Helm / env / gateway — they shape capacity for everyone:
 | Creative brainstorming | `0.7–0.9` | as needed | on |
 | Extraction / classification | `0–0.2` | small | off |
 
-### Recommended defaults for this lab
+### Recommended defaults for this reference
 
 ```json
 {
@@ -387,7 +387,7 @@ All scripts live under [`scripts/`](https://github.com/afsalashraf/aks-nim-llm-i
 Azure Free Trial usually **cannot** create modern NVIDIA GPU VMs (T4/A100).  
 GPU families often show **quota = 0**, and free accounts often **cannot raise quota**.
 
-**What worked in this lab:** upgrade to **Pay-As-You-Go**, then request T4 quota.
+**What worked in this deployment:** upgrade to **Pay-As-You-Go**, then request T4 quota.
 
 ### Quota is measured in vCPUs, not “1 GPU”
 For one machine of size `Standard_NC4as_T4_v3` you need:
@@ -427,7 +427,7 @@ cd aks-nim-llm-inference
 
 ---
 
-## 11. Step-by-step lab
+## 11. Step-by-step walkthrough
 
 Run from:
 
@@ -497,7 +497,7 @@ Stops random workloads from consuming the GPU node.
 
 *Figure: GPU pool created with driver install skipped.*
 
-Verify nodes (live lab capture):
+Verify nodes (live capture):
 
 ![kubectl get nodes](/documents/aks-nim-llm/kubectl-get-nodes.svg)
 
@@ -563,7 +563,7 @@ NIM images and model artifacts are pulled from NVIDIA’s registry; the key auth
 T4 has **16 GB** GPU memory. After runtime overhead, an 8B instruct NIM is usually too tight. We used:
 
 - image: `nvcr.io/nim/meta/llama-3.2-1b-instruct:1.12.0`  
-- env: `NIM_RELAX_MEM_CONSTRAINTS=1` (lab escape hatch on constrained VRAM — validate quality/stability before calling it “production ready”)
+- env: `NIM_RELAX_MEM_CONSTRAINTS=1` (escape hatch on constrained VRAM — validate quality/stability before calling it “production ready”)
 
 **What to change for a larger model later**
 
@@ -759,7 +759,7 @@ In our documentation pass, the RG was set to **Deleting**.
 source scripts/00-env.sh
 export NGC_API_KEY="nvapi-..."   # for NIM only
 
-# 1-7) lab
+# 1-7) walkthrough
 ./scripts/01-create-aks.sh
 ./scripts/02-add-gpu-nodepool.sh
 ./scripts/03-install-gpu-operator.sh
@@ -791,7 +791,7 @@ kubectl logs -n nim llm-nim-0 --tail=100
 
 ## Final takeaway
 
-You now have an intermediate, reproducible path:
+You now have an intermediate platform reference path:
 
 **AKS → NVIDIA GPU → GPU Operator → CUDA proof → NIM → tuned `/v1/chat/completions` → Chat UI → teardown**
 
@@ -802,4 +802,4 @@ Remember the platform lessons:
 3. **API parameters are capacity controls** — `temperature`, `top_p`, and especially `max_tokens` change cost and latency.  
 4. **Disk model cache ≠ KV cache** — PVC saves pull time; KV lives in GPU memory at runtime.  
 
-Every lab screenshot sits next to the step it proves. Use the public repo scripts to reproduce, then harden networking/auth before production.
+Every screenshot sits next to the step it proves. Use the public repo scripts to reproduce, then harden networking/auth before production.

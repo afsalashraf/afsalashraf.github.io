@@ -19,13 +19,13 @@ export type TechDocument = {
 export const documents: TechDocument[] = [
   {
     slug: 'aks-nim-llm-inference-on-azure',
-    title: 'Self-Host an LLM on AKS with NVIDIA GPUs — Complete Guide',
-    type: 'Intermediate hands-on guide',
+    title: 'Self-Host an LLM on AKS with NVIDIA GPUs — Reference',
+    type: 'Platform reference',
     audience: 'Cloud / AI platform engineers',
     updated: '2026-11-21',
     tags: ['Azure', 'AKS', 'NVIDIA', 'NIM', 'GPU', 'Kubernetes'],
     summary:
-      'Intermediate lab: NVIDIA stack on AKS, GPU/model fit, and plain-English guides to temperature, top_p, max_tokens, caches — plus full steps and screenshots.',
+      'Platform reference: NVIDIA stack on AKS, GPU/model fit, and plain-English guides to temperature, top_p, max_tokens, caches — with walkthrough and screenshots.',
     file: 'Documents/aks-nim-llm-inference-on-azure.md',
     markdown: aksNimLab,
   },
