@@ -1,8 +1,8 @@
 # Self-Host an LLM on Azure Kubernetes with NVIDIA GPUs — Complete Guide
 
 **Type:** Hands-on lab / intermediate platform guide  
-**Audience:** Cloud / AI platform engineers with basic Kubernetes familiarity  
-**Updated:** 2026-11-20
+**Audience:** Cloud / AI platform engineers  
+**Updated:** 2026-11-21
 
 Build and operate a self-hosted, OpenAI-compatible LLM on **AKS** with the **NVIDIA GPU Operator** and **NVIDIA NIM** — including **why** each stack layer exists, how to **choose GPU + model**, and how **sampling / caching parameters** affect quality and cost. Screenshots are from a real **eastus** lab (November 2026), then torn down to stop billing.
 
@@ -26,9 +26,8 @@ Build and operate a self-hosted, OpenAI-compatible LLM on **AKS** with the **NVI
 11. [Step-by-step lab](#11-step-by-step-lab)
 12. [ChatGPT-style web UI](#12-chatgpt-style-web-ui)
 13. [Calling the model (curl + API fields)](#13-calling-the-model-curl--api-fields)
-14. [Problems we hit (and fixes)](#14-problems-we-hit-and-fixes)
-15. [Tear down (stop paying)](#15-tear-down-stop-paying)
-16. [Appendix — commands cheat sheet](#16-appendix--commands-cheat-sheet)
+14. [Tear down (stop paying)](#14-tear-down-stop-paying)
+15. [Appendix — commands cheat sheet](#15-appendix--commands-cheat-sheet)
 
 ---
 
@@ -227,43 +226,112 @@ Rules of thumb:
 
 ## 7. Inference parameters, KV cache, and model cache
 
-Two different “caches” people confuse:
+When you call `/v1/chat/completions`, you are not only “asking a question.” You are also telling the server **how creative to be**, **how long it may talk**, and **how much GPU work you allow**. Those knobs affect answer quality, latency, and cost.
 
-| Cache | Where | Purpose |
+### Two caches people mix up
+
+| Cache | Where it lives | What it is for | Why you care |
+| --- | --- | --- | --- |
+| **Model cache (PVC)** | Disk on the node | Stores downloaded NIM / model files | First start is slow; later restarts skip a full re-download |
+| **KV cache** | GPU memory while answering | Remembers attention state for tokens already seen | Makes generation fast; grows with longer chats and more users |
+
+**Simple picture:** the PVC is like a **downloaded app install**. The KV cache is like **short-term working memory** while the model is talking. Wrong PVC → slow boots. Wrong KV sizing → OOM or fewer concurrent users.
+
+### Temperature — “how random should the next word be?”
+
+The model always has a ranked list of next-token candidates. **Temperature** stretches or squeezes that list:
+
+| Setting | What happens in plain English | When you need it |
 | --- | --- | --- |
-| **Model cache (PVC)** | Disk (`persistence` in Helm values) | Avoid re-downloading/building NIM artifacts on every restart |
-| **KV cache** | GPU memory during decode | Speeds generation; size grows with tokens × layers × concurrency |
+| **`0` – `0.2`** | Picks safer, more repeatable answers | Docs demos, FAQ bots, ops runbooks, “explain this error” |
+| **`0.3` – `0.5`** | Slight variety, still mostly on-topic | General chat assistants |
+| **`0.7` – `0.9`** | More surprise and phrasing diversity | Brainstorming, creative copy |
+| **Very high (`~1+`)** | Answers can wander or contradict | Rarely useful for platform tools |
 
-### OpenAI-compatible request fields (what to tune)
+**Why we need it:** without temperature control, every app gets the same “default personality.” Platform teams usually **force a low default** at the gateway so demos and internal tools stay consistent.
 
-NIM’s `/v1/chat/completions` accepts the usual controls. Use them deliberately:
+**Lab tip:** use **`0.1–0.3`** for screenshots and smoke tests so two runs look similar.
 
-| Field | Effect | Lab guidance |
+### `top_p` — “only consider the top slice of likely words”
+
+`top_p` (nucleus sampling) keeps only the smallest set of tokens whose probabilities add up to `p` (for example `0.9`), then samples from that slice.
+
+- **Low `top_p` (e.g. 0.5)** → narrower vocabulary → safer, sometimes duller  
+- **High `top_p` (e.g. 0.95)** → more options → more variety  
+
+**Why we need it:** another way to limit randomness. You usually **tune either temperature *or* top_p**, not both aggressively. For this lab, **`top_p: 0.9`** (or omit) with low temperature is enough.
+
+### `max_tokens` — “hard stop on answer length”
+
+This caps **how many tokens the model may generate** (not your prompt length).
+
+| Why it matters | Reality |
+| --- | --- |
+| **Cost** | Every generated token burns GPU time |
+| **Latency** | Longer answers take longer |
+| **KV / VRAM** | Longer outputs keep more state in GPU memory |
+| **UX** | Unbounded answers feel broken in APIs |
+
+**Why we need it:** without a cap, a chatty reply can dominate a small T4. Start with **`128–256`** in labs; raise only when product needs longer answers.
+
+### `stop` — “end the reply when you see this text”
+
+Stop sequences tell the model to halt when it emits a marker (for example `\n\n` or `###`).
+
+**Why we need it:** useful for structured outputs (JSON lines, bullet lists) so the model does not keep talking after the format is done.
+
+### `stream` — “send words as they are ready”
+
+- **`stream: false`** → wait for the full answer (easy for curl / scripts)  
+- **`stream: true`** → tokens arrive continuously (feels faster in a chat UI)
+
+**Why we need it:** streaming improves **perceived** speed (TTFT). Total GPU work is similar; you still need `max_tokens` and timeouts.
+
+### `seed` (when the NIM build supports it)
+
+Same prompt + same seed → more reproducible answers.
+
+**Why we need it:** regression tests (“did our prompt change break the answer?”). Not every NIM image exposes seed the same way — check the model docs.
+
+### Other request fields you will see
+
+| Field | Simple meaning | Why platform teams set it |
 | --- | --- | --- |
-| **`temperature`** | Higher ⇒ more random; `0`–`0.2` ⇒ focused/deterministic | Use **`0.1–0.3`** for platform/docs demos |
-| **`top_p`** | Nucleus sampling; alternative/complement to temperature | Start `0.9` or omit; don’t raise both temperature and top_p aggressively |
-| **`max_tokens`** | Cap on generated tokens (cost + latency) | Keep small in labs (`128–256`) until SLOs are clear |
-| **`stop`** | Stop sequences | Useful for structured outputs |
-| **`stream`** | Token streaming | Better UX for chat UIs; measure TTFT |
-| **`seed`** (if supported) | Reproducibility | Handy for regression checks |
+| **`model`** | Which served model name to hit | Routes traffic; must match what NIM registered |
+| **`messages`** | Chat history (`system` / `user` / `assistant`) | `system` sets behavior; keep history short to save tokens + KV |
+| **`top_k`** (if present) | Only look at the top *k* tokens | Another randomness limiter; often leave default |
+| **`presence_penalty` / `frequency_penalty`** | Discourage repetition | Helpful for long chat; usually leave near `0` for Q&A |
+| **`n`** | Ask for multiple completions | Multiplies cost — avoid in labs |
 
-**Quality vs cost:** higher `max_tokens` and higher concurrency burn GPU-seconds and KV memory. Interactive apps should set strict caps and timeouts.
+### Serving-side knobs (server, not the curl body)
 
-### Serving-side knobs (conceptual)
+These are set in Helm / env / gateway — they shape capacity for everyone:
 
-Exact env names vary by NIM version/model, but platform teams usually care about:
+| Knob | Plain English | Why you need it |
+| --- | --- | --- |
+| **Max concurrent requests / batch** | How many chats share the GPU at once | Higher throughput, worse per-user latency if overloaded |
+| **Max context / input length** | Reject huge prompts early | Protects VRAM and stops accidental 50k-token dumps |
+| **`NIM_RELAX_MEM_CONSTRAINTS`** | Allow tighter VRAM packing on small GPUs | Lab escape hatch on T4 — validate before production |
+| **Replicas** | More NIM pods | Only helps if each replica has a GPU and the model fits |
 
-- **Max batch / concurrent sequences** — throughput vs per-user latency  
-- **Max context / input length** — reject oversized prompts early at the gateway  
-- **Memory relax flags** — e.g. `NIM_RELAX_MEM_CONSTRAINTS` for constrained lab SKUs (not a production free pass)  
-- **Replica count** — horizontal scale only works if the model fits per-GPU and you have GPU nodes  
+### Quick “what should I set?” guide
 
-### Recommended defaults for this lab’s chat tests
+| Your goal | Temperature | `max_tokens` | Stream |
+| --- | --- | --- | --- |
+| Platform demo / docs screenshot | `0.1–0.2` | `128–200` | off (curl) or on (UI) |
+| Internal ops assistant | `0.2–0.4` | `256–512` | on in UI |
+| Creative brainstorming | `0.7–0.9` | as needed | on |
+| Extraction / classification | `0–0.2` | small | off |
+
+### Recommended defaults for this lab
 
 ```json
 {
   "model": "meta/llama-3.2-1b-instruct",
-  "messages": [{"role": "user", "content": "Explain GPU taints in Kubernetes in 3 bullets."}],
+  "messages": [
+    {"role": "system", "content": "You are a concise cloud platform assistant."},
+    {"role": "user", "content": "Explain why a GPU node pool is separate from the system pool in 3 bullets."}
+  ],
   "temperature": 0.2,
   "top_p": 0.9,
   "max_tokens": 200,
@@ -271,7 +339,7 @@ Exact env names vary by NIM version/model, but platform teams usually care about
 }
 ```
 
-For creative brainstorming, raise `temperature` toward `0.7–0.9`. For extraction/classification-style prompts, keep it low.
+**Bottom line for operators:** treat these fields as **product + capacity controls**, not optional cosmetics. Wrong temperature → flaky demos. Missing `max_tokens` → expensive, slow answers. Ignoring KV vs model cache → confusing OOMs vs slow cold starts.
 
 ---
 
@@ -662,38 +730,7 @@ Streaming improves perceived TTFT in UIs; still enforce `max_tokens` and gateway
 
 ---
 
-## 14. Problems we hit (and fixes)
-
-These are real issues from this lab — expect them.
-
-### 1) Insufficient vCPU for `DSv5`
-**Symptom:** creating AKS with `Standard_D4s_v5` fails (quota remaining 0).  
-**Fix:** use `Standard_D2s_v4` (or another family with quota).
-
-### 2) `Standard_B2s` not allowed for AKS
-**Symptom:** BadRequest listing allowed SKUs; `B2s` missing, `B2s_v2` / `D2s_v4` present.  
-**Fix:** switch system pool to `Standard_D2s_v4`.
-
-### 3) GPU quota request of 1 vCPU rejected
-**Symptom:** Microsoft email saying vCore↔GPU conversion is wrong.  
-**Fix:** request **4** vCPUs for one `NC4as_T4_v3`.
-
-### 4) CUDA job timed out / Pending
-**Symptom:** `Insufficient nvidia.com/gpu`.  
-**Cause:** GPU Operator could not schedule onto tainted GPU node.  
-**Fix:** Helm upgrade Operator with toleration for `sku=gpu:NoSchedule`.
-
-### 5) NIM stays ContainerCreating for a long time
-**Cause:** large image pull from `nvcr.io`.  
-**Fix:** wait; watch events with `kubectl describe pod -n nim llm-nim-0`.
-
-### 6) Wrong model size for T4
-**Symptom:** OOM / crash on 8B models.  
-**Fix:** use 1B instruct NIM + `NIM_RELAX_MEM_CONSTRAINTS=1`.
-
----
-
-## 15. Tear down (stop paying)
+## 14. Tear down (stop paying)
 
 **Why:** GPU + LoadBalancers continue billing while they exist.
 
@@ -714,7 +751,7 @@ In our documentation pass, the RG was set to **Deleting**.
 
 ---
 
-## 16. Appendix — commands cheat sheet
+## 15. Appendix — commands cheat sheet
 
 ```bash
 # 0) env

@@ -22,10 +22,10 @@ export const documents: TechDocument[] = [
     title: 'Self-Host an LLM on AKS with NVIDIA GPUs — Complete Guide',
     type: 'Intermediate hands-on guide',
     audience: 'Cloud / AI platform engineers',
-    updated: '2026-11-20',
+    updated: '2026-11-21',
     tags: ['Azure', 'AKS', 'NVIDIA', 'NIM', 'GPU', 'Kubernetes'],
     summary:
-      'Intermediate lab: NVIDIA stack on AKS, GPU/model selection, KV cache vs model cache, sampling params, plus full step-by-step with screenshots.',
+      'Intermediate lab: NVIDIA stack on AKS, GPU/model fit, and plain-English guides to temperature, top_p, max_tokens, caches — plus full steps and screenshots.',
     file: 'Documents/aks-nim-llm-inference-on-azure.md',
     markdown: aksNimLab,
   },
