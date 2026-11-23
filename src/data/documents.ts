@@ -1,6 +1,7 @@
 import aksNimLab from '../../Documents/aks-nim-llm-inference-on-azure.md?raw'
 import azureAgentic from '../../Documents/azure-agentic-ai-platform.md?raw'
 import multiCloudK8s from '../../Documents/multi-cloud-kubernetes-paas.md?raw'
+import nvidiaCudaMoat from '../../Documents/nvidia-cuda-moat-and-semiconductor-stack.md?raw'
 import nvidiaInference from '../../Documents/nvidia-inference-at-scale.md?raw'
 import nimVsStack from '../../Documents/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm.md?raw'
 
@@ -17,6 +18,18 @@ export type TechDocument = {
 }
 
 export const documents: TechDocument[] = [
+  {
+    slug: 'nvidia-cuda-moat-and-semiconductor-stack',
+    title: 'Why NVIDIA Leads — CUDA, Ecosystem Moat, and the Chip Supply Chain',
+    type: 'Architecture deep-dive',
+    audience: 'Cloud / AI Platform Architects',
+    updated: '2026-11-23',
+    tags: ['NVIDIA', 'CUDA', 'TSMC', 'ASML', 'Semiconductors', 'AI Infrastructure'],
+    summary:
+      'Why CUDA is a moat, why AMD/Intel alternatives struggle, how China fits in, and where TSMC and ASML sit in the stack.',
+    file: 'Documents/nvidia-cuda-moat-and-semiconductor-stack.md',
+    markdown: nvidiaCudaMoat,
+  },
   {
     slug: 'aks-nim-llm-inference-on-azure',
     title: 'Self-Host an LLM on AKS with NVIDIA GPUs — Reference',
