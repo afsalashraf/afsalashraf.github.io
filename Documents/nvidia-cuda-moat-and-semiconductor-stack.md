@@ -1,4 +1,4 @@
-# CUDA Explained Simply: Why NVIDIA Still Leads AI Computing
+# Why NVIDIA Still Leads AI Computing: CUDA, GPUs, and the Chip Supply Chain
 
 **Type:** Architecture deep-dive  
 **Audience:** Cloud / AI Platform Architects  
@@ -11,9 +11,9 @@ That is partly true. But it is incomplete.
 NVIDIA’s real advantage is a **full working system**:
 chips + software + networking + developer habits + partners who manufacture the silicon.
 
-This article explains that story in plain language:
+This article covers:
 
-1. Quick glossary + common confusions  
+1. Key terms and common confusions  
 2. What CUDA is  
 3. CUDA software bridge  
 4. GPU architecture  
@@ -28,7 +28,7 @@ This article explains that story in plain language:
 
 Think of AI computing like a city:
 
-| City piece | AI equivalent | Simple meaning |
+| City piece | AI equivalent | Meaning |
 | --- | --- | --- |
 | Roads and traffic rules | CUDA + libraries | How software talks to GPUs |
 | Cars and engines | NVIDIA GPUs | The machines that do the work |
@@ -41,9 +41,9 @@ TSMC and ASML make advanced factories possible for many companies, not only NVID
 
 ---
 
-## 2. Beginner glossary (read this first)
+## 2. Key terms
 
-| Term | Simple meaning |
+| Term | Meaning |
 | --- | --- |
 | **GPU** | A chip built for massive parallel math (great for AI) |
 | **CUDA** | NVIDIA’s software bridge + toolkit to program NVIDIA GPUs |
@@ -58,7 +58,7 @@ TSMC and ASML make advanced factories possible for many companies, not only NVID
 | **ASML** | Company that builds advanced lithography machines |
 | **Fabless** | Designs chips, but does not own the leading-edge factory |
 
-### Common confusions (very important)
+### Common confusions
 
 | People say | Better understanding |
 | --- | --- |
@@ -68,7 +68,7 @@ TSMC and ASML make advanced factories possible for many companies, not only NVID
 | “TSMC makes NVIDIA unique” | TSMC also builds chips for rivals. NVIDIA’s edge is the full stack. |
 | “ASML builds GPUs” | No. ASML builds machines used by chip factories. |
 
-### Training vs inference (30-second view)
+### Training vs inference
 
 | | Training | Inference |
 | --- | --- | --- |
@@ -82,7 +82,7 @@ They need different platform designs.
 
 ---
 
-## 3. What is CUDA, in simple words?
+## 3. What is CUDA?
 
 **CUDA** means **Compute Unified Device Architecture**.
 
@@ -96,7 +96,7 @@ GPUs were mostly for graphics: games, video, 3D.
 
 Developers could use the same GPU power for general computing, especially AI math.
 
-### Easy example
+### Example
 
 Training an AI model needs huge matrix math.
 
@@ -105,12 +105,11 @@ Training an AI model needs huge matrix math.
 
 CUDA is the toolkit that lets your AI software send that work to the GPU and manage it.
 
-**One sentence:**  
 CUDA is the **translator and toolkit** between AI software and NVIDIA GPUs.
 
 ---
 
-## 4. CUDA software bridge explained (step by step)
+## 4. CUDA software bridge
 
 Think of CUDA as a **bridge** between your AI app and the NVIDIA GPU.
 
@@ -118,7 +117,7 @@ Without this bridge, your Python/C++ AI code cannot efficiently use thousands of
 
 ![CUDA software bridge explained](/documents/cuda-ecosystem/cuda-software-bridge.jpg)
 
-### What “software bridge” means in plain English
+### What the software bridge does
 
 Your AI app speaks one language (“run this neural network”).  
 The GPU speaks another language (“run these tiny parallel instructions”).
@@ -133,7 +132,7 @@ CUDA sits in the middle and handles:
 
 ### The bridge has several floors
 
-| Floor | Piece | What it does (simple) |
+| Floor | Piece | What it does |
 | --- | --- | --- |
 | Top | AI application | PyTorch / TensorFlow / your LLM service |
 | Next | CUDA APIs | The “buttons” developers call |
@@ -160,12 +159,11 @@ CUDA sits in the middle and handles:
 - The same bridge works across many NVIDIA GPU generations.  
 - Frameworks (PyTorch, etc.) are deeply optimized for this path.
 
-**One sentence:**  
 The CUDA software bridge is what makes AI frameworks able to use NVIDIA GPUs quickly, reliably, and at scale.
 
 ### Important libraries on the bridge
 
-| Tool | Simple job |
+| Tool | Role |
 | --- | --- |
 | **CUDA Runtime** | Starts and manages GPU work |
 | **CUDA Compiler** | Turns GPU code into something the GPU can run |
@@ -180,13 +178,13 @@ That long investment is a big reason CUDA feels “special.”
 
 ---
 
-## 5. GPU architecture explained (simple words)
+## 5. GPU architecture
 
 If CUDA is the bridge, the **GPU architecture** is the city of workers on the other side.
 
-![GPU architecture in simple words](/documents/cuda-ecosystem/gpu-architecture-simple.jpg)
+![GPU architecture](/documents/cuda-ecosystem/gpu-architecture-simple.jpg)
 
-### CPU vs GPU (the easiest comparison)
+### CPU vs GPU
 
 | | CPU | GPU |
 | --- | --- | --- |
@@ -200,7 +198,7 @@ That is why GPUs fit AI so well.
 
 ### Main parts inside an NVIDIA GPU
 
-| Part | Simple meaning | Why AI cares |
+| Part | Meaning | Why AI cares |
 | --- | --- | --- |
 | **Streaming Multiprocessors (SMs)** | Neighborhoods of compute workers | Where parallel work is organized |
 | **CUDA Cores** | Many small general workers | Run parallel calculations |
@@ -241,7 +239,6 @@ A great architecture without a mature software bridge is hard to use.
 A great software bridge on weak hardware is also limited.  
 NVIDIA’s strength is that **both improved together for years**.
 
-**One sentence:**  
 GPU architecture is the parallel machine; CUDA is the control system that makes that machine useful for AI developers.
 
 ---
@@ -341,18 +338,18 @@ Rivals can use advanced manufacturing too.
 
 ---
 
-## 8. ASML and lithography (brief, plain English)
+## 8. ASML and lithography
 
 Chip factories need special machines to **print** tiny circuits onto silicon.  
 The company that leads this for the most advanced chips is **ASML** (Netherlands).
 
-![Lithography in simple words](/documents/cuda-ecosystem/asml-lithography-simple.jpg)
+![Lithography](/documents/cuda-ecosystem/asml-lithography-simple.jpg)
 
 ### What is lithography?
 
 **Lithography** is the step where circuit patterns are projected onto a silicon wafer using light.
 
-Simple analogy:
+Analogy:
 
 - The wafer is like a blank sheet  
 - The circuit design is like a stencil  
@@ -363,7 +360,7 @@ Without lithography, you cannot manufacture modern processors or GPUs.
 
 ### DUV vs EUV (keep it simple)
 
-| Type | Simple meaning | Used for |
+| Type | Meaning | Used for |
 | --- | --- | --- |
 | **DUV** | Older / longer-wavelength light lithography | Many chips, including some advanced processes with extra tricks |
 | **EUV** | Extreme ultraviolet light (13.5 nm) | Most advanced leading-edge chip manufacturing |
@@ -371,7 +368,7 @@ Without lithography, you cannot manufacture modern processors or GPUs.
 EUV can print finer details more efficiently.  
 That is why EUV machines are strategically important.
 
-### Simple manufacturing steps
+### Manufacturing steps
 
 1. Prepare silicon wafer  
 2. Add light-sensitive coating (photoresist)  
@@ -412,9 +409,9 @@ Governments control exports of technologies that can be used for advanced AI and
 - high-end AI GPUs  
 - some advanced semiconductor manufacturing tools (including certain ASML systems)  
 
-### What this means in plain English
+### What this means in practice
 
-| Restriction area | Simple effect |
+| Restriction area | Effect |
 | --- | --- |
 | Advanced NVIDIA AI GPUs | Top data-center GPUs may need licenses / cannot ship to restricted destinations |
 | Downgraded / compliant SKUs | Vendors may offer limited variants that meet export rules |
@@ -431,7 +428,6 @@ It is also “can they legally buy the latest GPUs and factory tools?”
 - Multi-region AI platforms may need different SKUs by geography  
 - Domestic alternatives grow faster when top GPUs are hard to import  
 
-**One sentence:**  
 Even if money is available, advanced AI GPUs and chip-making tools may still be blocked by export controls.
 
 ---
@@ -448,7 +444,7 @@ Winning AI platforms needs:
 - better software libraries  
 - better full-system design  
 
-| Company | Main focus | Strength in plain English |
+| Company | Main focus | Strength |
 | --- | --- | --- |
 | **NVIDIA** | GPUs + AI platforms | Strongest full stack for large AI today |
 | **AMD** | CPUs + Instinct GPUs | Serious competitor; ROCm is improving |
@@ -479,7 +475,7 @@ That is why “clone NVIDIA” really means “rebuild a whole industrial ecosys
 
 ---
 
-## 12. NVIDIA’s real advantages, ranked simply
+## 12. NVIDIA’s real advantages
 
 | Rank | Advantage | Why it matters |
 | --- | --- | --- |

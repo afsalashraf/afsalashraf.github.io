@@ -20,13 +20,13 @@ export type TechDocument = {
 export const documents: TechDocument[] = [
   {
     slug: 'nvidia-cuda-moat-and-semiconductor-stack',
-    title: 'CUDA Explained Simply: Why NVIDIA Still Leads AI Computing',
+    title: 'Why NVIDIA Still Leads AI Computing: CUDA, GPUs, and the Chip Supply Chain',
     type: 'Architecture deep-dive',
     audience: 'Cloud / AI Platform Architects',
     updated: '2026-11-23',
     tags: ['NVIDIA', 'CUDA', 'TSMC', 'ASML', 'Semiconductors', 'AI Infrastructure'],
     summary:
-      'Plain-English guide to the CUDA software bridge, GPU architecture, why CUDA is hard to replace, and the TSMC/ASML supply chain.',
+      'CUDA software bridge, GPU architecture, why the ecosystem is hard to replace, and where TSMC and ASML fit in the supply chain.',
     file: 'Documents/nvidia-cuda-moat-and-semiconductor-stack.md',
     markdown: nvidiaCudaMoat,
   },
