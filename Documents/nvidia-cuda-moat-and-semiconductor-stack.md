@@ -16,8 +16,9 @@ This article explains that story in plain language:
 1. What CUDA is  
 2. How the CUDA software bridge works  
 3. How GPU architecture works  
-4. Why other companies cannot easily replace CUDA  
-5. Where TSMC and ASML fit in the supply chain  
+4. Why CUDA is hard to replace  
+5. Where TSMC and ASML fit  
+6. Why advanced GPUs face export / shipping limits  
 
 ![How CUDA connects applications to NVIDIA GPUs](/documents/cuda-ecosystem/cuda-stack-layers.jpg)
 
@@ -275,37 +276,7 @@ This cycle reinforces itself. That is the ecosystem moat.
 
 ---
 
-## 6. What about China? Why is cloning so hard?
-
-China has strong engineers and growing AI chip efforts.  
-Huawei is a clear example of trying to build a full stack:
-
-| NVIDIA-style piece | Huawei-style piece |
-| --- | --- |
-| AI chip | Ascend |
-| Programming stack | CANN |
-| AI framework | MindSpore |
-| Systems / appliances | Atlas |
-
-### So why is it still hard?
-
-Because success needs **all of these together**:
-
-1. Competitive chip performance  
-2. Mature software tools  
-3. Compatibility with existing AI apps  
-4. Reliable multi-chip scaling  
-5. Large production capacity  
-6. Developers willing to switch  
-
-China can design chips.  
-Matching NVIDIA’s full ecosystem quality at global scale is the harder part.
-
-There is also a manufacturing challenge (advanced machines and process technology), covered next.
-
----
-
-## 7. Who builds NVIDIA chips? Meet TSMC
+## 6. Who builds NVIDIA chips? Meet TSMC
 
 NVIDIA mostly designs chips.  
 It usually does **not** run the leading-edge factories itself. This model is called **fabless**.
@@ -329,7 +300,7 @@ Rivals can use advanced manufacturing too.
 
 ---
 
-## 8. Who builds the machines that build chips? Meet ASML
+## 7. Who builds the machines that build chips? Meet ASML
 
 To print tiny circuits on silicon, factories need special machines.  
 The leader for the most advanced machines is **ASML** (Netherlands).
@@ -359,10 +330,38 @@ That process is lithography.
 
 ASML does **not** manufacture NVIDIA GPUs.
 
-### Why China cannot simply buy every ASML machine
+---
 
-Export controls limit China’s access to ASML’s most advanced **EUV** systems.  
-China can still make advanced chips with other methods, but the leading-edge path becomes harder and more expensive.
+## 8. Why advanced GPUs cannot freely ship everywhere
+
+This is geopolitics meeting technology.
+
+Governments control exports of technologies that can be used for advanced AI and high-performance computing. That includes:
+
+- high-end AI GPUs  
+- some advanced semiconductor manufacturing tools (including certain ASML systems)  
+
+### What this means in plain English
+
+| Restriction area | Simple effect |
+| --- | --- |
+| Advanced NVIDIA AI GPUs | Top data-center GPUs may need licenses / cannot ship to restricted destinations |
+| Downgraded / compliant SKUs | Vendors may offer limited variants that meet export rules |
+| Advanced lithography tools | Leading EUV machines face strict export limits |
+| Cloud GPU access | Some cloud regions and customers also face compliance checks |
+
+So the limit is not only “can a country design chips?”  
+It is also “can they legally buy the latest GPUs and factory tools?”
+
+### Why platform architects should care
+
+- GPU supply is shaped by **policy**, not only by factory capacity  
+- Procurement plans need compliance review early  
+- Multi-region AI platforms may need different SKUs by geography  
+- Domestic alternatives grow faster when top GPUs are hard to import  
+
+**One sentence:**  
+Even if money is available, advanced AI GPUs and chip-making tools may still be blocked by export controls.
 
 ---
 
