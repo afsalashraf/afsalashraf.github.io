@@ -75,10 +75,10 @@ export function DocumentView() {
 
   if (!doc) return <Navigate to="/blog" replace />
 
-  const html = withHeadingIds(marked.parse(doc.markdown) as string).replace(
-    /<img /g,
-    '<img loading="eager" decoding="async" class="doc-zoomable" ',
-  )
+  // Page already shows doc.title — drop the markdown's leading H1 so it isn't doubled.
+  const html = withHeadingIds(
+    (marked.parse(doc.markdown) as string).replace(/^\s*<h1[\s\S]*?<\/h1>\s*/i, ''),
+  ).replace(/<img /g, '<img loading="eager" decoding="async" class="doc-zoomable" ')
   const related = documents.filter((d) => d.slug !== doc.slug).slice(0, 2)
 
   return (
@@ -110,7 +110,7 @@ export function DocumentView() {
               {doc.type} · {doc.audience}
             </p>
 
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15] max-w-4xl">
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-normal leading-[1.2] max-w-4xl [word-spacing:0.06em]">
               {doc.title}
             </h1>
             <p className="mt-3 text-sm font-mono text-slate-500">

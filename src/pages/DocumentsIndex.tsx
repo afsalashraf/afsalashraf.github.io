@@ -22,7 +22,7 @@ export function DocumentsIndex() {
       <main className="relative z-10 pt-28 pb-24">
         <div className="max-w-5xl mx-auto px-6 md:px-8">
           <header className="mb-14">
-            <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-white">
+            <h1 className="font-display text-4xl md:text-5xl font-bold tracking-normal text-white">
               Blog
             </h1>
             <p className="mt-4 text-slate-400 text-[15px] md:text-base leading-relaxed max-w-2xl">
@@ -43,7 +43,7 @@ export function DocumentsIndex() {
                 </div>
 
                 <Link to={`/blog/${doc.slug}`} className="group block">
-                  <h2 className="font-display text-2xl md:text-[1.75rem] font-bold text-white tracking-tight group-hover:text-cyan-300 transition-colors leading-snug">
+                  <h2 className="font-display text-2xl md:text-[1.75rem] font-bold text-white tracking-normal group-hover:text-cyan-300 transition-colors leading-snug [word-spacing:0.06em]">
                     {doc.title}
                   </h2>
                   <p className="mt-2 text-slate-400 text-[15px] leading-relaxed">
