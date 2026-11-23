@@ -17,8 +17,9 @@ This article explains that story in plain language:
 2. How the CUDA software bridge works  
 3. How GPU architecture works  
 4. Why CUDA is hard to replace  
-5. Where TSMC and ASML fit  
-6. Why advanced GPUs face export / shipping limits  
+5. Where TSMC fits  
+6. ASML and lithography in brief  
+7. Why advanced GPUs face export / shipping limits  
 
 ![How CUDA connects applications to NVIDIA GPUs](/documents/cuda-ecosystem/cuda-stack-layers.jpg)
 
@@ -300,35 +301,65 @@ Rivals can use advanced manufacturing too.
 
 ---
 
-## 7. Who builds the machines that build chips? Meet ASML
+## 7. ASML and lithography (brief, plain English)
 
-To print tiny circuits on silicon, factories need special machines.  
-The leader for the most advanced machines is **ASML** (Netherlands).
+Chip factories need special machines to **print** tiny circuits onto silicon.  
+The company that leads this for the most advanced chips is **ASML** (Netherlands).
+
+![Lithography in simple words](/documents/cuda-ecosystem/asml-lithography-simple.jpg)
 
 ### What is lithography?
 
-Imagine drawing extremely tiny patterns on a wafer using light.  
-That process is lithography.
+**Lithography** is the step where circuit patterns are projected onto a silicon wafer using light.
 
-**EUV** (Extreme Ultraviolet) uses very short-wavelength light to print finer patterns needed for advanced chips.
+Simple analogy:
+
+- The wafer is like a blank sheet  
+- The circuit design is like a stencil  
+- The lithography machine uses light to stamp that stencil onto the wafer  
+- This stamp is repeated many times to build a full chip  
+
+Without lithography, you cannot manufacture modern processors or GPUs.
+
+### DUV vs EUV (keep it simple)
+
+| Type | Simple meaning | Used for |
+| --- | --- | --- |
+| **DUV** | Older / longer-wavelength light lithography | Many chips, including some advanced processes with extra tricks |
+| **EUV** | Extreme ultraviolet light (13.5 nm) | Most advanced leading-edge chip manufacturing |
+
+EUV can print finer details more efficiently.  
+That is why EUV machines are strategically important.
 
 ### Simple manufacturing steps
 
 1. Prepare silicon wafer  
-2. Add light-sensitive coating  
-3. Expose pattern with lithography machine  
+2. Add light-sensitive coating (photoresist)  
+3. Expose the pattern with a lithography machine  
 4. Develop the pattern  
 5. Etch / add materials  
 6. Repeat for many layers  
 7. Test and package the chip  
 
-### Critical clarification
+### Who does what?
 
-- **ASML** makes lithography machines  
-- **TSMC** uses those machines to manufacture chips  
-- **NVIDIA** designs the chips TSMC manufactures  
+| Company | Role |
+| --- | --- |
+| **ASML** | Builds lithography machines |
+| **TSMC / other foundries** | Use those machines to manufacture chips |
+| **NVIDIA** | Designs the GPU architecture and product |
 
-ASML does **not** manufacture NVIDIA GPUs.
+**Critical clarification:**  
+ASML does **not** manufacture NVIDIA GPUs.  
+ASML builds the machines that foundries use to manufacture chips designed by companies like NVIDIA, AMD, and others.
+
+### Why ASML matters to AI platforms
+
+- Advanced AI GPUs need advanced process technology  
+- Advanced process technology depends on advanced lithography  
+- Advanced EUV capacity is limited and strategically controlled  
+
+So AI GPU supply is connected not only to NVIDIA and TSMC, but also to ASML’s tool ecosystem.
 
 ---
 
