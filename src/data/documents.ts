@@ -26,7 +26,7 @@ export const documents: TechDocument[] = [
     updated: '2026-11-23',
     tags: ['NVIDIA', 'CUDA', 'TSMC', 'ASML', 'Semiconductors', 'AI Infrastructure'],
     summary:
-      'Plain-English guide to CUDA, why it is hard to replace, and how TSMC and ASML fit the chip supply chain — with diagrams.',
+      'Plain-English guide to the CUDA software bridge, GPU architecture, why CUDA is hard to replace, and the TSMC/ASML supply chain.',
     file: 'Documents/nvidia-cuda-moat-and-semiconductor-stack.md',
     markdown: nvidiaCudaMoat,
   },
