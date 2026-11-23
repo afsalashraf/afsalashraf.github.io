@@ -205,18 +205,18 @@ GPU architecture is the parallel machine; CUDA is the control system that makes 
 
 ---
 
-## 5. Why can’t AMD, Intel, or Qualcomm just copy CUDA?
+## 5. Why can’t AMD, Intel, or Huawei just copy CUDA?
 
 They **can** build alternatives. They already have.
 
 ![GPU software stacks by vendor](/documents/cuda-ecosystem/gpu-vendor-stacks.jpg)
 
-| Company | Their software path |
-| --- | --- |
-| NVIDIA | CUDA |
-| AMD | ROCm / HIP |
-| Intel | oneAPI / SYCL |
-| Huawei | CANN |
+| Company | Their software path | Focus |
+| --- | --- | --- |
+| NVIDIA | CUDA | Data-center GPUs + AI platforms |
+| AMD | ROCm / HIP | Instinct GPUs + CPUs |
+| Intel | oneAPI / SYCL | CPUs + AI accelerators |
+| Huawei | CANN | Ascend AI accelerators |
 
 So the real question is not:
 
@@ -382,9 +382,9 @@ Winning AI platforms needs:
 | **NVIDIA** | GPUs + AI platforms | Strongest full stack for large AI today |
 | **AMD** | CPUs + Instinct GPUs | Serious competitor; ROCm is improving |
 | **Intel** | CPUs + accelerators | Strong CPU base; AI stack still catching up |
-| **Qualcomm** | Mobile / edge / AI PCs | Excellent power efficiency; not mainly giant training clusters |
+| **Huawei** | Ascend + CANN | Building a full domestic AI stack |
 
-AMD and Intel are capable competitors.  
+AMD, Intel, and Huawei are real competitors in AI compute.  
 NVIDIA’s edge is years of **end-to-end** optimization, not a secret exclusive factory.
 
 ---
