@@ -1090,7 +1090,7 @@ If the paved path is slower than shadow IT, teams will leave it. Measure time-to
 ## Outcome
 
 Cloud choice becomes a placement decision — not a rewrite. Teams ship the same way on AKS and GKE.
-`,vT=`# CUDA Explained Simply: Why NVIDIA Still Leads AI Computing
+`,vT=`# Why NVIDIA Still Leads AI Computing: CUDA, GPUs, and the Chip Supply Chain
 
 **Type:** Architecture deep-dive  
 **Audience:** Cloud / AI Platform Architects  
@@ -1103,9 +1103,9 @@ That is partly true. But it is incomplete.
 NVIDIA’s real advantage is a **full working system**:
 chips + software + networking + developer habits + partners who manufacture the silicon.
 
-This article explains that story in plain language:
+This article covers:
 
-1. Quick glossary + common confusions  
+1. Key terms and common confusions  
 2. What CUDA is  
 3. CUDA software bridge  
 4. GPU architecture  
@@ -1120,7 +1120,7 @@ This article explains that story in plain language:
 
 Think of AI computing like a city:
 
-| City piece | AI equivalent | Simple meaning |
+| City piece | AI equivalent | Meaning |
 | --- | --- | --- |
 | Roads and traffic rules | CUDA + libraries | How software talks to GPUs |
 | Cars and engines | NVIDIA GPUs | The machines that do the work |
@@ -1133,9 +1133,9 @@ TSMC and ASML make advanced factories possible for many companies, not only NVID
 
 ---
 
-## 2. Beginner glossary (read this first)
+## 2. Key terms
 
-| Term | Simple meaning |
+| Term | Meaning |
 | --- | --- |
 | **GPU** | A chip built for massive parallel math (great for AI) |
 | **CUDA** | NVIDIA’s software bridge + toolkit to program NVIDIA GPUs |
@@ -1150,7 +1150,7 @@ TSMC and ASML make advanced factories possible for many companies, not only NVID
 | **ASML** | Company that builds advanced lithography machines |
 | **Fabless** | Designs chips, but does not own the leading-edge factory |
 
-### Common confusions (very important)
+### Common confusions
 
 | People say | Better understanding |
 | --- | --- |
@@ -1160,7 +1160,7 @@ TSMC and ASML make advanced factories possible for many companies, not only NVID
 | “TSMC makes NVIDIA unique” | TSMC also builds chips for rivals. NVIDIA’s edge is the full stack. |
 | “ASML builds GPUs” | No. ASML builds machines used by chip factories. |
 
-### Training vs inference (30-second view)
+### Training vs inference
 
 | | Training | Inference |
 | --- | --- | --- |
@@ -1174,7 +1174,7 @@ They need different platform designs.
 
 ---
 
-## 3. What is CUDA, in simple words?
+## 3. What is CUDA?
 
 **CUDA** means **Compute Unified Device Architecture**.
 
@@ -1188,7 +1188,7 @@ GPUs were mostly for graphics: games, video, 3D.
 
 Developers could use the same GPU power for general computing, especially AI math.
 
-### Easy example
+### Example
 
 Training an AI model needs huge matrix math.
 
@@ -1197,12 +1197,11 @@ Training an AI model needs huge matrix math.
 
 CUDA is the toolkit that lets your AI software send that work to the GPU and manage it.
 
-**One sentence:**  
 CUDA is the **translator and toolkit** between AI software and NVIDIA GPUs.
 
 ---
 
-## 4. CUDA software bridge explained (step by step)
+## 4. CUDA software bridge
 
 Think of CUDA as a **bridge** between your AI app and the NVIDIA GPU.
 
@@ -1210,7 +1209,7 @@ Without this bridge, your Python/C++ AI code cannot efficiently use thousands of
 
 ![CUDA software bridge explained](/documents/cuda-ecosystem/cuda-software-bridge.jpg)
 
-### What “software bridge” means in plain English
+### What the software bridge does
 
 Your AI app speaks one language (“run this neural network”).  
 The GPU speaks another language (“run these tiny parallel instructions”).
@@ -1225,7 +1224,7 @@ CUDA sits in the middle and handles:
 
 ### The bridge has several floors
 
-| Floor | Piece | What it does (simple) |
+| Floor | Piece | What it does |
 | --- | --- | --- |
 | Top | AI application | PyTorch / TensorFlow / your LLM service |
 | Next | CUDA APIs | The “buttons” developers call |
@@ -1252,12 +1251,11 @@ CUDA sits in the middle and handles:
 - The same bridge works across many NVIDIA GPU generations.  
 - Frameworks (PyTorch, etc.) are deeply optimized for this path.
 
-**One sentence:**  
 The CUDA software bridge is what makes AI frameworks able to use NVIDIA GPUs quickly, reliably, and at scale.
 
 ### Important libraries on the bridge
 
-| Tool | Simple job |
+| Tool | Role |
 | --- | --- |
 | **CUDA Runtime** | Starts and manages GPU work |
 | **CUDA Compiler** | Turns GPU code into something the GPU can run |
@@ -1272,13 +1270,13 @@ That long investment is a big reason CUDA feels “special.”
 
 ---
 
-## 5. GPU architecture explained (simple words)
+## 5. GPU architecture
 
 If CUDA is the bridge, the **GPU architecture** is the city of workers on the other side.
 
-![GPU architecture in simple words](/documents/cuda-ecosystem/gpu-architecture-simple.jpg)
+![GPU architecture](/documents/cuda-ecosystem/gpu-architecture-simple.jpg)
 
-### CPU vs GPU (the easiest comparison)
+### CPU vs GPU
 
 | | CPU | GPU |
 | --- | --- | --- |
@@ -1292,7 +1290,7 @@ That is why GPUs fit AI so well.
 
 ### Main parts inside an NVIDIA GPU
 
-| Part | Simple meaning | Why AI cares |
+| Part | Meaning | Why AI cares |
 | --- | --- | --- |
 | **Streaming Multiprocessors (SMs)** | Neighborhoods of compute workers | Where parallel work is organized |
 | **CUDA Cores** | Many small general workers | Run parallel calculations |
@@ -1333,7 +1331,6 @@ A great architecture without a mature software bridge is hard to use.
 A great software bridge on weak hardware is also limited.  
 NVIDIA’s strength is that **both improved together for years**.
 
-**One sentence:**  
 GPU architecture is the parallel machine; CUDA is the control system that makes that machine useful for AI developers.
 
 ---
@@ -1433,18 +1430,18 @@ Rivals can use advanced manufacturing too.
 
 ---
 
-## 8. ASML and lithography (brief, plain English)
+## 8. ASML and lithography
 
 Chip factories need special machines to **print** tiny circuits onto silicon.  
 The company that leads this for the most advanced chips is **ASML** (Netherlands).
 
-![Lithography in simple words](/documents/cuda-ecosystem/asml-lithography-simple.jpg)
+![Lithography](/documents/cuda-ecosystem/asml-lithography-simple.jpg)
 
 ### What is lithography?
 
 **Lithography** is the step where circuit patterns are projected onto a silicon wafer using light.
 
-Simple analogy:
+Analogy:
 
 - The wafer is like a blank sheet  
 - The circuit design is like a stencil  
@@ -1455,7 +1452,7 @@ Without lithography, you cannot manufacture modern processors or GPUs.
 
 ### DUV vs EUV (keep it simple)
 
-| Type | Simple meaning | Used for |
+| Type | Meaning | Used for |
 | --- | --- | --- |
 | **DUV** | Older / longer-wavelength light lithography | Many chips, including some advanced processes with extra tricks |
 | **EUV** | Extreme ultraviolet light (13.5 nm) | Most advanced leading-edge chip manufacturing |
@@ -1463,7 +1460,7 @@ Without lithography, you cannot manufacture modern processors or GPUs.
 EUV can print finer details more efficiently.  
 That is why EUV machines are strategically important.
 
-### Simple manufacturing steps
+### Manufacturing steps
 
 1. Prepare silicon wafer  
 2. Add light-sensitive coating (photoresist)  
@@ -1504,9 +1501,9 @@ Governments control exports of technologies that can be used for advanced AI and
 - high-end AI GPUs  
 - some advanced semiconductor manufacturing tools (including certain ASML systems)  
 
-### What this means in plain English
+### What this means in practice
 
-| Restriction area | Simple effect |
+| Restriction area | Effect |
 | --- | --- |
 | Advanced NVIDIA AI GPUs | Top data-center GPUs may need licenses / cannot ship to restricted destinations |
 | Downgraded / compliant SKUs | Vendors may offer limited variants that meet export rules |
@@ -1523,7 +1520,6 @@ It is also “can they legally buy the latest GPUs and factory tools?”
 - Multi-region AI platforms may need different SKUs by geography  
 - Domestic alternatives grow faster when top GPUs are hard to import  
 
-**One sentence:**  
 Even if money is available, advanced AI GPUs and chip-making tools may still be blocked by export controls.
 
 ---
@@ -1540,7 +1536,7 @@ Winning AI platforms needs:
 - better software libraries  
 - better full-system design  
 
-| Company | Main focus | Strength in plain English |
+| Company | Main focus | Strength |
 | --- | --- | --- |
 | **NVIDIA** | GPUs + AI platforms | Strongest full stack for large AI today |
 | **AMD** | CPUs + Instinct GPUs | Serious competitor; ROCm is improving |
@@ -1571,7 +1567,7 @@ That is why “clone NVIDIA” really means “rebuild a whole industrial ecosys
 
 ---
 
-## 12. NVIDIA’s real advantages, ranked simply
+## 12. NVIDIA’s real advantages
 
 | Rank | Advantage | Why it matters |
 | --- | --- | --- |
@@ -2055,7 +2051,7 @@ Use non-functional requirements to choose — not brand preference.
 > **Triton** is an optional general-purpose model-serving control plane.
 
 They are **complementary** layers — select by SLO, ownership model, and operational maturity, not by collecting every NVIDIA component.
-`,yd=[{slug:"nvidia-cuda-moat-and-semiconductor-stack",title:"CUDA Explained Simply: Why NVIDIA Still Leads AI Computing",type:"Architecture deep-dive",audience:"Cloud / AI Platform Architects",updated:"2026-11-23",tags:["NVIDIA","CUDA","TSMC","ASML","Semiconductors","AI Infrastructure"],summary:"Plain-English guide to the CUDA software bridge, GPU architecture, why CUDA is hard to replace, and the TSMC/ASML supply chain.",file:"Documents/nvidia-cuda-moat-and-semiconductor-stack.md",markdown:vT},{slug:"aks-nim-llm-inference-on-azure",title:"Self-Host an LLM on AKS with NVIDIA GPUs — Reference",type:"Platform reference",audience:"Cloud / AI platform engineers",updated:"2026-11-21",tags:["Azure","AKS","NVIDIA","NIM","GPU","Kubernetes"],summary:"Platform reference: NVIDIA stack on AKS, GPU/model fit, and plain-English guides to temperature, top_p, max_tokens, caches — with walkthrough and screenshots.",file:"Documents/aks-nim-llm-inference-on-azure.md",markdown:mT},{slug:"nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm",title:"NVIDIA NIM vs vLLM vs Triton vs TensorRT-LLM",type:"Deep-dive comparison",audience:"Cloud / AI Platform Architects",updated:"2026-11-19",tags:["NVIDIA","NIM","vLLM","Triton","TensorRT-LLM"],summary:"Architect guide to NIM, vLLM, Triton, and TensorRT-LLM — decision criteria, ops/SLOs, security, and when to choose each.",file:"Documents/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm.md",markdown:wT},{slug:"azure-agentic-ai-platform",title:"Azure Agentic AI Platform Reference",type:"Architecture reference",audience:"Platform / AI architects",updated:"2026-03-01",tags:["Azure","Agentic AI","MLOps"],summary:"Production pattern for Agentic AI on Azure — landing zones, Foundry, tool governance, RAG, and operations.",file:"Documents/azure-agentic-ai-platform.md",markdown:gT},{slug:"multi-cloud-kubernetes-paas",title:"Multi-Cloud Kubernetes PaaS Reference",type:"Platform playbook",audience:"Cloud / platform engineering",updated:"2026-02-01",tags:["Kubernetes","Azure","GCP"],summary:"Shared AKS and GKE PaaS patterns — GitOps, policy, golden paths, and observability across clouds.",file:"Documents/multi-cloud-kubernetes-paas.md",markdown:yT},{slug:"nvidia-inference-at-scale",title:"NVIDIA Inference at Enterprise Scale",type:"Capacity & serving guide",audience:"ML platform / SRE",updated:"2026-01-01",tags:["NVIDIA","Inference","MLOps"],summary:"GPU capacity classes, Triton serving, and cost governance for high-throughput enterprise inference.",file:"Documents/nvidia-inference-at-scale.md",markdown:xT}];function kT(t){return yd.find(n=>n.slug===t)}function ST(t){return new Date(t).toLocaleDateString("en-US",{month:"short",year:"numeric"})}function AT(){return g.jsxs("div",{className:"relative min-h-screen",children:[g.jsx(bc,{}),g.jsx(ld,{}),g.jsx(ud,{}),g.jsx("main",{className:"relative z-10 pt-28 pb-24",children:g.jsxs("div",{className:"max-w-5xl mx-auto px-6 md:px-8",children:[g.jsxs("header",{className:"mb-14",children:[g.jsx("h1",{className:"font-display text-4xl md:text-5xl font-bold tracking-tight text-white",children:"Blog"}),g.jsxs("p",{className:"mt-4 text-slate-400 text-[15px] md:text-base leading-relaxed max-w-2xl",children:["Architecture references and platform playbooks — from ",ye.name,"."]})]}),g.jsx("div",{className:"divide-y divide-white/[0.06]",children:yd.map(t=>g.jsxs("article",{className:"py-10 first:pt-0",children:[g.jsxs("div",{className:"flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-slate-500 mb-3",children:[g.jsxs("span",{className:"inline-flex items-center gap-1.5 text-cyan-400/80",children:[g.jsx(R0,{size:12}),t.type]}),g.jsx("span",{className:"text-slate-700",children:"·"}),g.jsx("time",{dateTime:t.updated,children:ST(t.updated)})]}),g.jsxs($t,{to:`/blog/${t.slug}`,className:"group block",children:[g.jsx("h2",{className:"font-display text-2xl md:text-[1.75rem] font-bold text-white tracking-tight group-hover:text-cyan-300 transition-colors leading-snug",children:t.title}),g.jsx("p",{className:"mt-2 text-slate-400 text-[15px] leading-relaxed",children:t.summary})]}),g.jsxs("div",{className:"mt-5 flex flex-wrap items-center justify-between gap-3",children:[g.jsx("div",{className:"flex flex-wrap gap-2",children:t.tags.map(n=>g.jsx("span",{className:"tag-violet",children:n},n))}),g.jsxs($t,{to:`/blog/${t.slug}`,className:"inline-flex items-center gap-1 text-sm text-slate-400 hover:text-cyan-300 transition-colors",children:["Read",g.jsx(oC,{size:14})]})]})]},t.slug))})]})}),g.jsx(pd,{})]})}function vd(){return{async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null}}var gr=vd();function W0(t){gr=t}var sr={exec:()=>null};function nr(t){let n=[];return i=>{let o=Math.max(0,Math.min(3,i-1)),a=n[o];return a||(a=t(o),n[o]=a),a}}function se(t,n=""){let i=typeof t=="string"?t:t.source,o={replace:(a,u)=>{let c=typeof u=="string"?u:u.source;return c=c.replace(qe.caret,"$1"),i=i.replace(a,c),o},getRegex:()=>new RegExp(i,n)};return o}var H0=((t="")=>{try{return!!new RegExp("(?<=1)(?<!1)"+t)}catch{return!1}})(),qe={codeRemoveIndent:/^(?: {0,3}\t| {1,4})/gm,listInterruptsParagraph:/^ {0,3}(?:[*+-]|1[.)])[ \t]+[^ \t\n]/,outputLinkReplace:/\\([\[\]])/g,indentCodeCompensation:/^(\s+)(?:```)/,beginningSpace:/^\s+/,endingHash:/#$/,startingSpaceChar:/^ /,endingSpaceChar:/ $/,endingSpaceTabChar:/[ \t]$/,nonSpaceChar:/[^ ]/,newLineCharGlobal:/\n/g,tabCharGlobal:/\t/g,leadingSpaceTab:/^[ \t]+/,multipleSpaceGlobal:/\s+/g,blankLine:/^[ \t]*$/,doubleBlankLine:/\n[ \t]*\n[ \t]*$/,blockquoteStart:/^ {0,3}>/,blockquoteSetextReplace:/\n {0,3}((?:=+|-+)[ \t]*)(?=\n|$)/g,blockquoteSetextReplace2:/^ {0,3}>[ \t]?/gm,blockquoteMarkerWhitespace:/^( {0,3}>)(\t[ \t]*)/gm,nestedBlockMarker:/^ {0,3}(?:(?:[*+-]|\d{1,9}[.)])(?: |$)|> ?)/,listReplaceNesting:/^ {1,4}(?=( {4})*[^ ])/g,listIsTask:/^\[[ xX]\][ \t]+\S/,listReplaceTask:/^\[[ xX]\][ \t]+/,listTaskCheckbox:/\[[ xX]\]/,anyLine:/\n.*\n/,hrefBrackets:/^<(.*)>$/,tableDelimiter:/[:|]/,tableAlignChars:/^\||\| *$/g,tableRowBlankLine:/\n[ \t]*$/,tableAlignRight:/^ *-+: *$/,tableAlignCenter:/^ *:-+: *$/,tableAlignLeft:/^ *:-+ *$/,startATag:/^<a /i,endATag:/^<\/a>/i,startPreScriptTag:/^<(pre|code|kbd|script)(\s|>)/i,endPreScriptTag:/^<\/(pre|code|kbd|script)(\s|>)/i,startAngleBracket:/^</,endAngleBracket:/>$/,pedanticHrefTitle:/^([^'"]*[^\s])\s+(['"])(.*)\2/,unicodeAlphaNumeric:/[\p{L}\p{N}]/u,numericCharacterReference:/&#(?:(\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));/,numericCharacterReferenceOrAmpersand:/&#(?:(\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g,escapeTest:/[&<>"']/,escapeReplace:/[&<>"']/g,escapeTestNoEncode:/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/,escapeReplaceNoEncode:/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g,caret:/(^|[^\[])\^/g,percentDecode:/%25/g,findPipe:/\|/g,splitPipe:/ \|/,slashPipe:/\\\|/g,carriageReturn:/\r\n|\r/g,spaceLine:/^ +$/gm,notSpaceStart:/^\S*/,endingNewline:/\n$/,listItemRegex:t=>new RegExp(`^( {0,3}${t})((?:[	 ][^\\n]*)?(?:\\n|$))`),nextBulletRegex:nr(t=>new RegExp(`^ {0,${t}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`)),hrRegex:nr(t=>new RegExp(`^ {0,${t}}((?:-[ 	]*){3,}|(?:_[ 	]*){3,}|(?:\\*[ 	]*){3,})(?:\\n+|$)`)),fencesBeginRegex:nr(t=>new RegExp(`^ {0,${t}}(?:\`\`\`|~~~)`)),headingBeginRegex:nr(t=>new RegExp(`^ {0,${t}}#{1,6}(?:\\s|$)`)),pedanticHeadingBeginRegex:nr(t=>new RegExp(`^ {0,${t}}#`)),htmlBeginRegex:nr(t=>new RegExp(`^ {0,${t}}(?:</?(?:${wd})(?:[ \\t]+|$|/?>)|<(?:(?:script|pre|style|textarea)(?:[\\s>]|$)|!--)|<\\?|<![A-Za-z]|<!\\[CDATA\\[)`,"i")),blockquoteBeginRegex:nr(t=>new RegExp(`^ {0,${t}}>`)),nestedContainerMarkers:/^(?: {0,3}(?:(?:[*+-]|\d{1,9}[.)])[ \t]+|>[ \t]?))+/},PT=/^(?:[ \t]*(?:\n|$))+/,CT=/^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/,TT=/^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}(?:(?=`)\1`*|(?=~)\1~*) *(?=\n|$)|$)/,ws=/^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/,bT=/^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,xd=/ {0,3}(?:[*+-]|\d{1,9}[.)])/,wd="address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul",ks=se(" {0,3}(?:</?(?:tag)(?:[ \\t]+|\\n|/?>)|<(?:(?:script|pre|style|textarea)(?:[\\s>]|$)|!--)|<\\?|<![A-Za-z]|<!\\[CDATA\\[)").replace("tag",wd).getRegex(),K0=/^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |fences|blockquote|heading|hr|html|table))+?)\n {0,3}(=+|-+)[ \t]*(?:\n+|$)/,q0=se(K0).replace(/bull/g,xd).replace(/blockCode/g,/(?: {4}| {0,3}\t)/).replace(/fences/g,/ {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g,/ {0,3}>/).replace(/heading/g,/ {0,3}#{1,6}(?:\s|$)/).replace(/hr/g,/ {0,3}(?:(?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/).replace(/\|table/g,"").replace(/html/g,ks).getRegex(),IT=se(K0).replace(/bull/g,xd).replace(/blockCode/g,/(?: {4}| {0,3}\t)/).replace(/fences/g,/ {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g,/ {0,3}>/).replace(/heading/g,/ {0,3}#{1,6}(?:\s|$)/).replace(/hr/g,/ {0,3}(?:(?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/).replace(/table/g,/ {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).replace(/html/g,ks).getRegex(),kd=/^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table|[ \t]+\n)[^\n]+)*)/,NT=/^[^\n]+/,Sd=/(?!\s*\])(?:\\[\s\S]|[^\[\]\\\n]|\n(?![ \t]*\n))+/,ET=se(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<(?:\\.|[^\n<>\\])*>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label",Sd).replace("title",/(?:"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\\n]|\n(?!\n))*'|\((?:\\[\s\S]|[^()\\])*\))/).getRegex(),LT=se(/^(bull)([ \t][^\n]*?)?(?:\n|$)/).replace(/bull/g,xd).getRegex(),Ad=/<!--(?:-?>|[\s\S]*?(?:-->|$))/,MT=se("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n*|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>[^\\n]*\\n*|$)|<![A-Z][\\s\\S]*?(?:>[^\\n]*\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>[^\\n]*\\n*|$)|</?(tag)(?:[ \\t]+|\\n|/?>|$)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!(?:script|pre|style|textarea)(?![a-z0-9-]))([a-z][a-z0-9-]*)(?:attribute)*?[ \\t]*/?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</[a-z][a-z0-9-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))","i").replace("comment",Ad).replace("tag",wd).replace("attribute",/[ \t]+[a-zA-Z:_][\w.:-]*(?:[ \t]*=[ \t]*"[^"\n]*"|[ \t]*=[ \t]*'[^'\n]*'|[ \t]*=[ \t]*[^\s"'=<>`]+)?/).getRegex(),Y0=t=>se(kd).replace("hr",ws).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("|table","").replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*(?:\\n|$))|~~~)[^\\n]*(?:\\n|$)").replace("list",t).replace("html",ks).getRegex(),RT=Y0(/ {0,3}(?:[*+-]|1[.)])[ \t]+[^ \t\n]/),DT=Y0(/ {0,3}(?:[*+-]|\d{1,9}[.)])(?:[ \t]|\n|$)/),jT=se(/^( {0,3}> ?(?:(?![ \t]*(?:\n|$))(paragraph)|[^\n]*)(?:\n|$))+/).replace("paragraph",DT).getRegex(),Pd={blockquote:jT,code:CT,def:ET,fences:TT,heading:bT,hr:ws,html:MT,lheading:q0,list:LT,newline:PT,paragraph:RT,table:sr,text:NT},gg=se("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr",ws).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("blockquote"," {0,3}>").replace("code","(?: {4}| {0,3}	)[^\\n]").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*(?:\\n|$))|~~~)[^\\n]*(?:\\n|$)").replace("list"," {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html",ks).getRegex(),UT={...Pd,lheading:IT,table:gg,paragraph:se(kd).replace("hr",ws).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("table",gg).replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*(?:\\n|$))|~~~)[^\\n]*(?:\\n|$)").replace("list"," {0,3}(?:[*+-]|1[.)])[ \\t]+[^ \\t\\n]").replace("html",ks).getRegex()},_T={...Pd,html:se(`^ *(?:comment(?: *\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1>(?: *\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?>(?: *\\n{2,}|\\s*$))`).replace("comment",Ad).replace(/tag/g,"(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,heading:/^(#{1,6})(.*)(?:\n+|$)/,fences:sr,lheading:/^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,paragraph:se(kd).replace("hr",ws).replace("heading",` *#{1,6} *[^
+`,yd=[{slug:"nvidia-cuda-moat-and-semiconductor-stack",title:"Why NVIDIA Still Leads AI Computing: CUDA, GPUs, and the Chip Supply Chain",type:"Architecture deep-dive",audience:"Cloud / AI Platform Architects",updated:"2026-11-23",tags:["NVIDIA","CUDA","TSMC","ASML","Semiconductors","AI Infrastructure"],summary:"CUDA software bridge, GPU architecture, why the ecosystem is hard to replace, and where TSMC and ASML fit in the supply chain.",file:"Documents/nvidia-cuda-moat-and-semiconductor-stack.md",markdown:vT},{slug:"aks-nim-llm-inference-on-azure",title:"Self-Host an LLM on AKS with NVIDIA GPUs — Reference",type:"Platform reference",audience:"Cloud / AI platform engineers",updated:"2026-11-21",tags:["Azure","AKS","NVIDIA","NIM","GPU","Kubernetes"],summary:"Platform reference: NVIDIA stack on AKS, GPU/model fit, and plain-English guides to temperature, top_p, max_tokens, caches — with walkthrough and screenshots.",file:"Documents/aks-nim-llm-inference-on-azure.md",markdown:mT},{slug:"nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm",title:"NVIDIA NIM vs vLLM vs Triton vs TensorRT-LLM",type:"Deep-dive comparison",audience:"Cloud / AI Platform Architects",updated:"2026-11-19",tags:["NVIDIA","NIM","vLLM","Triton","TensorRT-LLM"],summary:"Architect guide to NIM, vLLM, Triton, and TensorRT-LLM — decision criteria, ops/SLOs, security, and when to choose each.",file:"Documents/nvidia-nim-vs-vllm-vs-triton-vs-tensorrt-llm.md",markdown:wT},{slug:"azure-agentic-ai-platform",title:"Azure Agentic AI Platform Reference",type:"Architecture reference",audience:"Platform / AI architects",updated:"2026-03-01",tags:["Azure","Agentic AI","MLOps"],summary:"Production pattern for Agentic AI on Azure — landing zones, Foundry, tool governance, RAG, and operations.",file:"Documents/azure-agentic-ai-platform.md",markdown:gT},{slug:"multi-cloud-kubernetes-paas",title:"Multi-Cloud Kubernetes PaaS Reference",type:"Platform playbook",audience:"Cloud / platform engineering",updated:"2026-02-01",tags:["Kubernetes","Azure","GCP"],summary:"Shared AKS and GKE PaaS patterns — GitOps, policy, golden paths, and observability across clouds.",file:"Documents/multi-cloud-kubernetes-paas.md",markdown:yT},{slug:"nvidia-inference-at-scale",title:"NVIDIA Inference at Enterprise Scale",type:"Capacity & serving guide",audience:"ML platform / SRE",updated:"2026-01-01",tags:["NVIDIA","Inference","MLOps"],summary:"GPU capacity classes, Triton serving, and cost governance for high-throughput enterprise inference.",file:"Documents/nvidia-inference-at-scale.md",markdown:xT}];function kT(t){return yd.find(n=>n.slug===t)}function ST(t){return new Date(t).toLocaleDateString("en-US",{month:"short",year:"numeric"})}function AT(){return g.jsxs("div",{className:"relative min-h-screen",children:[g.jsx(bc,{}),g.jsx(ld,{}),g.jsx(ud,{}),g.jsx("main",{className:"relative z-10 pt-28 pb-24",children:g.jsxs("div",{className:"max-w-5xl mx-auto px-6 md:px-8",children:[g.jsxs("header",{className:"mb-14",children:[g.jsx("h1",{className:"font-display text-4xl md:text-5xl font-bold tracking-tight text-white",children:"Blog"}),g.jsxs("p",{className:"mt-4 text-slate-400 text-[15px] md:text-base leading-relaxed max-w-2xl",children:["Architecture references and platform playbooks — from ",ye.name,"."]})]}),g.jsx("div",{className:"divide-y divide-white/[0.06]",children:yd.map(t=>g.jsxs("article",{className:"py-10 first:pt-0",children:[g.jsxs("div",{className:"flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-mono text-slate-500 mb-3",children:[g.jsxs("span",{className:"inline-flex items-center gap-1.5 text-cyan-400/80",children:[g.jsx(R0,{size:12}),t.type]}),g.jsx("span",{className:"text-slate-700",children:"·"}),g.jsx("time",{dateTime:t.updated,children:ST(t.updated)})]}),g.jsxs($t,{to:`/blog/${t.slug}`,className:"group block",children:[g.jsx("h2",{className:"font-display text-2xl md:text-[1.75rem] font-bold text-white tracking-tight group-hover:text-cyan-300 transition-colors leading-snug",children:t.title}),g.jsx("p",{className:"mt-2 text-slate-400 text-[15px] leading-relaxed",children:t.summary})]}),g.jsxs("div",{className:"mt-5 flex flex-wrap items-center justify-between gap-3",children:[g.jsx("div",{className:"flex flex-wrap gap-2",children:t.tags.map(n=>g.jsx("span",{className:"tag-violet",children:n},n))}),g.jsxs($t,{to:`/blog/${t.slug}`,className:"inline-flex items-center gap-1 text-sm text-slate-400 hover:text-cyan-300 transition-colors",children:["Read",g.jsx(oC,{size:14})]})]})]},t.slug))})]})}),g.jsx(pd,{})]})}function vd(){return{async:!1,breaks:!1,extensions:null,gfm:!0,hooks:null,pedantic:!1,renderer:null,silent:!1,tokenizer:null,walkTokens:null}}var gr=vd();function W0(t){gr=t}var sr={exec:()=>null};function nr(t){let n=[];return i=>{let o=Math.max(0,Math.min(3,i-1)),a=n[o];return a||(a=t(o),n[o]=a),a}}function se(t,n=""){let i=typeof t=="string"?t:t.source,o={replace:(a,u)=>{let c=typeof u=="string"?u:u.source;return c=c.replace(qe.caret,"$1"),i=i.replace(a,c),o},getRegex:()=>new RegExp(i,n)};return o}var H0=((t="")=>{try{return!!new RegExp("(?<=1)(?<!1)"+t)}catch{return!1}})(),qe={codeRemoveIndent:/^(?: {0,3}\t| {1,4})/gm,listInterruptsParagraph:/^ {0,3}(?:[*+-]|1[.)])[ \t]+[^ \t\n]/,outputLinkReplace:/\\([\[\]])/g,indentCodeCompensation:/^(\s+)(?:```)/,beginningSpace:/^\s+/,endingHash:/#$/,startingSpaceChar:/^ /,endingSpaceChar:/ $/,endingSpaceTabChar:/[ \t]$/,nonSpaceChar:/[^ ]/,newLineCharGlobal:/\n/g,tabCharGlobal:/\t/g,leadingSpaceTab:/^[ \t]+/,multipleSpaceGlobal:/\s+/g,blankLine:/^[ \t]*$/,doubleBlankLine:/\n[ \t]*\n[ \t]*$/,blockquoteStart:/^ {0,3}>/,blockquoteSetextReplace:/\n {0,3}((?:=+|-+)[ \t]*)(?=\n|$)/g,blockquoteSetextReplace2:/^ {0,3}>[ \t]?/gm,blockquoteMarkerWhitespace:/^( {0,3}>)(\t[ \t]*)/gm,nestedBlockMarker:/^ {0,3}(?:(?:[*+-]|\d{1,9}[.)])(?: |$)|> ?)/,listReplaceNesting:/^ {1,4}(?=( {4})*[^ ])/g,listIsTask:/^\[[ xX]\][ \t]+\S/,listReplaceTask:/^\[[ xX]\][ \t]+/,listTaskCheckbox:/\[[ xX]\]/,anyLine:/\n.*\n/,hrefBrackets:/^<(.*)>$/,tableDelimiter:/[:|]/,tableAlignChars:/^\||\| *$/g,tableRowBlankLine:/\n[ \t]*$/,tableAlignRight:/^ *-+: *$/,tableAlignCenter:/^ *:-+: *$/,tableAlignLeft:/^ *:-+ *$/,startATag:/^<a /i,endATag:/^<\/a>/i,startPreScriptTag:/^<(pre|code|kbd|script)(\s|>)/i,endPreScriptTag:/^<\/(pre|code|kbd|script)(\s|>)/i,startAngleBracket:/^</,endAngleBracket:/>$/,pedanticHrefTitle:/^([^'"]*[^\s])\s+(['"])(.*)\2/,unicodeAlphaNumeric:/[\p{L}\p{N}]/u,numericCharacterReference:/&#(?:(\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));/,numericCharacterReferenceOrAmpersand:/&#(?:(\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g,escapeTest:/[&<>"']/,escapeReplace:/[&<>"']/g,escapeTestNoEncode:/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/,escapeReplaceNoEncode:/[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g,caret:/(^|[^\[])\^/g,percentDecode:/%25/g,findPipe:/\|/g,splitPipe:/ \|/,slashPipe:/\\\|/g,carriageReturn:/\r\n|\r/g,spaceLine:/^ +$/gm,notSpaceStart:/^\S*/,endingNewline:/\n$/,listItemRegex:t=>new RegExp(`^( {0,3}${t})((?:[	 ][^\\n]*)?(?:\\n|$))`),nextBulletRegex:nr(t=>new RegExp(`^ {0,${t}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`)),hrRegex:nr(t=>new RegExp(`^ {0,${t}}((?:-[ 	]*){3,}|(?:_[ 	]*){3,}|(?:\\*[ 	]*){3,})(?:\\n+|$)`)),fencesBeginRegex:nr(t=>new RegExp(`^ {0,${t}}(?:\`\`\`|~~~)`)),headingBeginRegex:nr(t=>new RegExp(`^ {0,${t}}#{1,6}(?:\\s|$)`)),pedanticHeadingBeginRegex:nr(t=>new RegExp(`^ {0,${t}}#`)),htmlBeginRegex:nr(t=>new RegExp(`^ {0,${t}}(?:</?(?:${wd})(?:[ \\t]+|$|/?>)|<(?:(?:script|pre|style|textarea)(?:[\\s>]|$)|!--)|<\\?|<![A-Za-z]|<!\\[CDATA\\[)`,"i")),blockquoteBeginRegex:nr(t=>new RegExp(`^ {0,${t}}>`)),nestedContainerMarkers:/^(?: {0,3}(?:(?:[*+-]|\d{1,9}[.)])[ \t]+|>[ \t]?))+/},PT=/^(?:[ \t]*(?:\n|$))+/,CT=/^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/,TT=/^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}(?:(?=`)\1`*|(?=~)\1~*) *(?=\n|$)|$)/,ws=/^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/,bT=/^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,xd=/ {0,3}(?:[*+-]|\d{1,9}[.)])/,wd="address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul",ks=se(" {0,3}(?:</?(?:tag)(?:[ \\t]+|\\n|/?>)|<(?:(?:script|pre|style|textarea)(?:[\\s>]|$)|!--)|<\\?|<![A-Za-z]|<!\\[CDATA\\[)").replace("tag",wd).getRegex(),K0=/^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |fences|blockquote|heading|hr|html|table))+?)\n {0,3}(=+|-+)[ \t]*(?:\n+|$)/,q0=se(K0).replace(/bull/g,xd).replace(/blockCode/g,/(?: {4}| {0,3}\t)/).replace(/fences/g,/ {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g,/ {0,3}>/).replace(/heading/g,/ {0,3}#{1,6}(?:\s|$)/).replace(/hr/g,/ {0,3}(?:(?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/).replace(/\|table/g,"").replace(/html/g,ks).getRegex(),IT=se(K0).replace(/bull/g,xd).replace(/blockCode/g,/(?: {4}| {0,3}\t)/).replace(/fences/g,/ {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g,/ {0,3}>/).replace(/heading/g,/ {0,3}#{1,6}(?:\s|$)/).replace(/hr/g,/ {0,3}(?:(?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/).replace(/table/g,/ {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).replace(/html/g,ks).getRegex(),kd=/^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table|[ \t]+\n)[^\n]+)*)/,NT=/^[^\n]+/,Sd=/(?!\s*\])(?:\\[\s\S]|[^\[\]\\\n]|\n(?![ \t]*\n))+/,ET=se(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<(?:\\.|[^\n<>\\])*>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label",Sd).replace("title",/(?:"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\\n]|\n(?!\n))*'|\((?:\\[\s\S]|[^()\\])*\))/).getRegex(),LT=se(/^(bull)([ \t][^\n]*?)?(?:\n|$)/).replace(/bull/g,xd).getRegex(),Ad=/<!--(?:-?>|[\s\S]*?(?:-->|$))/,MT=se("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n*|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>[^\\n]*\\n*|$)|<![A-Z][\\s\\S]*?(?:>[^\\n]*\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>[^\\n]*\\n*|$)|</?(tag)(?:[ \\t]+|\\n|/?>|$)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!(?:script|pre|style|textarea)(?![a-z0-9-]))([a-z][a-z0-9-]*)(?:attribute)*?[ \\t]*/?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</[a-z][a-z0-9-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))","i").replace("comment",Ad).replace("tag",wd).replace("attribute",/[ \t]+[a-zA-Z:_][\w.:-]*(?:[ \t]*=[ \t]*"[^"\n]*"|[ \t]*=[ \t]*'[^'\n]*'|[ \t]*=[ \t]*[^\s"'=<>`]+)?/).getRegex(),Y0=t=>se(kd).replace("hr",ws).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("|table","").replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*(?:\\n|$))|~~~)[^\\n]*(?:\\n|$)").replace("list",t).replace("html",ks).getRegex(),RT=Y0(/ {0,3}(?:[*+-]|1[.)])[ \t]+[^ \t\n]/),DT=Y0(/ {0,3}(?:[*+-]|\d{1,9}[.)])(?:[ \t]|\n|$)/),jT=se(/^( {0,3}> ?(?:(?![ \t]*(?:\n|$))(paragraph)|[^\n]*)(?:\n|$))+/).replace("paragraph",DT).getRegex(),Pd={blockquote:jT,code:CT,def:ET,fences:TT,heading:bT,hr:ws,html:MT,lheading:q0,list:LT,newline:PT,paragraph:RT,table:sr,text:NT},gg=se("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr",ws).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("blockquote"," {0,3}>").replace("code","(?: {4}| {0,3}	)[^\\n]").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*(?:\\n|$))|~~~)[^\\n]*(?:\\n|$)").replace("list"," {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html",ks).getRegex(),UT={...Pd,lheading:IT,table:gg,paragraph:se(kd).replace("hr",ws).replace("heading"," {0,3}#{1,6}(?:\\s|$)").replace("|lheading","").replace("table",gg).replace("blockquote"," {0,3}>").replace("fences"," {0,3}(?:`{3,}(?=[^`\\n]*(?:\\n|$))|~~~)[^\\n]*(?:\\n|$)").replace("list"," {0,3}(?:[*+-]|1[.)])[ \\t]+[^ \\t\\n]").replace("html",ks).getRegex()},_T={...Pd,html:se(`^ *(?:comment(?: *\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1>(?: *\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?>(?: *\\n{2,}|\\s*$))`).replace("comment",Ad).replace(/tag/g,"(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,heading:/^(#{1,6})(.*)(?:\n+|$)/,fences:sr,lheading:/^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,paragraph:se(kd).replace("hr",ws).replace("heading",` *#{1,6} *[^
 ]`).replace("|table","").replace("blockquote"," {0,3}>").replace("|fences","").replace("|list","").replace("|html","").replace("|tag","").replace("lheading",q0).getRegex()},VT=/^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,zT=/^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,X0=/^( {2,}|\\)\n(?!\s*$)[ \t]*/,OT=/^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,rn=/[\p{P}\p{S}]/u,oi=/[\s\p{P}\p{S}]/u,Ss=/[^\s\p{P}\p{S}]/u,BT=se(/^((?![*_])punctSpace)/,"u").replace(/punctSpace/g,oi).getRegex(),FT=/[\p{Pi}\p{Ps}"']/u,Q0=/(?!~)[\p{P}\p{S}]/u,$T=/(?!~)[\s\p{P}\p{S}]/u,GT=/(?:[^\s\p{P}\p{S}]|~)/u,WT=se(/link|precode-code|html/,"g").replace("link",/\[(?:[^\[\]`]|(?<a>`+)[^`]+\k<a>(?!`))*?\]\((?:\\[\s\S]|[^\\\(\)]|\((?:\\[\s\S]|[^\\\(\)])*\))*\)/).replace("precode-",H0?"(?<!`)()":"(^^|[^`])").replace("code",/(?<b>`+)[^`]+\k<b>(?!`)/).replace("html",/<(?! )[^<>]*?>/).getRegex(),Z0=/^(?:\*+(?:((?!\*)punct)|([^\s*]))?)|^_+(?:((?!_)punct)|([^\s_]))?/,HT=se(Z0,"u").replace(/punct/g,rn).getRegex(),KT=se(Z0,"u").replace(/punct/g,Q0).getRegex(),qT=/^(?:\*+(?:((?!\*)(?!openQuote)punct)|([^\s*]))?)|^_+(?:((?!_)(?!openQuote)punct)|([^\s_]))?/,YT=se(qT,"u").replace(/openQuote/g,FT).replace(/punct/g,rn).getRegex(),J0="^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)",XT=se(J0,"gu").replace(/notPunctSpace/g,Ss).replace(/punctSpace/g,oi).replace(/punct/g,rn).getRegex(),QT=se(J0,"gu").replace(/notPunctSpace/g,GT).replace(/punctSpace/g,$T).replace(/punct/g,Q0).getRegex(),ZT="^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)[\\s](\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|(?:(?!\\*)punct|notPunctSpace)(\\*+)(?!\\*)(?=notPunctSpace)",JT=se(ZT,"gu").replace(/notPunctSpace/g,Ss).replace(/punctSpace/g,oi).replace(/punct/g,rn).getRegex(),eb=se("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)","gu").replace(/notPunctSpace/g,Ss).replace(/punctSpace/g,oi).replace(/punct/g,rn).getRegex(),tb="^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)[\\s](_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)|(?:(?!_)punct|notPunctSpace)(_+)(?!_)(?=notPunctSpace)",nb=se(tb,"gu").replace(/notPunctSpace/g,Ss).replace(/punctSpace/g,oi).replace(/punct/g,rn).getRegex(),rb=se(/^~~?(?:((?!~)punct)|[^\s~])/,"u").replace(/punct/g,rn).getRegex(),ib="^[^~]+(?=[^~])|(?!~)punct(~~?)(?=[\\s]|$)|notPunctSpace(~~?)(?!~)(?=punctSpace|$)|(?!~)punctSpace(~~?)(?=notPunctSpace)|[\\s](~~?)(?!~)(?=punct)|(?!~)punct(~~?)(?!~)(?=punct)|notPunctSpace(~~?)(?=notPunctSpace)",sb=se(ib,"gu").replace(/notPunctSpace/g,Ss).replace(/punctSpace/g,oi).replace(/punct/g,rn).getRegex(),ob=se(/\\(punct)/,"gu").replace(/punct/g,rn).getRegex(),ab=se(/(`+)(?:[^`]|[^`][\s\S]*?[^`])\1(?!`)|`+|\\(punct)/,"gu").replace(/punct/g,rn).getRegex(),lb=se(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme",/[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email",/[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(),ub=se(Ad).replace("(?:-->|$)","-->").getRegex(),cb=se("^comment|^</[a-zA-Z][a-zA-Z0-9-]*\\s*>|^<[a-zA-Z][a-zA-Z0-9-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment",ub).replace("attribute",/\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(),ev=/\[(?:\\[\s\S]|[^\[\]\\])*\]/,aa=se(/(?:\[(?:brackets|\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+(?!`)[^`]*?`+(?!`)|``+(?=\])|[^\[\]\\`])*?/).replace("brackets",ev).getRegex(),db=se(/^!?\[(label)\]\([ \t\n]*(href)(?:(?:[ \t]+(?:\n[ \t]*)?|\n[ \t]*)(title))?[ \t\n]*\)/).replace("label",aa).replace("href",/<(?:\\.|[^\n<>\\])*>|(?!<)[^ \t\n\x00-\x1f]+|(?=\))/).replace("title",/"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|\((?:\\[\s\S]|[^)\\])*\)/).getRegex(),fb=se(/^!?\[(label)\]\[(ref)\]/).replace("label",aa).replace("ref",Sd).getRegex(),hb=se(/^!?\[(ref)\](?:\[\])?/).replace("ref",Sd).getRegex(),yg=/(?!\s*\])(?:\\[\s\S]|[^\[\]\\]){1,999}/,pb=se(/(?:[^\[\]\\`]*(?:\[(?:brackets|\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+(?!`)[^`]*?`+(?!`)|``+(?=\]))){0,999}?[^\[\]\\`]*?/).replace("brackets",ev).getRegex(),mb=se("reflink|nolink(?!\\()","g").replace("reflink",se(/^!?\[(label)\]\[(ref)\]/).replace("label",pb).replace("ref",yg).getRegex()).replace("nolink",se(/^!?\[(ref)\](?:\[\])?/).replace("ref",yg).getRegex()).getRegex(),vg=/[hH][tT][tT][pP][sS]?|[fF][tT][pP]/,gb=/[A-Za-z0-9._+-]+@[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![\w-])/,yb=se(/(?:mailto:email|xmpp:email(?:\/[A-Za-z0-9@.]+)?)/).replace(/email/g,gb).getRegex(),Cd={_backpedal:sr,anyPunctuation:ob,anyPunctuationOutsideCode:ab,autolink:lb,blockSkip:WT,br:X0,code:zT,del:sr,delLDelim:sr,delRDelim:sr,emStrongLDelim:HT,emStrongRDelimAst:XT,emStrongRDelimUnd:eb,escape:VT,link:db,nolink:hb,punctuation:BT,reflink:fb,reflinkSearch:mb,tag:cb,text:OT,url:sr},vb={...Cd,emStrongLDelim:YT,emStrongRDelimAst:JT,emStrongRDelimUnd:nb,link:se(/^!?\[(label)\]\((.*?)\)/).replace("label",aa).getRegex(),reflink:se(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label",aa).getRegex()},fc={...Cd,emStrongRDelimAst:QT,emStrongLDelim:KT,delLDelim:rb,delRDelim:sb,url:se(/^emailProtocol|^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("emailProtocol",yb).replace("protocol",vg).replace("email",/[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![\w-])/).getRegex(),_backpedal:/(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,del:/^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/,text:se(/^(?:[^a-zA-Z0-9](?=emailProtocol)|(`+|~+|[^`~])(?:(?=[`~])|(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|wwwStart|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9](?=emailProtocol)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))))/).replace("protocol",vg).replace(/emailProtocol/g,/(?:mailto|xmpp):/).replace("wwwStart",H0?"(?<![^\\s*_~(])www\\.":"www\\.").getRegex()},xb={...fc,br:se(X0).replace("{2,}","*").getRegex(),text:se(fc.text).replace("\\b_","\\b_| {2,}\\n").replace(/\{2,\}/g,"*").getRegex()},Bo={normal:Pd,gfm:UT,pedantic:_T},Xi={normal:Cd,gfm:fc,breaks:xb,pedantic:vb},wb={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"},xg=t=>wb[t];function wt(t,n){if(n){if(qe.escapeTest.test(t))return t.replace(qe.escapeReplace,xg)}else if(qe.escapeTestNoEncode.test(t))return t.replace(qe.escapeReplaceNoEncode,xg);return t}function kb(t){return qe.numericCharacterReference.test(t)?t.replace(qe.numericCharacterReferenceOrAmpersand,(n,i,o)=>{if(i===void 0&&o===void 0)return"&amp;";let a=i===void 0?Number.parseInt(o,16):Number.parseInt(i,10);return a===0||a>1114111||a>=55296&&a<=57343?"�":a===38?"&amp;":String.fromCodePoint(a)}):t}function wg(t){try{t=encodeURI(t).replace(qe.percentDecode,"%")}catch{return null}return t}function kg(t,n){var u;let i=t.replace(qe.findPipe,(c,f,p)=>{let m=!1,y=f;for(;--y>=0&&p[y]==="\\";)m=!m;return m?"|":" |"}),o=i.split(qe.splitPipe),a=0;if(o[0].trim()||o.shift(),o.length>0&&!((u=o.at(-1))!=null&&u.trim())&&o.pop(),n)if(o.length>n)o.splice(n);else for(;o.length<n;)o.push("");for(;a<o.length;a++)o[a]=o[a].trim().replace(qe.slashPipe,"|");return o}function hn(t,n,i){let o=t.length;if(o===0)return"";let a=0;for(;a<o&&t.charAt(o-a-1)===n;)a++;return t.slice(0,o-a)}function Sg(t){let n=t.split(`
 `),i=n.length-1;for(;i>=0&&qe.blankLine.test(n[i]);)i--;return n.length-i<=2?t:n.slice(0,i+1).join(`
 `)}function la(t){return t.trim().replace(qe.multipleSpaceGlobal," ").toLowerCase().toUpperCase().toLowerCase()}function Ag(t,n){if(t.indexOf(n[0])===-1&&t.indexOf(n[1])===-1)return-1;let i=0;for(let o=0;o<t.length;o++)if(t[o]==="\\")o++;else if(t[o]===n[0])i++;else if(t[o]===n[1]&&(i--,i<0))return o;return i>0?-2:-1}var ei=new WeakMap;function Td(t){let n={"*":-1,_:-1},i=-1,o=t.length;for(let a=0;a<o;a++){let u=t[a];if(u!=="*"&&u!=="_"&&u!=="~")continue;let c=a===0?`
