@@ -13,13 +13,12 @@ chips + software + networking + developer habits + partners who manufacture the 
 
 This article explains that story in plain language:
 
-1. What CUDA is  
-2. How the CUDA software bridge works  
-3. How GPU architecture works  
-4. Why CUDA is hard to replace  
-5. Where TSMC fits  
-6. ASML and lithography in brief  
-7. Why advanced GPUs face export / shipping limits  
+1. Quick glossary + common confusions  
+2. What CUDA is  
+3. CUDA software bridge  
+4. GPU architecture  
+5. Why CUDA is hard to replace  
+6. TSMC, ASML, and export limits  
 
 ![How CUDA connects applications to NVIDIA GPUs](/documents/cuda-ecosystem/cuda-stack-layers.jpg)
 
@@ -42,7 +41,48 @@ TSMC and ASML make advanced factories possible for many companies, not only NVID
 
 ---
 
-## 2. What is CUDA, in simple words?
+## 2. Beginner glossary (read this first)
+
+| Term | Simple meaning |
+| --- | --- |
+| **GPU** | A chip built for massive parallel math (great for AI) |
+| **CUDA** | NVIDIA’s software bridge + toolkit to program NVIDIA GPUs |
+| **CUDA Core** | A small general worker inside the GPU |
+| **Tensor Core** | A special AI math engine inside modern NVIDIA GPUs |
+| **HBM** | Very fast memory sitting next to the GPU |
+| **Kernel** | A small GPU program that runs many times in parallel |
+| **Training** | Teaching a model (heavy, long-running GPU work) |
+| **Inference** | Using a trained model to answer requests |
+| **Foundry** | A factory that manufactures chips for other companies (example: TSMC) |
+| **Lithography** | Using light to print circuit patterns on silicon |
+| **ASML** | Company that builds advanced lithography machines |
+| **Fabless** | Designs chips, but does not own the leading-edge factory |
+
+### Common confusions (very important)
+
+| People say | Better understanding |
+| --- | --- |
+| “CUDA is the GPU” | No. CUDA is software. The GPU is hardware. |
+| “CUDA Core = CUDA” | No. CUDA Cores are hardware workers. CUDA is the software ecosystem. |
+| “TensorRT is CUDA” | TensorRT is one NVIDIA library/tool that sits on the CUDA ecosystem. |
+| “TSMC makes NVIDIA unique” | TSMC also builds chips for rivals. NVIDIA’s edge is the full stack. |
+| “ASML builds GPUs” | No. ASML builds machines used by chip factories. |
+
+### Training vs inference (30-second view)
+
+| | Training | Inference |
+| --- | --- | --- |
+| Goal | Learn model weights | Serve answers / predictions |
+| Work pattern | Long jobs, huge compute | Continuous API traffic |
+| Example | Train Llama | Chat completion API |
+| Platform focus | Throughput + multi-GPU scale | Latency + reliability + cost |
+
+Both need GPUs.  
+They need different platform designs.
+
+---
+
+## 3. What is CUDA, in simple words?
 
 **CUDA** means **Compute Unified Device Architecture**.
 
@@ -70,7 +110,7 @@ CUDA is the **translator and toolkit** between AI software and NVIDIA GPUs.
 
 ---
 
-## 3. CUDA software bridge explained (step by step)
+## 4. CUDA software bridge explained (step by step)
 
 Think of CUDA as a **bridge** between your AI app and the NVIDIA GPU.
 
@@ -140,7 +180,7 @@ That long investment is a big reason CUDA feels “special.”
 
 ---
 
-## 4. GPU architecture explained (simple words)
+## 5. GPU architecture explained (simple words)
 
 If CUDA is the bridge, the **GPU architecture** is the city of workers on the other side.
 
@@ -206,7 +246,7 @@ GPU architecture is the parallel machine; CUDA is the control system that makes 
 
 ---
 
-## 5. Why can’t AMD, Intel, or Huawei just copy CUDA?
+## 6. Why can’t AMD, Intel, or Huawei just copy CUDA?
 
 They **can** build alternatives. They already have.
 
@@ -277,7 +317,7 @@ This cycle reinforces itself. That is the ecosystem moat.
 
 ---
 
-## 6. Who builds NVIDIA chips? Meet TSMC
+## 7. Who builds NVIDIA chips? Meet TSMC
 
 NVIDIA mostly designs chips.  
 It usually does **not** run the leading-edge factories itself. This model is called **fabless**.
@@ -301,7 +341,7 @@ Rivals can use advanced manufacturing too.
 
 ---
 
-## 7. ASML and lithography (brief, plain English)
+## 8. ASML and lithography (brief, plain English)
 
 Chip factories need special machines to **print** tiny circuits onto silicon.  
 The company that leads this for the most advanced chips is **ASML** (Netherlands).
@@ -363,7 +403,7 @@ So AI GPU supply is connected not only to NVIDIA and TSMC, but also to ASML’s 
 
 ---
 
-## 8. Why advanced GPUs cannot freely ship everywhere
+## 9. Why advanced GPUs cannot freely ship everywhere
 
 This is geopolitics meeting technology.
 
@@ -396,7 +436,7 @@ Even if money is available, advanced AI GPUs and chip-making tools may still be 
 
 ---
 
-## 9. If rivals also use TSMC, why is NVIDIA still ahead?
+## 10. If rivals also use TSMC, why is NVIDIA still ahead?
 
 Because a factory is only one part of the product.
 
@@ -420,7 +460,7 @@ NVIDIA’s edge is years of **end-to-end** optimization, not a secret exclusive 
 
 ---
 
-## 10. The full semiconductor map (who depends on whom)
+## 11. The full semiconductor map (who depends on whom)
 
 | Layer | Examples | Responsibility |
 | --- | --- | --- |
@@ -439,7 +479,7 @@ That is why “clone NVIDIA” really means “rebuild a whole industrial ecosys
 
 ---
 
-## 11. NVIDIA’s real advantages, ranked simply
+## 12. NVIDIA’s real advantages, ranked simply
 
 | Rank | Advantage | Why it matters |
 | --- | --- | --- |
@@ -455,7 +495,7 @@ The durable moat is **CUDA + chips + networking + ecosystem + systems**.
 
 ---
 
-## 12. What you should learn next (platform architect path)
+## 13. What you should learn next (platform architect path)
 
 If you design AI platforms, learn these seven pieces in order:
 
